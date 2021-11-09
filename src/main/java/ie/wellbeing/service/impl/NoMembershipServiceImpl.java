@@ -1,19 +1,28 @@
 package ie.wellbeing.service.impl;
 
+<<<<<<< HEAD
 import ie.wellbeing.service.MembershipServiceState;
+=======
+import ie.wellbeing.service.MembershipState;
+>>>>>>> 2469c845f5be36f80155aeae4dd7995b42e25f78
 
 
-public class NoMembershipServiceImpl implements MembershipServiceState {
+public class NoMembershipServiceImpl extends MembershipState {
 
-    private final MembershipServiceContext membershipServiceContext;
+    private final MembershipContextServiceImpl membershipContextServiceImpl;
 
-    public NoMembershipServiceImpl(MembershipServiceContext membershipServiceContext){
-        this.membershipServiceContext=membershipServiceContext;
+    public NoMembershipServiceImpl(MembershipContextServiceImpl membershipContextServiceImpl){
+        this.membershipContextServiceImpl = membershipContextServiceImpl;
     }
 
     @Override
-    public Integer handleMembership() {
+    public String membershipName() {
         //Set user membership initially to null
+        return "NO_MEMBERSHIP";
+    }
+
+    @Override
+    public Integer membershipId() {
         return 0;
     }
 

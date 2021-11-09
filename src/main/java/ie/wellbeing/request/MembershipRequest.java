@@ -4,7 +4,7 @@ public class MembershipRequest {
 
     private String mName;
 
-    private String uId;
+    private Integer uId;
 
     public String getmName() {
         return mName;
@@ -14,11 +14,11 @@ public class MembershipRequest {
         this.mName = mName;
     }
 
-    public String getuId() {
+    public Integer getuId() {
         return uId;
     }
 
-    public void setuId(String uId) {
+    public void setuId(Integer uId) {
         this.uId = uId;
     }
 

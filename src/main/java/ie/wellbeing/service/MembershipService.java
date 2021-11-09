@@ -1,8 +1,14 @@
 package ie.wellbeing.service;
 
 
-public interface MembershipService {
+import ie.wellbeing.model.MembershipDetails;
+import ie.wellbeing.request.MembershipRequest;
+import java.util.List;
 
-    public void changeStateTo(MembershipServiceState newState);
-    public Integer handle();
+public interface MembershipService {
+    String createMembership(MembershipRequest membershipRequest, String siteURL) throws Exception;
+
+    void updateMembershipDetails(Integer userId, String type);
+
+    List<MembershipDetails> getAllUsersMembershipDetails();
 }

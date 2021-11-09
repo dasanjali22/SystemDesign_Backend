@@ -3,7 +3,7 @@ package ie.wellbeing.service.impl;
 import ie.wellbeing.model.UserDetails;
 import ie.wellbeing.model.dao.UserDetailsDao;
 import ie.wellbeing.request.UserRequest;
-import ie.wellbeing.service.MembershipService;
+import ie.wellbeing.service.MembershipContextService;
 import ie.wellbeing.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -16,7 +16,11 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
+<<<<<<< HEAD
 import java.util.Optional;
+=======
+import java.util.Locale;
+>>>>>>> 2469c845f5be36f80155aeae4dd7995b42e25f78
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -29,21 +33,25 @@ public class UserServiceImpl implements UserService {
     private JavaMailSender mailSender;
 
     @Autowired
-    MembershipService membershipService;
+    MembershipContextService membershipService;
 
 
     @Override
     public void registrationUser(UserRequest userRequest,String siteURL) throws IllegalStateException, MessagingException, UnsupportedEncodingException {
         passwordEncoder=new BCryptPasswordEncoder();
-        Optional<UserDetails> useroptional = userDao.findByEmail(userRequest.getuEmail());
-        if (!useroptional.isPresent()) {
+        UserDetails userOptional = userDao.findByEmail(userRequest.getuEmail());
+        if (userOptional==null) {
+            String randomCode = RandomString.make(64);
             UserDetails userdetails = new UserDetails();
             userdetails.setName(userRequest.getuName());
-            userdetails.setEmail(userRequest.getuEmail());
+            userdetails.setEmail(userRequest.getuEmail().toLowerCase());
             userdetails.setPhone(userRequest.getuPhone());
             userdetails.setAge(userRequest.getuAge());
             userdetails.setCity(userRequest.getuCity());
-            userdetails.setMid(membershipService.handle());
+            userdetails.setCountry(userRequest.getuCountry());
+            userdetails.setVerificationCode(randomCode);
+            userdetails.setEnabled(false);
+            userdetails.setmName(membershipService.handle());
             if(userRequest.getuCreatePassword().equals(userRequest.getuConfirmPassword())){
                 String encodedPassword=this.passwordEncoder.encode(userRequest.getuConfirmPassword());
                 userdetails.setConfirmPassword(encodedPassword);
@@ -52,13 +60,11 @@ public class UserServiceImpl implements UserService {
             else{
                 throw new IllegalStateException("Password Mismatch");
             }
-            //userdetails.setCreatePassword(userRequest.getuCreatePassword());
-            //userdetails.setConfirmPassword(userRequest.getuConfirmPassword());
             userDao.save(userdetails);
             sendVerificationEmail(userdetails, siteURL);
         }
         else{
-            throw new IllegalStateException("User Already registered please login");
+            throw new IllegalStateException("User Already registered please login: "+ userOptional.getEmail());
         }
     }
 
