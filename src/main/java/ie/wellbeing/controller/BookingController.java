@@ -22,7 +22,7 @@ public class BookingController {
 
    @GetMapping("/{id}")
     public Booking getBooking(@PathVariable Integer id){
-        return bookingService.git getBookingId(id);
+        return bookingService.getBookingId(id);
    }
 
    @GetMapping("/all")
