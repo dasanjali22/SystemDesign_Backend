@@ -1,15 +1,9 @@
 package ie.wellbeing.model;
 
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
 import javax.persistence.*;
-import java.util.Collection;
-import java.util.Collections;
 
 @Entity
-public class LoginUser implements UserDetails {
+public class LoginUser{
 
     @Id
     @SequenceGenerator(
@@ -27,9 +21,12 @@ public class LoginUser implements UserDetails {
 
     @Column(name ="ConfirmPassword")
     private String confirmPassword;
+
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
+
     private Boolean locked = false;
+
     private Boolean enabled = false;
 
     public LoginUser( String email,
@@ -40,43 +37,54 @@ public class LoginUser implements UserDetails {
 
     }
 
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        SimpleGrantedAuthority authority =
-                new SimpleGrantedAuthority(userRole.name());
-        return Collections.singletonList(authority);
-    }
-
-
-    @Override
-    public String getUsername() {
+    public String getEmail() {
         return email;
     }
 
-    @Override
-    public String getPassword() {
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getConfirmPassword() {
         return confirmPassword;
     }
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
     }
 
-    @Override
-    public boolean isAccountNonLocked() {
-        return !locked;
-    }
+//    public UserRole getUserRole() {
+//        return userRole;
+//    }
+//
+//    public void setUserRole(UserRole userRole) {
+//        this.userRole = userRole;
+//    }
+//
+//    public Boolean getLocked() {
+//        return locked;
+//    }
+//
+//    public void setLocked(Boolean locked) {
+//        this.locked = locked;
+//    }
+//
+//    public Boolean getEnabled() {
+//        return enabled;
+//    }
+//
+//    public void setEnabled(Boolean enabled) {
+//        this.enabled = enabled;
+//    }
 
     @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
+    public String toString() {
+        return "LoginUser{" +
+                "email='" + email + '\'' +
+                ", confirmPassword='" + confirmPassword + '\'' +
+                ", userRole=" + userRole +
+                ", locked=" + locked +
+                ", enabled=" + enabled +
+                '}';
     }
-
-    @Override
-    public boolean isEnabled() {
-        return enabled;
-    }
-
 }

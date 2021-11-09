@@ -12,24 +12,21 @@ import org.springframework.stereotype.Service;
 public class LoginServiceImpl implements LoginService {
 
     @Autowired
-    private  LoginUserDao loginUserDao;
+    private LoginUserDao loginUserDao;
 
 
     public void loginUser(LoginRequest loginRequest, String siteURL) throws IllegalStateException {
         String tempEmailId = loginRequest.getuEmail();
         String tempPassword = loginRequest.getuConfirmPassword();
-        LoginUser loginUserObj = new LoginUser(tempEmailId,tempPassword);
-        if(loginUserObj.getUsername() != null && loginUserObj.getPassword()!= null){
-//         loginUserObj = fetchUserByEmailAndPassword(tempEmailId,tempPassword);
-            System.out.println("Success");
-        } else {
-//        if(!loginUserObj.isPresent()){
-            throw new IllegalStateException("Bad Credentials");
+        LoginUser loginUserObj = new LoginUser(tempEmailId, tempPassword);
+
+        if (loginUserObj.getEmail() != null && loginUserObj.getConfirmPassword() != null) {
+            LoginUser loginUser = loginUserDao.findByEmail(loginRequest.getuEmail());
+            if (loginRequest.getuEmail() == loginUser.getEmail()) {
+                System.out.println("Success");
+            } else {
+                throw new IllegalStateException("Bad Credentials");
+            }
         }
     }
-    public LoginUser fetchUserByEmailAndPassword(String uEmail, String uConfirmPassword) {
-        return loginUserDao.findByEmailAndConfirmPassword(uEmail, uConfirmPassword);
-    }
-
-
 }
