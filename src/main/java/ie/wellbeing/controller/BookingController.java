@@ -5,6 +5,9 @@ import ie.wellbeing.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
+import java.io.UnsupportedEncodingException;
+import java.text.ParseException;
 import java.util.List;
 
 
@@ -15,8 +18,9 @@ public class BookingController {
     @Autowired
     BookingService bookingService;
 
-    @PostMapping("/")
-    public Booking createBooking(@RequestBody Booking booking){
+    @PostMapping(value = "/",headers =  "content-type=application/json" )
+    @ResponseBody
+    public Booking createBooking(@RequestBody Booking booking) throws ParseException, MessagingException, UnsupportedEncodingException {
         return bookingService.createBooking(booking);
     }
 

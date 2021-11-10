@@ -1,10 +1,3 @@
-/**
- * Project:Well-Being System
- * Creation Date: 22-10-21
- * Author: Sai Anushka
- * Package Created: Sai Anushka
- */
-
 package ie.wellbeing.model;
 
 import javax.persistence.*;
@@ -16,7 +9,16 @@ import javax.validation.constraints.Email;
 public class UserDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(
+            name="user_sequence",
+            sequenceName="user_sequence",
+            allocationSize=1
+    )
+    @GeneratedValue(
+            strategy=GenerationType.SEQUENCE,
+            generator="user_sequence"
+    )
+
     @Column(name = "UID")
     private Integer id;
 
@@ -45,27 +47,15 @@ public class UserDetails {
     @Column(name = "UConfirmPassword")
     private String ConfirmPassword;
 
+    @Column(name = "membership_name")
+    private String mName;
+
 
     @Column(name = "verification_code", length = 64)
     private String verificationCode;
 
     private boolean enabled;
 
-    public String getVerificationCode() {
-        return verificationCode;
-    }
-
-    public void setVerificationCode(String verificationCode) {
-        this.verificationCode = verificationCode;
-    }
-
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
 
     public Integer getId() {
         return id;
@@ -138,4 +128,30 @@ public class UserDetails {
     public void setConfirmPassword(String confirmPassword) {
         ConfirmPassword = confirmPassword;
     }
+
+    public String getmName() {
+        return mName;
+    }
+
+    public void setmName(String mName) {
+        this.mName = mName;
+    }
+
+    public String getVerificationCode() {
+        return verificationCode;
+    }
+
+    public void setVerificationCode(String verificationCode) {
+        this.verificationCode = verificationCode;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+
+    }
 }
+

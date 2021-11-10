@@ -1,10 +1,3 @@
-/**
- * Project:Well-Being System
- * Creation Date: 22-10-21
- * Author: Sai Anushka
- * Package Created: Sai Anushka
- */
-
 package ie.wellbeing.common;
 
 import java.io.Serializable;
@@ -25,7 +18,8 @@ public class ApiResponse implements Serializable
     private int status;
 
     private Object data;
-    
+
+    //Has Error Message defined
     private ApiResponseError error;
 
     

@@ -1,18 +1,14 @@
-/**
- * Project:Well-Being System
- * Creation Date: 22-10-21
- * Author: Sai Anushka
- * Package Created: Sai Anushka
- */
-
 package ie.wellbeing.service;
 
-import ie.wellbeing.model.Membership;
 
+import ie.wellbeing.model.MembershipDetails;
+import ie.wellbeing.request.MembershipRequest;
 import java.util.List;
 
 public interface MembershipService {
+    String createMembership(MembershipRequest membershipRequest, String siteURL) throws Exception;
 
-    List<Membership> getMembershipDetails();
+    void updateMembershipDetails(Integer userId, String type);
 
+    List<MembershipDetails> getAllUsersMembershipDetails();
 }

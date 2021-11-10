@@ -2,20 +2,53 @@ package ie.wellbeing.service.impl;
 
 
 import ie.wellbeing.model.Booking;
+import ie.wellbeing.model.MembershipDetails;
 import ie.wellbeing.model.dao.BookingDao;
+import ie.wellbeing.model.dao.MembershipDetailsDao;
 import ie.wellbeing.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
+import java.io.UnsupportedEncodingException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 @Service
 public class BookingServiceImpl implements BookingService {
     @Autowired
     private BookingDao bookingDao;
+
+    @Autowired
+    private MembershipDetailsDao membershipDetailsDao;
+
+    @Autowired
+    private EmailServiceImpl emailServiceImpl;
+
     @Override
-    public Booking createBooking(Booking booking) {
-        return bookingDao.save(booking);
+    public Booking createBooking(Booking booking) throws ParseException, MessagingException, UnsupportedEncodingException {
+        //Booking booking1 = bookingDao.save(booking);
+        String session_time = booking.getSessionTime();
+        Date currentDate = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-M-yyyy hh:mm:ss a", Locale.ENGLISH);
+        Date sessiondate = formatter.parse(session_time);
+        if(currentDate.compareTo(sessiondate) > 0) {
+            System.out.println("Expired");
+        }
+        else if(currentDate.compareTo(sessiondate) < 0){
+            MembershipDetails membershipDetails = membershipDetailsDao.getMembershipDetailsByuId(booking.getUserId());
+            emailServiceImpl.sendSimpleMessage();
+            if(membershipDetails.getmName().equals("PLATINUM")){
+
+            }
+        }
+        else{
+
+        }
+        return booking;
     }
 
     public Booking getBookingId(Integer id){
@@ -24,4 +57,6 @@ public class BookingServiceImpl implements BookingService {
     public List<Booking> getAllBooking(){
         return bookingDao.findAll();
     }
+
+
 }

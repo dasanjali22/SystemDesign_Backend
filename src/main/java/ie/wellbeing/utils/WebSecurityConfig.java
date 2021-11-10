@@ -1,10 +1,3 @@
-/**
- * Project:Well-Being System
- * Creation Date: 22-10-21
- * Author: Sai Anushka
- * Package Created: Sai Anushka
- */
-
 package ie.wellbeing.utils;
 
 import org.springframework.context.annotation.Bean;
@@ -18,10 +11,10 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.Arrays;
 
 @EnableWebSecurity
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    protected void configure(HttpSecurity http) throws Exception{
         http.cors().and().csrf().disable(); //to sned post requests without being rejected
         http.headers().frameOptions().disable();
     }
@@ -37,4 +30,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
+
 }

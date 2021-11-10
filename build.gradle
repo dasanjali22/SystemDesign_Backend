@@ -30,10 +30,14 @@ dependencies {
 	implementation group: 'io.springfox', name: 'springfox-swagger2', version: '3.0.0'
 	implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
-	compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.12'
+
+	//Stripe
+	implementation 'com.stripe:stripe-java:10.0.2'
+
+	//thyme Leaf
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 }
 
 test {
 	useJUnitPlatform()
 }
-

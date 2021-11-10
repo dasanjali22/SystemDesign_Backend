@@ -1,10 +1,3 @@
-/**
- * Project:Well-Being System
- * Creation Date: 22-10-21
- * Author: Sai Anushka
- * Package Created: Sai Anushka
- */
-
 package ie.wellbeing.controller;
 
 import ie.wellbeing.common.ApiResponse;
@@ -17,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-
 
 @RestController
 @RequestMapping("user")

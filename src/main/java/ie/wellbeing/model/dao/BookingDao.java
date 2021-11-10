@@ -9,7 +9,7 @@ import java.util.List;
 
 @Repository
 public interface BookingDao extends JpaRepository<Booking, Integer>{
-     Booking save(Booking booking);
+     //Booking save(Booking booking);
      Booking findBookingByUserId(Integer id);
 
      @Override

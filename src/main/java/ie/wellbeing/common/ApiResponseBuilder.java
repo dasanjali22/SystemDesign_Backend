@@ -1,10 +1,3 @@
-/**
- * Project:Well-Being System
- * Creation Date: 22-10-21
- * Author: Sai Anushka
- * Package Created: Sai Anushka
- */
-
 package ie.wellbeing.common;
 
 /**
@@ -16,7 +9,7 @@ public class ApiResponseBuilder
     private ApiResponse res;
 
     /**
-     * @param res
+     * @param
      */
     private ApiResponseBuilder(int status )
     {
