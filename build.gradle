@@ -19,14 +19,9 @@ sonarqube {
     property "sonar.projectKey", "dasanjali22_SystemDesign_Backend"
     property "sonar.organization", "dasanjali22"
     property "sonar.host.url", "https://sonarcloud.io"
-<<<<<<< HEAD
-}
-}
-=======
     property "sonar.sourceEncoding", "UTF-8"
-    }
-  }
->>>>>>> 3c9434436a44536e773e30b642109a4682e8433f
+	}
+}
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
