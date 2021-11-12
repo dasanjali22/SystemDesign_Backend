@@ -19,6 +19,7 @@ sonarqube {
     property "sonar.projectKey", "dasanjali22_SystemDesign_Backend"
     property "sonar.organization", "dasanjali22"
     property "sonar.host.url", "https://sonarcloud.io"
+    property "sonar.sourceEncoding", "UTF-8"
   }
 
 dependencies {
