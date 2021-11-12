@@ -1,4 +1,4 @@
-name: SonarCloudBuild
+name: SonarCloud-Build
 on:
   push:
     branches:
