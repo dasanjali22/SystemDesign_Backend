@@ -1,20 +1,26 @@
 package ie.wellbeing.service.impl;
 
-import ie.wellbeing.service.MembershipServiceState;
-import org.springframework.stereotype.Service;
+
+import ie.wellbeing.service.MembershipState;
 
 
-public class NoMembershipServiceImpl implements MembershipServiceState {
 
-    private final MembershipServiceContext membershipServiceContext;
+public class NoMembershipServiceImpl extends MembershipState {
 
-    public NoMembershipServiceImpl(MembershipServiceContext membershipServiceContext){
-        this.membershipServiceContext=membershipServiceContext;
+    private final MembershipContextServiceImpl membershipContextServiceImpl;
+
+    public NoMembershipServiceImpl(MembershipContextServiceImpl membershipContextServiceImpl){
+        this.membershipContextServiceImpl = membershipContextServiceImpl;
     }
 
     @Override
-    public Integer handleMembership() {
+    public String membershipName() {
         //Set user membership initially to null
+        return "NO_MEMBERSHIP";
+    }
+
+    @Override
+    public Integer membershipId() {
         return 0;
     }
 

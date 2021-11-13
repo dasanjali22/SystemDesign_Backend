@@ -20,6 +20,10 @@ git branch -M main
 git push -uf origin main
 ```
 
+##Stripe
+use test credit cards offered by stripe
+4242 4242 4242 4242 is not a real credit card number. It is one of the several Stripe testing cards available online. These cards only work in testing mode.
+
 ## Integrate with your tools
 
 - [ ] [Set up project integrations](https://gitlab.com/-/experiment/new_project_readme_content:461496283c2dc1422d8a2400fd1b4255?https://docs.gitlab.com/ee/user/project/integrations/)
