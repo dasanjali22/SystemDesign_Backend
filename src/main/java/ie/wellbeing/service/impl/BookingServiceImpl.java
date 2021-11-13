@@ -30,25 +30,27 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public Booking createBooking(Booking booking) throws ParseException, MessagingException, UnsupportedEncodingException {
-        //Booking booking1 = bookingDao.save(booking);
+        Booking booking1 = bookingDao.save(booking);
         String session_time = booking.getSessionTime();
         Date currentDate = new Date();
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-M-yyyy hh:mm:ss a", Locale.ENGLISH);
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-M-yyyy hh:mm:ss", Locale.ENGLISH);
         Date sessiondate = formatter.parse(session_time);
-        if(currentDate.compareTo(sessiondate) > 0) {
+        MembershipDetails membershipDetails = null;
+        if (currentDate.compareTo(sessiondate) > 0) {
             System.out.println("Expired");
-        }
-        else if(currentDate.compareTo(sessiondate) < 0){
-            MembershipDetails membershipDetails = membershipDetailsDao.getMembershipDetailsByuId(booking.getUserId());
+        } else if (currentDate.compareTo(sessiondate) < 0) {
+            membershipDetails = membershipDetailsDao.getMembershipDetailsByuId(booking.getUserId());
             emailServiceImpl.sendSimpleMessage();
-            if(membershipDetails.getmName().equals("PLATINUM")){
+            if (membershipDetails.getmName().equals("PLATINUM")) {
 
             }
-        }
-        else{
+        } else if (membershipDetails.getmName().equals("GOLD")) {
+
+        } else if (membershipDetails.getmName().equals("SILVER"))
+        {
 
         }
-        return booking;
+            return booking;
     }
 
     public Booking getBookingId(Integer id){

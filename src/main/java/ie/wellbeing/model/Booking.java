@@ -2,16 +2,23 @@
 package ie.wellbeing.model;
 
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Table(name = "BOOKING_TABLE")
 @Entity
 public class Booking{
 
     @Id
+    @SequenceGenerator(
+            name="payment_sequence",
+            sequenceName="payment_sequence",
+            allocationSize=1
+    )
+    @GeneratedValue(
+            strategy=GenerationType.SEQUENCE,
+            generator="payment_sequence"
+    )
+
     @Column(name = "UID")
     private Integer userId;
     @Column(name = "SID")
@@ -22,6 +29,8 @@ public class Booking{
     private String bookingType;
     @Column(name = "stime")
     private String sessionTime;
+
+
 
     public Integer getUserId() {
         return userId;
@@ -63,7 +72,6 @@ public class Booking{
         this.sessionTime = sessionTime;
     }
 
-
-
-
 }
+
+

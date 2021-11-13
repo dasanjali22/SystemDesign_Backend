@@ -1,5 +1,7 @@
 package ie.wellbeing.controller;
 
+import ie.wellbeing.common.ApiResponse;
+import ie.wellbeing.common.ApiResponseBuilder;
 import ie.wellbeing.model.Booking;
 import ie.wellbeing.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,10 @@ public class BookingController {
     public Booking createBooking(@RequestBody Booking booking) throws ParseException, MessagingException, UnsupportedEncodingException {
         return bookingService.createBooking(booking);
     }
+
+    @GetMapping("/getUsers")
+    public ApiResponse getAllUsers() {
+        return ApiResponseBuilder.success().data(bookingService.getAllBooking()).build(); }
 
    @GetMapping("/{id}")
     public Booking getBooking(@PathVariable Integer id){

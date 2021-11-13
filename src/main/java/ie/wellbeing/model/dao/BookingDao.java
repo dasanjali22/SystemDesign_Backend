@@ -13,7 +13,7 @@ public interface BookingDao extends JpaRepository<Booking, Integer>{
      Booking findBookingByUserId(Integer id);
 
      @Override
-     List<Booking> findAll();
+      List<Booking> findAll();
 }
 
 
