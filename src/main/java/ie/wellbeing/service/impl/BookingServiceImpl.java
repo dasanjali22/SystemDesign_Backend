@@ -40,7 +40,7 @@ public class BookingServiceImpl implements BookingService {
             System.out.println("Expired");
         } else if (currentDate.compareTo(sessiondate) < 0) {
             membershipDetails = membershipDetailsDao.getMembershipDetailsByuId(booking.getUserId());
-            emailServiceImpl.sendSimpleMessage();
+           // emailServiceImpl.sendSimpleMessage();
             if (membershipDetails.getmName().equals("PLATINUM")) {
 
             }
