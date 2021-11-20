@@ -1,12 +1,6 @@
 package ie.wellbeing.service.impl;
 
-<<<<<<< HEAD
-import ie.wellbeing.model.dao.MembershipDao;
-import ie.wellbeing.service.MembershipServiceState;
-import org.springframework.beans.factory.annotation.Autowired;
-=======
 import ie.wellbeing.service.MembershipState;
->>>>>>> 2469c845f5be36f80155aeae4dd7995b42e25f78
 
 public class PlatinumMembershipServiceImpl extends MembershipState {
 
