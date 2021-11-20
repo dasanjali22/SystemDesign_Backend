@@ -2,12 +2,9 @@ package ie.wellbeing.service.impl;
 
 import ie.wellbeing.model.PaymentDetails;
 import ie.wellbeing.model.UserDetails;
-import ie.wellbeing.model.dao.PaymentDetailsDao;
-import ie.wellbeing.model.dao.UserDetailsDao;
-import ie.wellbeing.service.MembershipContextService;
-import ie.wellbeing.service.MembershipService;
-import ie.wellbeing.service.MembershipState;
-import ie.wellbeing.service.PaymentService;
+import ie.wellbeing.repository.PaymentDetailsDao;
+import ie.wellbeing.repository.UserDetailsDao;
+import ie.wellbeing.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +15,7 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-public class PaymentServiceImpl implements PaymentService {
+public class PaymentServiceImpl implements PaymentService,PaymentServiceProxy {
 
     @Autowired
     PaymentDetailsDao paymentDetailsDao;
@@ -31,6 +28,9 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Autowired
     MembershipContextService membershipContextService;
+
+    @Autowired
+    PaymentServiceProxy paymentServiceProxy;
 
     @Override
     public List<PaymentDetails> getAllPaymentDetails() {
@@ -53,8 +53,8 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    @Transactional
     public void updatePaymentDetails(PaymentDetails paymentDetails) {
+
         SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd");
         Calendar cal = Calendar.getInstance();
         Date today = cal.getTime();

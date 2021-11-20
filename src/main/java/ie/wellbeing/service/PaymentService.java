@@ -9,5 +9,4 @@ public interface PaymentService {
 
     PaymentDetails checkUserPaymentId(String email);
 
-    void updatePaymentDetails(PaymentDetails paymentDetails);
 }

@@ -1,10 +1,6 @@
 package ie.wellbeing.service.impl;
 
-<<<<<<< HEAD
-import ie.wellbeing.service.MembershipServiceState;
-=======
 import ie.wellbeing.service.MembershipState;
->>>>>>> 2469c845f5be36f80155aeae4dd7995b42e25f78
 
 
 public class NoMembershipServiceImpl extends MembershipState {

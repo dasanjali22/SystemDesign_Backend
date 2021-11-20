@@ -1,26 +1,22 @@
 package ie.wellbeing.service.impl;
 
 import ie.wellbeing.model.UserDetails;
-import ie.wellbeing.model.dao.UserDetailsDao;
+import ie.wellbeing.repository.UserDetailsDao;
 import ie.wellbeing.request.UserRequest;
 import ie.wellbeing.service.MembershipContextService;
 import ie.wellbeing.service.UserService;
+import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
-<<<<<<< HEAD
-import java.util.Optional;
-=======
 import java.util.Locale;
->>>>>>> 2469c845f5be36f80155aeae4dd7995b42e25f78
 
 @Service
 public class UserServiceImpl implements UserService {
