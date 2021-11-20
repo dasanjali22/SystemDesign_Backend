@@ -56,6 +56,13 @@ public class UserDetails {
 
     private boolean enabled;
 
+    public UserDetails() {
+    }
+
+    public UserDetails(String email) {
+        this.email = email;
+
+    }
 
     public Integer getId() {
         return id;

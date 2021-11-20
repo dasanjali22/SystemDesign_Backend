@@ -1,4 +1,4 @@
-package ie.wellbeing.model.dao;
+package ie.wellbeing.repository;
 
 import ie.wellbeing.model.PaymentDetails;
 import org.springframework.data.jpa.repository.JpaRepository;

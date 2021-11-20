@@ -2,8 +2,8 @@ package ie.wellbeing.service.impl;
 
 import ie.wellbeing.model.MembershipDetails;
 import ie.wellbeing.model.PaymentDetails;
-import ie.wellbeing.model.dao.MembershipDetailsDao;
-import ie.wellbeing.model.dao.PaymentDetailsDao;
+import ie.wellbeing.repository.MembershipDetailsDao;
+import ie.wellbeing.repository.PaymentDetailsDao;
 import ie.wellbeing.request.MembershipRequest;
 import ie.wellbeing.service.MembershipService;
 import ie.wellbeing.service.MembershipState;
