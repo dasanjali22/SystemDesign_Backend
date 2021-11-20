@@ -7,9 +7,6 @@ import ie.wellbeing.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.mail.MessagingException;
-import java.io.UnsupportedEncodingException;
-import java.text.ParseException;
 import java.util.List;
 
 
@@ -22,21 +19,27 @@ public class BookingController {
 
     @PostMapping(value = "/",headers =  "content-type=application/json" )
     @ResponseBody
-    public Booking createBooking(@RequestBody Booking booking) throws ParseException, MessagingException, UnsupportedEncodingException {
-        return bookingService.createBooking(booking);
+    public Booking createBooking(@RequestBody Booking booking) throws Exception {
+        try {
+            return bookingService.createBooking(booking);
+        }
+        catch (Exception e)
+        {
+            throw e;
+        }
     }
 
     @GetMapping("/getUsers")
     public ApiResponse getAllUsers() {
         return ApiResponseBuilder.success().data(bookingService.getAllBooking()).build(); }
 
-   @GetMapping("/{id}")
+    @GetMapping("/{id}")
     public Booking getBooking(@PathVariable Integer id){
         return bookingService.getBookingId(id);
-   }
+    }
 
-   @GetMapping("/all")
+    @GetMapping("/all")
     public List<Booking> getAllBookings(){
         return bookingService.getAllBooking();
-   }
+    }
 }

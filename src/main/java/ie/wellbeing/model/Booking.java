@@ -1,9 +1,13 @@
-
 package ie.wellbeing.model;
 
 
 import javax.persistence.*;
+import java.util.Date;
 
+
+/*
+Authors : Sai Rohit Voleti & Subhiksha
+ */
 @Table(name = "BOOKING_TABLE")
 @Entity
 public class Booking{
@@ -28,7 +32,7 @@ public class Booking{
     @Column(name = "Btype")
     private String bookingType;
     @Column(name = "stime")
-    private String sessionTime;
+    private Date sessionTime;
 
 
 
@@ -64,14 +68,12 @@ public class Booking{
         this.bookingType = bookingType;
     }
 
-    public String getSessionTime() {
+    public Date getSessionTime() {
         return sessionTime;
     }
 
-    public void setSessionTime(String sessionTime) {
+    public void setSessionTime(Date sessionTime) {
         this.sessionTime = sessionTime;
     }
 
 }
-
-
