@@ -1,8 +1,14 @@
 package ie.wellbeing.model;
 
-import javax.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Entity
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collection;
+
+@Entity @Data @NoArgsConstructor @AllArgsConstructor
 public class LoginUser{
 
     @Id
@@ -13,17 +19,17 @@ public class LoginUser{
     )
 
     @GeneratedValue(
-            strategy= GenerationType.SEQUENCE,
+            strategy= GenerationType.AUTO,
             generator="user_sequence"
     )
 
     private String email;
-
+    private String name;
     @Column(name ="ConfirmPassword")
     private String confirmPassword;
 
-    @Enumerated(EnumType.STRING)
-    private UserRole userRole;
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Collection<UserRole> roles = new ArrayList<>();
 
     private Boolean locked = false;
 
@@ -53,38 +59,15 @@ public class LoginUser{
         this.confirmPassword = confirmPassword;
     }
 
-//    public UserRole getUserRole() {
-//        return userRole;
-//    }
-//
-//    public void setUserRole(UserRole userRole) {
-//        this.userRole = userRole;
-//    }
-//
-//    public Boolean getLocked() {
-//        return locked;
-//    }
-//
-//    public void setLocked(Boolean locked) {
-//        this.locked = locked;
-//    }
-//
-//    public Boolean getEnabled() {
-//        return enabled;
-//    }
-//
-//    public void setEnabled(Boolean enabled) {
-//        this.enabled = enabled;
-//    }
 
-    @Override
-    public String toString() {
-        return "LoginUser{" +
-                "email='" + email + '\'' +
-                ", confirmPassword='" + confirmPassword + '\'' +
-                ", userRole=" + userRole +
-                ", locked=" + locked +
-                ", enabled=" + enabled +
-                '}';
-    }
+//    @Override
+//    public String toString() {
+//        return "LoginUser{" +
+//                "email='" + email + '\'' +
+//                ", confirmPassword='" + confirmPassword + '\'' +
+//                ", userRole=" + userRole +
+//                ", locked=" + locked +
+//                ", enabled=" + enabled +
+//                '}';
+//    }
 }

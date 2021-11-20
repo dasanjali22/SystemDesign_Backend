@@ -5,22 +5,82 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e5ec7650-d81d-4260-a7cc-4081c563b63b" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ie/wellbeing/common/Response.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ie/wellbeing/controller/PaymentController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ie/wellbeing/controller/PaymentStripeController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ie/wellbeing/model/PaymentDetails.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ie/wellbeing/model/dao/PaymentDetailsDao.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ie/wellbeing/model/dao/UserRoleDao.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ie/wellbeing/service/MembershipContextService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ie/wellbeing/service/MembershipState.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ie/wellbeing/service/PaymentService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ie/wellbeing/service/PaymentStripeService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ie/wellbeing/service/impl/MembershipContextServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ie/wellbeing/service/impl/MembershipServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ie/wellbeing/service/impl/PaymentServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ie/wellbeing/service/impl/PaymentStripeServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/charge.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.1/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.1/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.1/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.1/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.1/fileHashes/fileHashes.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.1/fileHashes/fileHashes.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.1/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.1/fileHashes/resourceHashesCache.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/checksums/checksums.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/ie/wellbeing/controller/LoginUserController.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/ie/wellbeing/controller/LoginUserController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/ie/wellbeing/model/LoginUser.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/ie/wellbeing/model/LoginUser.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/ie/wellbeing/model/Membership.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/ie/wellbeing/model/MembershipDetails.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/ie/wellbeing/model/MembershipDetails.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/ie/wellbeing/model/UserDetails.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/ie/wellbeing/model/UserDetails.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/ie/wellbeing/model/UserRole.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/ie/wellbeing/model/UserRole.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/ie/wellbeing/model/dao/LoginUserDao.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/ie/wellbeing/model/dao/LoginUserDao.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/ie/wellbeing/model/dao/MembershipDao.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/ie/wellbeing/model/dao/UserDetailsDao.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/ie/wellbeing/model/dao/UserDetailsDao.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/ie/wellbeing/request/MembershipRequest.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/ie/wellbeing/request/MembershipRequest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/ie/wellbeing/service/LoginService.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/ie/wellbeing/service/LoginService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/ie/wellbeing/service/MembershipService.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/ie/wellbeing/service/MembershipService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/ie/wellbeing/service/MembershipServiceState.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/ie/wellbeing/service/impl/GoldMembershipServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/ie/wellbeing/service/impl/GoldMembershipServiceImpl.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/ie/wellbeing/service/impl/LoginServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/ie/wellbeing/service/impl/LoginServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/ie/wellbeing/service/impl/MembershipServiceContext.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/ie/wellbeing/service/impl/NoMembershipServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/ie/wellbeing/service/impl/NoMembershipServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/ie/wellbeing/service/impl/PlatinumMembershipServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/ie/wellbeing/service/impl/PlatinumMembershipServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/ie/wellbeing/service/impl/SilverMembershipServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/ie/wellbeing/service/impl/SilverMembershipServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/ie/wellbeing/service/impl/UserServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/ie/wellbeing/service/impl/UserServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/data.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/schema.sql" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/schema.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/tmp/compileTestJava/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/build/tmp/compileTestJava/previous-compilation-data.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ie/wellbeing/WellBeingApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ie/wellbeing/WellBeingApplication.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ie/wellbeing/controller/LoginUserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ie/wellbeing/controller/LoginUserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ie/wellbeing/controller/MembershipController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ie/wellbeing/controller/MembershipController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ie/wellbeing/model/LoginUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ie/wellbeing/model/LoginUser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ie/wellbeing/model/Membership.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ie/wellbeing/model/MembershipDetails.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ie/wellbeing/model/MembershipDetails.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ie/wellbeing/model/UserDetails.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ie/wellbeing/model/UserDetails.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ie/wellbeing/model/UserRole.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ie/wellbeing/model/UserRole.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ie/wellbeing/model/dao/LoginUserDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ie/wellbeing/model/dao/LoginUserDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ie/wellbeing/model/dao/MembershipDao.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ie/wellbeing/model/dao/UserDetailsDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ie/wellbeing/model/dao/UserDetailsDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ie/wellbeing/request/MembershipRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ie/wellbeing/request/MembershipRequest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ie/wellbeing/service/LoginService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ie/wellbeing/service/LoginService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ie/wellbeing/service/MembershipService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ie/wellbeing/service/MembershipService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ie/wellbeing/service/MembershipServiceState.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ie/wellbeing/service/impl/GoldMembershipServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ie/wellbeing/service/impl/GoldMembershipServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ie/wellbeing/service/impl/LoginServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ie/wellbeing/service/impl/LoginServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ie/wellbeing/service/impl/MembershipServiceContext.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ie/wellbeing/service/impl/NoMembershipServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ie/wellbeing/service/impl/NoMembershipServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ie/wellbeing/service/impl/PlatinumMembershipServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ie/wellbeing/service/impl/PlatinumMembershipServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ie/wellbeing/service/impl/SilverMembershipServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ie/wellbeing/service/impl/SilverMembershipServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ie/wellbeing/service/impl/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ie/wellbeing/service/impl/UserServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/data.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/schema.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/schema.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -97,6 +157,7 @@
     <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="SDKs" />
     <property name="project.structure.proportion" value="0.15" />
@@ -289,19 +350,8 @@
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/ie/wellbeing/service/impl/LoginServiceImpl.java</url>
-          <line>23</line>
-          <option name="timeStamp" value="11" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
-  </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/wellbeing$My_System.ic" NAME="My_System Coverage Results" MODIFIED="1636307020640" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/wellbeing$My_System.ic" NAME="My_System Coverage Results" MODIFIED="1636483452748" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/wellbeing$WellBeingSystem.ic" NAME="WellBeingSystem Coverage Results" MODIFIED="1635681141028" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/wellbeing$WellBeingApplicationTests.ic" NAME="WellBeingApplicationTests Coverage Results" MODIFIED="1635756394028" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>

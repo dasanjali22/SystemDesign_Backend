@@ -1,18 +1,18 @@
 package ie.wellbeing.service.impl;
 
-import ie.wellbeing.model.dao.MembershipDao;
-import ie.wellbeing.service.MembershipServiceState;
-import org.springframework.beans.factory.annotation.Autowired;
+import ie.wellbeing.service.MembershipState;
 
 
-public class PlatinumMembershipServiceImpl implements MembershipServiceState {
-
-    @Autowired
-    private MembershipDao membershipDao;
+public class PlatinumMembershipServiceImpl extends MembershipState {
 
     @Override
-    public Integer handleMembership() {
-        return 3;
+    public String membershipName() {
+        return "PLATINUM";
+    }
+
+    @Override
+    public Integer membershipId() {
+        return 1;
     }
 
     @Override

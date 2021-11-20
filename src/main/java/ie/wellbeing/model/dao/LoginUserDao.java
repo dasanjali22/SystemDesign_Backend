@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface LoginUserDao  extends JpaRepository<LoginUser, Long> {
     LoginUser findByEmail(String email);
-    LoginUser findByConfirmPassword(String userPassword);
-//    LoginUser getUserByEmailId(String email);
+    LoginUser findByConfirmPassword(String confirmPassword);
+//    LoginUser findByUsername(String email);
 }

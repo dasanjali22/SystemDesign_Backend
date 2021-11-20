@@ -1,33 +1,43 @@
-///**
-// * Project:Well-Being System
-// * Creation Date: 22-10-21
-// * Author: Sai Anushka
-// * Package Created: Sai Anushka
-// */
-//
-//package ie.wellbeing.controller;
-//
-//import ie.wellbeing.common.ApiResponse;
-//import ie.wellbeing.common.ApiResponseBuilder;
-//import ie.wellbeing.service.MembershipServiceState;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.web.bind.annotation.GetMapping;
-//import org.springframework.web.bind.annotation.RequestMapping;
-//import org.springframework.web.bind.annotation.RestController;
-//
-//@RestController
-//@RequestMapping("membership")
-//public class MembershipController {
-//
-//    @Autowired
-//    private MembershipServiceState membershipServiceState;
-//
-//    /*
-//    @GetMapping("/membershipDetails")
-//    public ApiResponse getMembershipDetails() {
-//        return ApiResponseBuilder.success().data(membershipServiceState.getMembershipDetails()).build();
-//    }
-//    */
-//
-//}
-//
+/**
+ * Project:Well-Being System
+ * Creation Date: 22-10-21
+ * Author: Sai Anushka
+ * Package Created: Sai Anushka
+ */
+
+package ie.wellbeing.controller;
+
+import ie.wellbeing.common.ApiResponse;
+import ie.wellbeing.common.ApiResponseBuilder;
+import ie.wellbeing.request.MembershipRequest;
+import ie.wellbeing.service.MembershipService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+
+
+@RestController
+@RequestMapping("membership")
+public class MembershipController {
+
+    @Autowired
+    private MembershipService membershipService;
+
+    @PostMapping("/createMembership")
+    public String createUserMembership(@RequestBody MembershipRequest membershipRequest, HttpServletRequest request) throws Exception {
+       String url= membershipService.createMembership(membershipRequest, getSiteURL(request));
+        return url;
+    }
+
+    private String getSiteURL(HttpServletRequest request) {
+        String siteURL = request.getRequestURL().toString();
+        return siteURL.replace(request.getServletPath(), "");
+    }
+
+    @GetMapping("/getMembershipDetails")
+    public ApiResponse getAllUsersMembershipDetails() {
+        return ApiResponseBuilder.success().data(membershipService.getAllUsersMembershipDetails()).build();
+    }
+}
+

@@ -45,10 +45,10 @@ public class UserDetails {
     private String CreatePassword;
 
     @Column(name = "UConfirmPassword")
-    private String ConfirmPassword;
+    private String confirmPassword;
 
-    @Column(name = "membership_id")
-    private Integer mid;
+    @Column(name = "membership_name")
+    private String mName;
 
 
     @Column(name = "verification_code", length = 64)
@@ -122,19 +122,20 @@ public class UserDetails {
     }
 
     public String getConfirmPassword() {
-        return ConfirmPassword;
+        return confirmPassword;
     }
 
     public void setConfirmPassword(String confirmPassword) {
-        ConfirmPassword = confirmPassword;
+        this.confirmPassword = confirmPassword;
     }
 
-    public Integer getMid() {
-        return mid;
+    public String getmName() {
+        return mName;
     }
 
-    public void setMid(Integer mid) {
-        this.mid = mid;}
+    public void setmName(String mName) {
+        this.mName = mName;
+    }
 
     public String getVerificationCode() {
         return verificationCode;
