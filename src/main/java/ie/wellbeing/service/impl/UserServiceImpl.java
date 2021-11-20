@@ -1,7 +1,7 @@
 package ie.wellbeing.service.impl;
 
 import ie.wellbeing.model.UserDetails;
-import ie.wellbeing.model.dao.UserDetailsDao;
+import ie.wellbeing.repository.UserDetailsDao;
 import ie.wellbeing.request.UserRequest;
 import ie.wellbeing.service.MembershipContextService;
 import ie.wellbeing.service.UserService;
