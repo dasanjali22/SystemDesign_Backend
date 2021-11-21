@@ -16,7 +16,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
-import java.util.Locale;
+
 
 @Service
 public class UserServiceImpl implements UserService {

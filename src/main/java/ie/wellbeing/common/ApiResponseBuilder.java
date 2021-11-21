@@ -9,7 +9,7 @@ public class ApiResponseBuilder
     private ApiResponse res;
 
     /**
-     * @param res
+     * @param
      */
     private ApiResponseBuilder(int status )
     {
