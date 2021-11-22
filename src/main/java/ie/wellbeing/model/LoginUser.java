@@ -8,16 +8,11 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
 
+
 @Entity @Data @NoArgsConstructor @AllArgsConstructor
 public class LoginUser{
 
     @Id
-    @SequenceGenerator(
-            name="user_sequence",
-            sequenceName="user_sequence",
-            allocationSize=1
-    )
-
     @GeneratedValue(
             strategy= GenerationType.AUTO,
             generator="user_sequence"
@@ -28,8 +23,6 @@ public class LoginUser{
     @Column(name ="ConfirmPassword")
     private String confirmPassword;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    private Collection<UserRole> roles = new ArrayList<>();
 
     private Boolean locked = false;
 
@@ -59,15 +52,4 @@ public class LoginUser{
         this.confirmPassword = confirmPassword;
     }
 
-
-//    @Override
-//    public String toString() {
-//        return "LoginUser{" +
-//                "email='" + email + '\'' +
-//                ", confirmPassword='" + confirmPassword + '\'' +
-//                ", userRole=" + userRole +
-//                ", locked=" + locked +
-//                ", enabled=" + enabled +
-//                '}';
-//    }
 }

@@ -16,11 +16,9 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
-<<<<<<< HEAD
 
-=======
 import java.util.Locale;
->>>>>>> 0f143d25ebb66a6241f656fd4c0a87fc1974ed3d
+
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -28,6 +26,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserDetailsDao userDao;
     private PasswordEncoder passwordEncoder;
+
 
     @Autowired
     private JavaMailSender mailSender;
@@ -54,6 +53,7 @@ public class UserServiceImpl implements UserService {
             userdetails.setmName(membershipService.handle());
             if(userRequest.getuCreatePassword().equals(userRequest.getuConfirmPassword())){
                 String encodedPassword=this.passwordEncoder.encode(userRequest.getuConfirmPassword());
+
                 userdetails.setConfirmPassword(encodedPassword);
                 userdetails.setCreatePassword(encodedPassword);
             }
