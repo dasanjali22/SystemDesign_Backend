@@ -1,10 +1,7 @@
 package ie.wellbeing.model;
 
 
-import io.swagger.models.auth.In;
-
 import javax.persistence.*;
-import java.util.Date;
 
 @Entity
 @Table(name = "membershipdetails")
