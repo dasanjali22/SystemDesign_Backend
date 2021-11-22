@@ -56,7 +56,7 @@ public class BookingServiceImpl implements BookingService {
             if(bookingCheck.size()>0){
                 for(Booking booking : bookingCheck){
                     if(booking.getUserId().equals(bookingRequest.getUserId()) && booking.getBookingType().equalsIgnoreCase(bookingRequest.getBookingType())){
-                        return "Booking already exist Please complete the payment";
+                        return "Booking already exist for today. Please come back tomorrow!";
                     }
 
                 }
