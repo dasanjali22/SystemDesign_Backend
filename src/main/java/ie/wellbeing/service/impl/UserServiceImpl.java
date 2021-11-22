@@ -17,13 +17,13 @@ import javax.mail.internet.MimeMessage;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
-
 @Service
 public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserDetailsDao userDao;
     private PasswordEncoder passwordEncoder;
+
 
     @Autowired
     private JavaMailSender mailSender;
@@ -50,6 +50,7 @@ public class UserServiceImpl implements UserService {
             userdetails.setmName(membershipService.handle());
             if(userRequest.getuCreatePassword().equals(userRequest.getuConfirmPassword())){
                 String encodedPassword=this.passwordEncoder.encode(userRequest.getuConfirmPassword());
+
                 userdetails.setConfirmPassword(encodedPassword);
                 userdetails.setCreatePassword(encodedPassword);
             }
