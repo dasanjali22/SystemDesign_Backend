@@ -20,13 +20,14 @@ public class LoginServiceImpl implements LoginService {
     private UserDetailsDao userDetailsDao;
     private PasswordEncoder passwordEncoder;
 
-    public void loginUser(LoginRequest loginRequest, String siteURL) throws IllegalStateException {
+    public UserDetails loginUser(LoginRequest loginRequest, String siteURL) throws IllegalStateException {
         passwordEncoder = new BCryptPasswordEncoder();
         if (loginRequest.getuEmail() != null && loginRequest.getuConfirmPassword() != null) {
             UserDetails userDetails = userDetailsDao.findByEmail(loginRequest.getuEmail());
             boolean isPasswordMatches = passwordEncoder.matches(loginRequest.getuConfirmPassword(),userDetails.getConfirmPassword());
             if (isPasswordMatches) {
                 System.out.println("Logged in");
+                return  userDetails;
             } else{
                 throw new IllegalStateException("Password Mismatch");
             }

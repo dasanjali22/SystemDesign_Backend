@@ -23,8 +23,7 @@ public class LoginUserController {
 
     @PostMapping("/login")
     public ApiResponse loginUser(@RequestBody LoginRequest loginRequest, HttpServletRequest request)  throws IOException, MessagingException {
-        loginService.loginUser(loginRequest, getSiteURL(request));
-        return ApiResponseBuilder.success().build();
+        return ApiResponseBuilder.success().data(loginService.loginUser(loginRequest, getSiteURL(request))).build();
     }
 
     private String getSiteURL(HttpServletRequest request) {
