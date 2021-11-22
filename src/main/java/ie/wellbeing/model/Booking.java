@@ -2,8 +2,6 @@ package ie.wellbeing.model;
 
 
 import javax.persistence.*;
-import java.util.Date;
-
 
 /*
 Authors : Sai Rohit Voleti & Subhiksha
@@ -22,19 +20,26 @@ public class Booking{
             strategy=GenerationType.SEQUENCE,
             generator="booking_sequence"
     )
+    @Column(name = "BID")
+    private Integer bookingId;
+
+    @Column(name = "employee_id")
+    private Integer eId;
 
     @Column(name = "UID")
     private Integer userId;
-    @Column(name = "SID")
-    private Integer sessionId;
-    @Column(name = "BID")
-    private Integer bookingId;
+
     @Column(name = "Btype")
     private String bookingType;
+
     @Column(name = "stime")
-    private Date sessionTime;
+    private String sessionSlot;
 
+    @Column(name = "sPrice")
+    private Integer servicePrice;
 
+    @Column(name = "payment_status")
+    private Integer paymentStatus;
 
     public Integer getUserId() {
         return userId;
@@ -44,12 +49,12 @@ public class Booking{
         this.userId = userId;
     }
 
-    public Integer getSessionId() {
-        return sessionId;
+    public Integer geteId() {
+        return eId;
     }
 
-    public void setSessionId(Integer sessionId) {
-        this.sessionId = sessionId;
+    public void seteId(Integer eId) {
+        this.eId = eId;
     }
 
     public Integer getBookingId() {
@@ -68,12 +73,27 @@ public class Booking{
         this.bookingType = bookingType;
     }
 
-    public Date getSessionTime() {
-        return sessionTime;
+    public String getSessionSlot() {
+        return sessionSlot;
     }
 
-    public void setSessionTime(Date sessionTime) {
-        this.sessionTime = sessionTime;
+    public void setSessionSlot(String sessionSlot) {
+        this.sessionSlot = sessionSlot;
     }
 
+    public Integer getServicePrice() {
+        return servicePrice;
+    }
+
+    public void setServicePrice(Integer servicePrice) {
+        this.servicePrice = servicePrice;
+    }
+
+    public Integer getPaymentStatus() {
+        return paymentStatus;
+    }
+
+    public void setPaymentStatus(Integer paymentStatus) {
+        this.paymentStatus = paymentStatus;
+    }
 }

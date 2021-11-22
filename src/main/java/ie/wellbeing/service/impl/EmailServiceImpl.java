@@ -9,6 +9,7 @@ import ie.wellbeing.model.Booking;
 import ie.wellbeing.model.EmployeeDetails;
 import ie.wellbeing.model.UserDetails;
 import ie.wellbeing.repository.UserDetailsDao;
+import ie.wellbeing.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -21,37 +22,40 @@ import java.text.SimpleDateFormat;
 import java.util.Optional;
 
 @Service
-public class EmailServiceImpl {
+public class EmailServiceImpl implements EmailService {
     @Autowired
-    private JavaMailSender emailSender;
+    private JavaMailSender mailSender;
     @Autowired
     private UserDetailsDao userDetailsDao;
 
     public EmailServiceImpl() {
     }
 
+    @Override
     public void sendSimpleMessage(Booking booking) throws Exception {
-        Optional<UserDetails> userDetailsOptional = this.userDetailsDao.findById(booking.getUserId());
-        if (!userDetailsOptional.isPresent()) {
+        UserDetails userDetails = userDetailsDao.getById(booking.getUserId());
+
+        if (userDetails==null) {
             throw new Exception("Invalid user Id");
-        } else {
-            String toAddress = ((UserDetails)userDetailsOptional.get()).getEmail();
+        }
+        else {
+            String toAddress = userDetails.getEmail();
             String fromAddress = "uit13328@rmd.ac.in";
             String senderName = "Booking sys";
             String subject = "Booking Done!!!";
-            String content = "Dear [[name]],<br>please find booking details belowbooking id [[bid]],<br>booking type [[btype]]session id [[sid]]session time [[stime]]thanks for choosing our service";
-            MimeMessage message = this.emailSender.createMimeMessage();
+            String content = "Dear [[name]],<br>please find booking details below booking id [[bid]],<br>booking type [[btype]]session id [[sid]]session time [[stime]]thanks for choosing our service";
+            MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message);
             helper.setFrom(fromAddress, senderName);
             helper.setTo(toAddress);
             helper.setSubject(subject);
-            content = content.replace("[[name]]", ((UserDetails)userDetailsOptional.get()).getName());
+            content = content.replace("[[name]]", userDetails.getEmail());
             content = content.replace("[[bid]]", Integer.toString(booking.getBookingId()));
             content = content.replace("[[btype]]", booking.getBookingType());
-            content = content.replace("[[sid]]", Integer.toString(booking.getSessionId()));
-            content = content.replace("[[stime]]", (new SimpleDateFormat("dd-MM-yyyy HH:mm:ss")).format(booking.getSessionTime()));
+           // content = content.replace("[[sid]]", Integer.toString(booking.getSessionId()));
+            content = content.replace("[[stime]]", booking.getSessionSlot());
             helper.setText(content, true);
-            this.emailSender.send(message);
+            mailSender.send(message);
         }
     }
 
@@ -61,17 +65,17 @@ public class EmailServiceImpl {
         String senderName = "Booking sys";
         String subject = "You are booked for a session!!";
         String content = "Dear [[name]],<br>please find booking details belowemployee id [[eid]],<br>employee type [[btype]]session id [[sid]]session time [[stime]]thanks for choosing our service";
-        MimeMessage message = this.emailSender.createMimeMessage();
+        MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message);
         helper.setFrom(fromAddress, senderName);
         helper.setTo(toAddress);
         helper.setSubject(subject);
-        content = content.replace("[[name]]", employeeDetails.geteName());
+        content = content.replace("[[name]]", employeeDetails.getEmployeeName());
         content = content.replace("[[bid]]", Integer.toString(employeeDetails.getId()));
         content = content.replace("[[btype]]", employeeDetails.geteType());
-        content = content.replace("[[sid]]", Integer.toString(booking.getSessionId()));
-        content = content.replace("[[stime]]", (new SimpleDateFormat("dd-MM-yyyy HH:mm:ss")).format(booking.getSessionTime()));
+       // content = content.replace("[[sid]]", Integer.toString(booking.getSessionId()));
+        content = content.replace("[[stime]]", (new SimpleDateFormat("dd-MM-yyyy HH:mm:ss")).format(booking.getSessionSlot()));
         helper.setText(content, true);
-        this.emailSender.send(message);
+        mailSender.send(message);
     }
 }

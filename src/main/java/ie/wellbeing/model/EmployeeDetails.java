@@ -21,10 +21,13 @@ public class EmployeeDetails {
     private Integer eId;
 
     @Column(name = "employee_name")
-    private String eName;
+    private String employeeName;
 
     @Column(name = "employee_type")
     private String eType;
+
+    @Column(name = "employee_email")
+    private String eEmail;
 
     public Integer getId() {
         return eId;
@@ -34,12 +37,12 @@ public class EmployeeDetails {
         this.eId = eId;
     }
 
-    public String geteName() {
-        return eName;
+    public String getEmployeeName() {
+        return employeeName;
     }
 
-    public void seteName(String eName) {
-        this.eName = eName;
+    public void setEmployeeName(String employeeName) {
+        this.employeeName = employeeName;
     }
 
     public String geteType() {
@@ -48,5 +51,21 @@ public class EmployeeDetails {
 
     public void seteType(String eType) {
         this.eType = eType;
+    }
+
+    public Integer geteId() {
+        return eId;
+    }
+
+    public void seteId(Integer eId) {
+        this.eId = eId;
+    }
+
+    public String geteEmail() {
+        return eEmail;
+    }
+
+    public void seteEmail(String eEmail) {
+        this.eEmail = eEmail;
     }
 }

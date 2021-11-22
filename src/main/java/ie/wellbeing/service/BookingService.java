@@ -1,12 +1,13 @@
 package ie.wellbeing.service;
 
 import ie.wellbeing.model.Booking;
+import ie.wellbeing.request.BookingRequest;
 
 import java.util.List;
 
 public interface BookingService {
 
-    Booking createBooking(Booking booking) throws Exception;
+    String createBooking(BookingRequest bookingRequest, String siteURL) throws Exception;
     List<Booking> getAllBooking();
-    Booking getBookingId(Integer id);
+    void updateBookingDetails(Integer paymentId, String type) throws Exception;
 }

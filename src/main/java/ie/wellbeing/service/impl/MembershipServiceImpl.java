@@ -29,6 +29,9 @@ public class MembershipServiceImpl implements MembershipService {
         PaymentDetails paymentDetails = new PaymentDetails();
         int membershipPrice;
         int membershipId;
+        SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd");
+        Calendar cal = Calendar.getInstance();
+        Date today = cal.getTime();
         switch (membershipRequest.getmName()){
             case "GOLD":
                 MembershipState goldMembershipState = new GoldMembershipServiceImpl();
@@ -38,6 +41,7 @@ public class MembershipServiceImpl implements MembershipService {
                 paymentDetails.setPaymentUserId(membershipRequest.getuId());
                 paymentDetails.setPaymentStatus(0);
                 paymentDetails.setPaymentType("GOLD");
+                paymentDetails.setPaymentCreatedDate(ft.format(today));
                 paymentDetailsDao.save(paymentDetails);
                 break;
             case "SILVER":
@@ -48,6 +52,7 @@ public class MembershipServiceImpl implements MembershipService {
                 paymentDetails.setPaymentUserId(membershipRequest.getuId());
                 paymentDetails.setPaymentStatus(0);
                 paymentDetails.setPaymentType("SILVER");
+                paymentDetails.setPaymentCreatedDate(ft.format(today));
                 paymentDetailsDao.save(paymentDetails);
                 break;
             case "PLATINUM":
@@ -58,6 +63,7 @@ public class MembershipServiceImpl implements MembershipService {
                 paymentDetails.setPaymentUserId(membershipRequest.getuId());
                 paymentDetails.setPaymentStatus(0);
                 paymentDetails.setPaymentType("PLATINUM");
+                paymentDetails.setPaymentCreatedDate(ft.format(today));
                 paymentDetailsDao.save(paymentDetails);
                 break;
             default:

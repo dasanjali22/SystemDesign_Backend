@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.List;
+
 
 @Controller
 @RequestMapping("payment-stripe")
@@ -38,12 +40,12 @@ public class PaymentStripeController {
     }
 
     @PostMapping("/create-charge")
-    public @ResponseBody Response createCharge(String email, String token ) {
+    public @ResponseBody Response createCharge(String email, String token, String serviceType ) throws Exception {
 
         if (token == null) {
             return new Response(false, "Stripe payment token is missing. please try again later.");
         }
-        PaymentDetails paymentDetails = paymentService.checkUserPaymentId(email);
+        PaymentDetails paymentDetails = paymentService.checkUserPaymentId(email, serviceType);
         int price = paymentDetails.getPaymentPrice();
 
         String chargeId = paymentStripeService.createCharge(email, token, price*100);

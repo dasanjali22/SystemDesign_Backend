@@ -32,28 +32,40 @@ public class PaymentServiceImpl implements PaymentService,PaymentServiceProxy {
     @Autowired
     PaymentServiceProxy paymentServiceProxy;
 
+    @Autowired
+    BookingService bookingService;
+
     @Override
     public List<PaymentDetails> getAllPaymentDetails() {
         return paymentDetailsDao.findAll();
     }
 
     @Override
-    public PaymentDetails checkUserPaymentId(String email) {
+    public PaymentDetails checkUserPaymentId(String email, String serviceType) {
+        SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd");
+        Calendar cal = Calendar.getInstance();
+        Date today = cal.getTime();
+        String createdDate = ft.format(today);
         UserDetails userOptional = userDao.findByEmail(email);
         if(userOptional!=null){
-            PaymentDetails paymentDetails = paymentDetailsDao.findByPaymentUserId(userOptional.getId());
-            if(paymentDetails!=null){
-                return paymentDetails;
+            List<PaymentDetails> paymentDetails = paymentDetailsDao.findByPaymentUserId(userOptional.getId());
+            if(paymentDetails.size()>0){
+                for(PaymentDetails pay : paymentDetails){
+                    if(pay.getPaymentType().equalsIgnoreCase(serviceType) && pay.getPaymentCreatedDate().equalsIgnoreCase(createdDate)){
+                        return pay;
+                    }
+                }
             }else {
                 throw new IllegalStateException("Payment Details Not Found");
             }
         }else{
             throw new IllegalStateException("User Not Found ");
         }
+        return null;
     }
 
     @Override
-    public void updatePaymentDetails(PaymentDetails paymentDetails) {
+    public void updatePaymentDetails(PaymentDetails paymentDetails) throws Exception {
 
         SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd");
         Calendar cal = Calendar.getInstance();
@@ -76,6 +88,18 @@ public class PaymentServiceImpl implements PaymentService,PaymentServiceProxy {
                 membershipService.updateMembershipDetails(paymentDetails.getPaymentUserId(), paymentDetails.getPaymentType());
                 MembershipState platinumMembershipState = new PlatinumMembershipServiceImpl();
                 membershipContextService.changeStateTo(platinumMembershipState, paymentDetails.getPaymentUserId());
+                break;
+            case "YOGA":
+                bookingService.updateBookingDetails(paymentDetails.getId(), paymentDetails.getPaymentType());
+                break;
+            case "GYM":
+                bookingService.updateBookingDetails(paymentDetails.getId(), paymentDetails.getPaymentType());
+                break;
+            case "DOCTOR":
+                bookingService.updateBookingDetails(paymentDetails.getId(), paymentDetails.getPaymentType());
+                break;
+            case "DIETITIAN":
+                bookingService.updateBookingDetails(paymentDetails.getId(), paymentDetails.getPaymentType());
                 break;
             default:
                 break;
