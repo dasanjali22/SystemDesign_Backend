@@ -23,6 +23,14 @@ public class LoginRequest {
         this.uConfirmPassword = uConfirmPassword;
     }
 
+    public LoginRequest() {
+    }
+
+    public LoginRequest(String uEmail, String uConfirmPassword) {
+        this.uEmail = uEmail;
+        this.uConfirmPassword = uConfirmPassword;
+    }
+
     @Override
     public String toString() {
         return "UserRequest{" +
