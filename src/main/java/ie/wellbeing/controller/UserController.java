@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 @RestController
-@RequestMapping("user")
+@RequestMapping("/user")
 public class UserController {
 
     @Autowired
@@ -27,11 +27,6 @@ public class UserController {
     private String getSiteURL(HttpServletRequest request) {
         String siteURL = request.getRequestURL().toString();
         return siteURL.replace(request.getServletPath(), "");
-    }
-
-    @GetMapping("/getUsers")
-    public ApiResponse getAllUsers() {
-        return ApiResponseBuilder.success().data(userService.getAllUsers()).build();
     }
 
     @GetMapping("/verify/{code}")

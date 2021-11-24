@@ -1,9 +1,13 @@
 package ie.wellbeing.service.impl;
 
+import ie.wellbeing.model.Role;
 import ie.wellbeing.model.UserDetails;
+import ie.wellbeing.repository.RoleDao;
 import ie.wellbeing.repository.UserDetailsDao;
 import ie.wellbeing.request.UserRequest;
 import ie.wellbeing.service.MembershipContextService;
+import ie.wellbeing.service.RoleContextService;
+import ie.wellbeing.service.RoleService;
 import ie.wellbeing.service.UserService;
 import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +35,14 @@ public class UserServiceImpl implements UserService {
     @Autowired
     MembershipContextService membershipService;
 
+    @Autowired
+    RoleContextService roleService;
+
+
+    @Autowired
+    private RoleDao roleDao;
+    private Role role;
+
 
     @Override
     public void registrationUser(UserRequest userRequest,String siteURL) throws IllegalStateException, MessagingException, UnsupportedEncodingException {
@@ -48,6 +60,8 @@ public class UserServiceImpl implements UserService {
             userdetails.setVerificationCode(randomCode);
             userdetails.setEnabled(false);
             userdetails.setmName(membershipService.handle());
+            userdetails.setuRole(roleService.handle());
+
             if(userRequest.getuCreatePassword().equals(userRequest.getuConfirmPassword())){
                 String encodedPassword=this.passwordEncoder.encode(userRequest.getuConfirmPassword());
 

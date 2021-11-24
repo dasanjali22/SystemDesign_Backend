@@ -1,11 +1,22 @@
 package ie.wellbeing.request;
 
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 
-public class LoginRequest {
+public class LoginRequest  implements Serializable {
+
+    private static final long serialVersionUID = -5616176897013108345L;
     private String uEmail;
     @Size(max = 8)
     private String uConfirmPassword;
+
+    public LoginRequest() {
+    }
+
+    public LoginRequest(String uEmail, String uConfirmPassword) {
+        this.uEmail = uEmail;
+        this.uConfirmPassword = uConfirmPassword;
+    }
 
     public String getuEmail() {
         return uEmail;

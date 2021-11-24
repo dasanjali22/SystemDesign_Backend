@@ -15,4 +15,5 @@ public interface UserService {
     List<UserDetails> getAllUsers();
 
     boolean verify(String verificationCode);
+
 }

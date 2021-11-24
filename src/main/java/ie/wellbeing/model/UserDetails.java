@@ -2,6 +2,8 @@ package ie.wellbeing.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Entity
@@ -50,12 +52,41 @@ public class UserDetails {
     @Column(name = "membership_name")
     private String mName;
 
+    public String getuRole() {
+        return uRole;
+    }
+
+    public void setuRole(String uRole) {
+        this.uRole = uRole;
+    }
+
+    @Column(name = "user_role")
+    private String uRole;
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
 
     @Column(name = "verification_code", length = 64)
     private String verificationCode;
 
     private boolean enabled;
 
+    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @JoinTable(
+            name="user_roles",
+            joinColumns = @JoinColumn(name="UID"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<Role> roles = new HashSet<>();
+
+    public void addRole(Role role){
+        this.roles.add(role);
+    }
     public UserDetails() {
     }
 

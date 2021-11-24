@@ -73,8 +73,6 @@
 //}
 
 package ie.wellbeing.utils;
-
-import ie.wellbeing.service.impl.CustomUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -96,8 +94,8 @@ import java.util.Arrays;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 
-    @Autowired
-    private CustomUserDetailService customUserDetailService;
+//    @Autowired
+//    private CustomUserDetailService customUserDetailService;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception{
@@ -128,13 +126,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
         public PasswordEncoder passwordEncoder(){
         return NoOpPasswordEncoder.getInstance();
     }
-        @Override
-        protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(customUserDetailService);
-    }
-        @Bean
-        public AuthenticationManager authenticationManagerBean() throws Exception{
-        return super.authenticationManagerBean();
-    }
+//        @Override
+//        protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//        auth.userDetailsService(customUserDetailService);
+//    }
+//        @Bean
+//        public AuthenticationManager authenticationManagerBean() throws Exception{
+//        return super.authenticationManagerBean();
+//    }
 
 }
