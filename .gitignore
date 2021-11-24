@@ -5,3 +5,4 @@ gradle
 bin
 lib
 .VSCodeCounter
+.settings
