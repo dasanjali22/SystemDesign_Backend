@@ -14,5 +14,4 @@ import java.util.List;
 @Repository
 public interface PaymentDetailsDao extends JpaRepository<PaymentDetails, Integer> {
     List<PaymentDetails> findByPaymentUserId(Integer id);
-
 }
