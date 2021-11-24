@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MembershipDetailsDao extends JpaRepository<MembershipDetails, Integer> {
 
-    MembershipDetails getMembershipDetailsByuId(Integer userId);
+    MembershipDetails getMembershipDetailsByuId(Long userId);
 }

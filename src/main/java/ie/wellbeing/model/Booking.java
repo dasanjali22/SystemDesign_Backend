@@ -27,7 +27,7 @@ public class Booking{
     private Integer eId;
 
     @Column(name = "UID")
-    private Integer userId;
+    private Long userId;
 
     @Column(name = "Btype")
     private String bookingType;
@@ -41,11 +41,11 @@ public class Booking{
     @Column(name = "payment_status")
     private Integer paymentStatus;
 
-    public Integer getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 

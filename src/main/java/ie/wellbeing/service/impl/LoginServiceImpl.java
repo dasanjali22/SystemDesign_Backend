@@ -1,5 +1,5 @@
 package ie.wellbeing.service.impl;
-import ie.wellbeing.model.UserDetails;
+import ie.wellbeing.model.UserRegistration;
 import ie.wellbeing.repository.UserDetailsDao;
 import ie.wellbeing.request.LoginRequest;
 import ie.wellbeing.service.LoginService;
@@ -20,14 +20,14 @@ public class LoginServiceImpl implements LoginService {
     private UserDetailsDao userDetailsDao;
     private PasswordEncoder passwordEncoder;
 
-    public UserDetails loginUser(LoginRequest loginRequest, String siteURL) throws IllegalStateException {
+    public UserRegistration loginUser(LoginRequest loginRequest, String siteURL) throws IllegalStateException {
         passwordEncoder = new BCryptPasswordEncoder();
         if (loginRequest.getuEmail() != null && loginRequest.getuConfirmPassword() != null) {
-            UserDetails userDetails = userDetailsDao.findByEmail(loginRequest.getuEmail());
-            boolean isPasswordMatches = passwordEncoder.matches(loginRequest.getuConfirmPassword(),userDetails.getConfirmPassword());
+            UserRegistration userRegistration = userDetailsDao.findByEmail(loginRequest.getuEmail());
+            boolean isPasswordMatches = passwordEncoder.matches(loginRequest.getuConfirmPassword(), userRegistration.getConfirmPassword());
             if (isPasswordMatches) {
                 System.out.println("Logged in");
-                return  userDetails;
+                return userRegistration;
             } else{
                 throw new IllegalStateException("Password Mismatch");
             }
@@ -35,5 +35,6 @@ public class LoginServiceImpl implements LoginService {
             throw new IllegalStateException("User Not registered please Register");
         }
     }
+
 
 }

@@ -1,6 +1,6 @@
 package ie.wellbeing.service.impl;
 
-import ie.wellbeing.model.UserDetails;
+import ie.wellbeing.model.UserRegistration;
 import ie.wellbeing.repository.UserDetailsDao;
 import ie.wellbeing.service.MembershipContextService;
 import ie.wellbeing.service.MembershipState;
@@ -20,10 +20,10 @@ public class MembershipContextServiceImpl implements MembershipContextService {
     }
 
     @Override
-    public void changeStateTo(MembershipState newState, Integer userId){
-        UserDetails userDetails=userDetailsDao.getById(userId);
-        userDetails.setmName(newState.membershipName());
-        userDetailsDao.save(userDetails);
+    public void changeStateTo(MembershipState newState, Long userId){
+        UserRegistration userRegistration =userDetailsDao.getById(userId);
+        userRegistration.setmName(newState.membershipName());
+        userDetailsDao.save(userRegistration);
     }
 
     @Override

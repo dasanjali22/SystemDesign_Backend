@@ -20,7 +20,7 @@ public class PaymentDetails {
     private Integer id;
 
     @Column(name = "payment_user_id")
-    private Integer paymentUserId;
+    private Long paymentUserId;
 
     @Column(name = "payment_created_date")
     private String paymentCreatedDate;
@@ -45,11 +45,11 @@ public class PaymentDetails {
         this.id = id;
     }
 
-    public Integer getPaymentUserId() {
+    public Long getPaymentUserId() {
         return paymentUserId;
     }
 
-    public void setPaymentUserId(Integer paymentUserId) {
+    public void setPaymentUserId(Long paymentUserId) {
         this.paymentUserId = paymentUserId;
     }
 

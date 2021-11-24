@@ -14,7 +14,7 @@ Authors : Sai Rohit Voleti & Subhiksha
 @Repository
 public interface BookingDao extends JpaRepository<Booking, Integer>{
 
-    List<Booking> findByUserId(Integer userId);
+    List<Booking> findByUserId(Long userId);
 
     List<Booking> findBySessionSlot(String sessionSlot);
 

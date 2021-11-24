@@ -1,14 +1,13 @@
 package ie.wellbeing.service.impl;
 
 import ie.wellbeing.model.PaymentDetails;
-import ie.wellbeing.model.UserDetails;
+import ie.wellbeing.model.UserRegistration;
 import ie.wellbeing.repository.PaymentDetailsDao;
 import ie.wellbeing.repository.UserDetailsDao;
 import ie.wellbeing.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -46,7 +45,7 @@ public class PaymentServiceImpl implements PaymentService,PaymentServiceProxy {
         Calendar cal = Calendar.getInstance();
         Date today = cal.getTime();
         String createdDate = ft.format(today);
-        UserDetails userOptional = userDao.findByEmail(email);
+        UserRegistration userOptional = userDao.findByEmail(email);
         if(userOptional!=null){
             List<PaymentDetails> paymentDetails = paymentDetailsDao.findByPaymentUserId(userOptional.getId());
             if(paymentDetails.size()>0){

@@ -45,7 +45,7 @@ public class BookingServiceImpl implements BookingService {
 
             Date currentDate = new Date();
 
-            UserDetails userDetails = userDetailsDao.getById(bookingRequest.getUserId());
+            UserRegistration userRegistration = userDetailsDao.getById(bookingRequest.getUserId());
 
             ServiceList serviceList = serviceListDao.findByServiceName(bookingRequest.getBookingType());
 
@@ -70,7 +70,7 @@ public class BookingServiceImpl implements BookingService {
               Calendar cal = Calendar.getInstance();
               Date today = cal.getTime();
 
-            if(userDetails == null)
+            if(userRegistration == null)
             {
                 throw new Exception("User Details not found!!!!");
             }

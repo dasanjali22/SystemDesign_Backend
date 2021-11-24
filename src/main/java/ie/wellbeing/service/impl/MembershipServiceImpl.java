@@ -73,7 +73,7 @@ public class MembershipServiceImpl implements MembershipService {
     }
 
     @Override
-    public void updateMembershipDetails(Integer userId, String type) {
+    public void updateMembershipDetails(Long userId, String type) {
         SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd");
         Calendar cal = Calendar.getInstance();
         Date today = cal.getTime();

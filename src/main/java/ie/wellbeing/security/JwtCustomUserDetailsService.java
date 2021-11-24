@@ -1,27 +1,29 @@
-package ie.wellbeing.service.impl;
+package ie.wellbeing.security;
 
+import ie.wellbeing.model.UserRegistration;
 import ie.wellbeing.repository.UserDetailsDao;
-import ie.wellbeing.request.LoginRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 
 @Service
-public class CustomUserDetailService implements UserDetailsService {
+public class JwtCustomUserDetailsService implements UserDetailsService {
 
+    @Autowired
     private UserDetailsDao userDetailsDao;
-    private LoginRequest loginRequest;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        if(username.equals("anjalids916")){
-            return new User( "anjalids916","abcdefgh",new ArrayList<>());
+
+        UserRegistration userRegistration = userDetailsDao.findByEmail(username);
+        if (userRegistration != null) {
+            return new User(userRegistration.getEmail(), userRegistration.getConfirmPassword(), new ArrayList<>());
         } else {
-            throw new UsernameNotFoundException("User not found");
+            throw new UsernameNotFoundException(String.format("USER_NOT_FOUND '%s'.", username));
         }
     }
 }
