@@ -4,7 +4,10 @@ import ie.wellbeing.common.ApiResponse;
 import ie.wellbeing.common.ApiResponseBuilder;
 import ie.wellbeing.model.Booking;
 import ie.wellbeing.request.BookingRequest;
+import ie.wellbeing.request.BookingResponse;
 import ie.wellbeing.service.BookingService;
+import ie.wellbeing.service.impl.IFilter;
+import ie.wellbeing.service.impl.InterceptorManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,15 +20,23 @@ import java.util.List;
 public class BookingController {
 
     @Autowired
-    BookingService bookingService;
+    private BookingService bookingServiceImplEmailDecorator;
+
+    @Autowired
+    private IFilter filter;
 
     @PostMapping(value = "/createBooking" )
-    public String createBooking(@RequestBody BookingRequest bookingRequest, HttpServletRequest request) throws Exception {
-        try {
-            return bookingService.createBooking(bookingRequest, getSiteURL(request));
+    public BookingResponse createBooking(@RequestBody BookingRequest bookingRequest, HttpServletRequest request) throws Exception {
+        try {// To simulate the Interceptor pattern, we use Interceptor Manager
+            // This is the manager for Interceptor and the target is set that is email decorator
+            // Ideally, it is the BookingServiceImpl but we decorated with Email for Decorator pattern
+            InterceptorManager interceptorManager = new InterceptorManager(bookingServiceImplEmailDecorator);
+            // This is the part where we set the filter which is BookingPreconditionFilter
+            // We can add more
+            interceptorManager.setFilter(filter);
+            return interceptorManager.filterRequest(bookingRequest, getSiteURL(request));
         }
-        catch (Exception e)
-        {
+        catch (Exception e){
             throw e;
         }
     }
@@ -37,10 +48,10 @@ public class BookingController {
 
     @GetMapping("/getUsers")
     public ApiResponse getAllUsers() {
-        return ApiResponseBuilder.success().data(bookingService.getAllBooking()).build(); }
+        return ApiResponseBuilder.success().data(bookingServiceImplEmailDecorator.getAllBooking()).build(); }
 
     @GetMapping("/all")
     public List<Booking> getAllBookings(){
-        return bookingService.getAllBooking();
+        return bookingServiceImplEmailDecorator.getAllBooking();
     }
 }

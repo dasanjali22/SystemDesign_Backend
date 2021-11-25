@@ -4,21 +4,29 @@ package ie.wellbeing.service.impl;
 import ie.wellbeing.model.*;
 import ie.wellbeing.repository.*;
 import ie.wellbeing.request.BookingRequest;
+import ie.wellbeing.request.BookingResponse;
 import ie.wellbeing.service.BookingService;
-import ie.wellbeing.service.EmailService;
+import ie.wellbeing.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 /*
 Authors : Sai Rohit Voleti & Subhiksha
  */
-@Service
+
+@org.springframework.stereotype.Service
+@Qualifier("bookingServiceImpl")
 public class BookingServiceImpl implements BookingService {
+    @Autowired
+    PaymentDetailsDao paymentDetailsDao;
+
+    @Autowired
+    EmployeeDetailsDao employeeDetailsDao;
+
     @Autowired
     private BookingDao bookingDao;
 
@@ -26,185 +34,128 @@ public class BookingServiceImpl implements BookingService {
     private MembershipDetailsDao membershipDetailsDao;
 
     @Autowired
-    private EmailService emailService;
+    private NotificationService notificationService;
 
     @Autowired
-    private UserDetailsDao userDetailsDao;
+    private ServiceDao serviceListDao;
 
     @Autowired
-    private ServiceListDao serviceListDao;
+    private IBookingServicePaymentStrategy bookingServiceSilverMembershipPaymentStrategy;
 
     @Autowired
-    PaymentDetailsDao paymentDetailsDao;
+    private IBookingServicePaymentStrategy bookingServiceGoldMembershipPaymentStrategy;
 
     @Autowired
-    EmployeeDetailsDao employeeDetailsDao;
+    private IBookingServicePaymentStrategy bookingServicePlatinumMembershipPaymentStrategy;
 
     @Override
-    public String createBooking(BookingRequest bookingRequest, String siteURL) throws Exception {
+    public BookingResponse createBooking(BookingRequest bookingRequest, String siteURL) {
 
-            Date currentDate = new Date();
+        List<EmployeeDetails> employeeDetailsList = employeeDetailsDao.findAll();
 
-            UserRegistration userRegistration = userDetailsDao.getById(bookingRequest.getUserId());
+        System.out.println(employeeDetailsList);
+        EmployeeDetails employeeDetails = employeeDetailsDao.findByEmployeeName(bookingRequest.geteName());
 
-            ServiceList serviceList = serviceListDao.findByServiceName(bookingRequest.getBookingType());
+        Booking booking = new Booking();
 
-            EmployeeDetails employeeDetails = employeeDetailsDao.findByEmployeeName(bookingRequest.geteName());
+        booking.setBookingType(bookingRequest.getBookingType());
+        booking.setSessionSlot(bookingRequest.getSessionSlot());
+        booking.setUserId(bookingRequest.getUserId());
+        booking.seteId(employeeDetails.geteId());
 
-            List<Booking> bookingCheck = bookingDao.findBySessionSlot(bookingRequest.getSessionSlot());
+        MembershipDetails membershipDetails = membershipDetailsDao.getMembershipDetailsByuId(bookingRequest.getUserId());
 
-            if(bookingCheck.size()>0){
-                for(Booking booking : bookingCheck){
-                    if(booking.getUserId().equals(bookingRequest.getUserId()) && booking.getBookingType().equalsIgnoreCase(bookingRequest.getBookingType())){
-                        return "Booking already exist for today. Please come back tomorrow!";
-                    }
 
-                }
-            }
+        boolean shouldMakePayment = false;
 
-            PaymentDetails paymentDetails = new PaymentDetails();
-
-            Booking booking = new Booking();
-
-             SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd");
-              Calendar cal = Calendar.getInstance();
-              Date today = cal.getTime();
-
-            if(userRegistration == null)
-            {
-                throw new Exception("User Details not found!!!!");
-            }
-
-        if(userRegistration.getmName().equalsIgnoreCase("NO_MEMBERSHIP")){
-            booking.setBookingType(bookingRequest.getBookingType());
-            booking.setSessionSlot(bookingRequest.getSessionSlot());
-            booking.setUserId(bookingRequest.getUserId());
-            booking.setServicePrice(serviceList.getsPrice());
-            booking.seteId(employeeDetails.geteId());
-            booking.setPaymentStatus(0);
-            bookingDao.save(booking);
-            paymentDetails.setPaymentPrice(serviceList.getsPrice());
-            paymentDetails.setPaymentUserId(bookingRequest.getUserId());
-            paymentDetails.setPaymentStatus(0);
-            paymentDetails.setPaymentCreatedDate(ft.format(today));
-            paymentDetails.setPaymentType(bookingRequest.getBookingType());
-            paymentDetailsDao.save(paymentDetails);
-            return siteURL+"/payment-stripe/charge";
-        }
-
-            MembershipDetails membershipDetails = membershipDetailsDao.getMembershipDetailsByuId(bookingRequest.getUserId());
-
-            if(membershipDetails != null)
-            {
-                if (currentDate.compareTo(new SimpleDateFormat("yyyy-MM-dd").parse(membershipDetails.getmEndDate())) > 0)
-                {
-                    System.out.println("Expired");
-
-                }
-                else if (currentDate.compareTo(new SimpleDateFormat("yyyy-MM-dd").parse(membershipDetails.getmEndDate())) < 0)
-                {
-                    if (membershipDetails.getmName().equalsIgnoreCase("PLATINUM"))
-                    {
-                        booking.setBookingType(bookingRequest.getBookingType());
-                        booking.setSessionSlot(bookingRequest.getSessionSlot());
-                        booking.setUserId(bookingRequest.getUserId());
-                        booking.seteId(employeeDetails.geteId());
-                        bookingDao.save(booking);
-                        emailService.sendSimpleMessage(booking);
-                    }
-                    else if (membershipDetails.getmName().equalsIgnoreCase("GOLD"))
-                    {
-                        if(bookingRequest.getBookingType().equalsIgnoreCase("Doctor") || bookingRequest.getBookingType().equalsIgnoreCase("Gym"))
-                        {
-                            booking.setBookingType(bookingRequest.getBookingType());
-                            booking.setSessionSlot(bookingRequest.getSessionSlot());
-                            booking.setUserId(bookingRequest.getUserId());
-                            booking.seteId(employeeDetails.geteId());
-                            bookingDao.save(booking);
-                            emailService.sendSimpleMessage(booking);
-                        }
-                        else {
-                            booking.setBookingType(bookingRequest.getBookingType());
-                            booking.setSessionSlot(bookingRequest.getSessionSlot());
-                            booking.setUserId(bookingRequest.getUserId());
-                            booking.setServicePrice(serviceList.getsPrice());
-                            booking.seteId(employeeDetails.geteId());
-                            booking.setPaymentStatus(0);
-                            bookingDao.save(booking);
-                            paymentDetails.setPaymentPrice(serviceList.getsPrice());
-                            paymentDetails.setPaymentUserId(bookingRequest.getUserId());
-                            paymentDetails.setPaymentStatus(0);
-                            paymentDetails.setPaymentCreatedDate(ft.format(today));
-                            paymentDetails.setPaymentType(bookingRequest.getBookingType());
-                            paymentDetailsDao.save(paymentDetails);
-                            return siteURL+"/payment-stripe/charge";
-                        }
-
-                    }
-                    else if (membershipDetails.getmName().equalsIgnoreCase("SILVER"))
-                    {
-                        if(bookingRequest.getBookingType().equalsIgnoreCase("Gym"))
-                        {
-                            booking.setBookingType(bookingRequest.getBookingType());
-                            booking.setSessionSlot(bookingRequest.getSessionSlot());
-                            booking.setUserId(bookingRequest.getUserId());
-                            booking.seteId(employeeDetails.geteId());
-                            bookingDao.save(booking);
-                            emailService.sendSimpleMessage(booking);
-                        }
-                        else
-                        {
-                            booking.setBookingType(bookingRequest.getBookingType());
-                            booking.setSessionSlot(bookingRequest.getSessionSlot());
-                            booking.setUserId(bookingRequest.getUserId());
-                            booking.setServicePrice(serviceList.getsPrice());
-                            booking.seteId(employeeDetails.geteId());
-                            booking.setPaymentStatus(0);
-                            bookingDao.save(booking);
-                            paymentDetails.setPaymentPrice(serviceList.getsPrice());
-                            paymentDetails.setPaymentUserId(bookingRequest.getUserId());
-                            paymentDetails.setPaymentStatus(0);
-                            paymentDetails.setPaymentType(bookingRequest.getBookingType());
-                            paymentDetails.setPaymentCreatedDate(ft.format(today));
-                            paymentDetailsDao.save(paymentDetails);
-                            return siteURL+"/payment-stripe/charge";
-
-                        }
-                    }
-                    else{
-                        return "Booking not Successful";
-                    }
-                }
-            }
-                return "Booking Successful";
-
-        }
-
-    public List<Booking> getAllBooking(){
-        try
+        if(membershipDetails == null)
         {
-            return bookingDao.findAll();
+            shouldMakePayment = true;
         }
-        catch (Exception e){
-            throw e;
-        }
-    }
-
-    @Override
-    public void updateBookingDetails(Integer paymentId, String type) throws Exception {
-        PaymentDetails paymentDetails = paymentDetailsDao.getById(paymentId);
-        List<Booking> bookingCheck = bookingDao.findByUserId(paymentDetails.getPaymentUserId());
-        if(bookingCheck.size()>0){
-            for(Booking booking : bookingCheck){
-                if(booking.getBookingType().equals(type)){
-                    paymentDetails.setPaymentStatus(1);
-                    booking.setPaymentStatus(1);
-                    bookingDao.save(booking);
-                    paymentDetailsDao.save(paymentDetails);
-                    emailService.sendSimpleMessage(booking);
-                }
+        else
+        {
+            switch (membershipDetails.getmName())
+            {
+                // Not using enum, stupid cases
+                case "PLATINUM":
+                case "Platinum":
+                    shouldMakePayment = bookingServicePlatinumMembershipPaymentStrategy.ShouldMakePayment(membershipDetails, bookingRequest);
+                    break;
+                case "GOLD" :
+                case "Gold" :
+                    shouldMakePayment = bookingServiceGoldMembershipPaymentStrategy.ShouldMakePayment(membershipDetails, bookingRequest);
+                    break;
+                case "SILVER" :
+                case "silver" :
+                    shouldMakePayment = bookingServiceSilverMembershipPaymentStrategy.ShouldMakePayment(membershipDetails, bookingRequest);
+                    break;
             }
         }
-    }
-}
 
+        BookingResponse bookingResponse = new BookingResponse();
+        bookingResponse.setBooking(booking);
+
+        if(shouldMakePayment)
+        {
+            setPaymentDetails(bookingRequest, booking, employeeDetails);
+            bookingResponse.setPaymentUrl(siteURL+"/payment-stripe/charge");
+        }
+
+        bookingDao.save(booking);
+
+        return bookingResponse;
+    }
+
+    private void setPaymentDetails(BookingRequest bookingRequest, Booking booking, EmployeeDetails employeeDetails)
+    {
+        Service serviceList = serviceListDao.findByServiceNameContainingIgnoreCase(bookingRequest.getBookingType());
+
+        booking.setServicePrice(serviceList.getsPrice());
+        booking.seteId(employeeDetails.geteId());
+        booking.setPaymentStatus(0);
+
+        PaymentDetails paymentDetails = new PaymentDetails();
+        paymentDetails.setPaymentPrice(serviceList.getsPrice());
+        paymentDetails.setPaymentUserId(bookingRequest.getUserId());
+        paymentDetails.setPaymentStatus(0);
+        paymentDetails.setPaymentType(bookingRequest.getBookingType());
+        paymentDetails.setPaymentCreatedDate(new SimpleDateFormat ("yyyy-MM-dd").format(new Date()));
+        paymentDetailsDao.save(paymentDetails);
+    }
+
+    public List<Booking> getAllBooking() {
+        return bookingDao.findAll();
+    }
+    @Override
+
+    public void updateBookingDetails(Integer paymentId, String type) throws Exception {
+
+        PaymentDetails paymentDetails = paymentDetailsDao.getById(paymentId);
+
+        List<Booking> bookingCheck = bookingDao.findByUserId(paymentDetails.getPaymentUserId());
+
+        if (bookingCheck.size() > 0) {
+
+            for (Booking booking : bookingCheck) {
+
+                if (booking.getBookingType().equals(type)) {
+
+                    paymentDetails.setPaymentStatus(1);
+
+                    booking.setPaymentStatus(1);
+
+                    bookingDao.save(booking);
+
+                    paymentDetailsDao.save(paymentDetails);
+
+                    notificationService.sendSimpleMessage(booking);
+
+                }
+
+            }
+
+        }
+
+    }
+
+}
