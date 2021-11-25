@@ -6,6 +6,7 @@ import ie.wellbeing.repository.*;
 import ie.wellbeing.request.BookingRequest;
 import ie.wellbeing.request.BookingResponse;
 import ie.wellbeing.service.BookingService;
+import ie.wellbeing.service.IBookingServicePaymentStrategy;
 import ie.wellbeing.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -65,7 +66,6 @@ public class BookingServiceImpl implements BookingService {
 
         MembershipDetails membershipDetails = membershipDetailsDao.getMembershipDetailsByuId(bookingRequest.getUserId());
 
-
         boolean shouldMakePayment = false;
 
         if(membershipDetails == null)
@@ -98,7 +98,7 @@ public class BookingServiceImpl implements BookingService {
         if(shouldMakePayment)
         {
             setPaymentDetails(bookingRequest, booking, employeeDetails);
-            bookingResponse.setPaymentUrl(siteURL+"/payment-stripe/charge");
+            bookingResponse.setPaymentUrl(siteURL + "/payment-stripe/charge");
         }
 
         bookingDao.save(booking);
@@ -126,36 +126,20 @@ public class BookingServiceImpl implements BookingService {
     public List<Booking> getAllBooking() {
         return bookingDao.findAll();
     }
+
     @Override
-
     public void updateBookingDetails(Integer paymentId, String type) throws Exception {
-
         PaymentDetails paymentDetails = paymentDetailsDao.getById(paymentId);
-
         List<Booking> bookingCheck = bookingDao.findByUserId(paymentDetails.getPaymentUserId());
-
         if (bookingCheck.size() > 0) {
-
             for (Booking booking : bookingCheck) {
-
                 if (booking.getBookingType().equals(type)) {
-
                     paymentDetails.setPaymentStatus(1);
-
                     booking.setPaymentStatus(1);
-
                     bookingDao.save(booking);
-
                     paymentDetailsDao.save(paymentDetails);
-
-                    notificationService.sendSimpleMessage(booking);
-
                 }
-
             }
-
         }
-
     }
-
 }

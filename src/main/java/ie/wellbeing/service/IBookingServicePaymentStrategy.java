@@ -1,4 +1,4 @@
-package ie.wellbeing.service.impl;
+package ie.wellbeing.service;
 
 import ie.wellbeing.model.MembershipDetails;
 import ie.wellbeing.request.BookingRequest;

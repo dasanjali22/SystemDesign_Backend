@@ -3,6 +3,7 @@ package ie.wellbeing.service.impl;
 import ie.wellbeing.request.BookingRequest;
 import ie.wellbeing.request.BookingResponse;
 import ie.wellbeing.service.BookingService;
+import ie.wellbeing.service.IFilter;
 
 import java.util.ArrayList;
 import java.util.List;

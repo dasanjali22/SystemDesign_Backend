@@ -4,6 +4,7 @@ import ie.wellbeing.model.Booking;
 import ie.wellbeing.model.MembershipDetails;
 import ie.wellbeing.repository.*;
 import ie.wellbeing.request.BookingRequest;
+import ie.wellbeing.service.IFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -49,7 +50,6 @@ public class BookingPreconditionFilter implements IFilter{
         }
 
         MembershipDetails membershipDetails = membershipDetailsDao.getMembershipDetailsByuId(bookingRequest.getUserId());
-
 
         if (membershipDetails != null) {
             if (new Date().compareTo(new SimpleDateFormat("yyyy-MM-dd").parse(membershipDetails.getmEndDate())) > 0) {

@@ -2,6 +2,7 @@ package ie.wellbeing.service.impl;
 
 import ie.wellbeing.model.MembershipDetails;
 import ie.wellbeing.request.BookingRequest;
+import ie.wellbeing.service.IBookingServicePaymentStrategy;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 

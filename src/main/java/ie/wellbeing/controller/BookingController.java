@@ -6,7 +6,7 @@ import ie.wellbeing.model.Booking;
 import ie.wellbeing.request.BookingRequest;
 import ie.wellbeing.request.BookingResponse;
 import ie.wellbeing.service.BookingService;
-import ie.wellbeing.service.impl.IFilter;
+import ie.wellbeing.service.IFilter;
 import ie.wellbeing.service.impl.InterceptorManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

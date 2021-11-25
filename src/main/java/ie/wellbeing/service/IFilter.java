@@ -1,6 +1,7 @@
-package ie.wellbeing.service.impl;
+package ie.wellbeing.service;
 
 import ie.wellbeing.request.BookingRequest;
+
 //@author: Sai Rohit Voleti/*
 public interface IFilter {
 
