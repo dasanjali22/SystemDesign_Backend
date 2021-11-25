@@ -1,7 +1,6 @@
 package ie.wellbeing.service.impl;
 
 import ie.wellbeing.service.MembershipState;
-import org.springframework.beans.factory.annotation.Autowired;
 
 
 public class GoldMembershipServiceImpl extends MembershipState {

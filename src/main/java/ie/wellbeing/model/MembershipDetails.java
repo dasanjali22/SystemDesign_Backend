@@ -1,10 +1,7 @@
 package ie.wellbeing.model;
 
 
-import io.swagger.models.auth.In;
-
 import javax.persistence.*;
-import java.util.Date;
 
 @Entity
 @Table(name = "membershipdetails")
@@ -28,7 +25,7 @@ public class MembershipDetails {
     private String mName;
 
     @Column(name = "UID")
-    private Integer uId;
+    private Long uId;
 
     @Column(name = "membership_Start_Date")
     private String mStartDate;
@@ -44,11 +41,11 @@ public class MembershipDetails {
         this.mName = mName;
     }
 
-    public Integer getuId() {
+    public Long getuId() {
         return uId;
     }
 
-    public void setuId(Integer uId) {
+    public void setuId(Long uId) {
         this.uId = uId;
     }
 

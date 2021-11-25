@@ -6,7 +6,7 @@ import javax.validation.constraints.Email;
 
 @Entity
 @Table(name = "userdetails")
-public class UserDetails {
+public class UserRegistration {
 
     @Id
     @SequenceGenerator(
@@ -20,7 +20,7 @@ public class UserDetails {
     )
 
     @Column(name = "UID")
-    private Integer id;
+    private Long id;
 
     @Column(name = "UName")
     private String name;
@@ -45,7 +45,7 @@ public class UserDetails {
     private String CreatePassword;
 
     @Column(name = "UConfirmPassword")
-    private String ConfirmPassword;
+    private String confirmPassword;
 
     @Column(name = "membership_name")
     private String mName;
@@ -56,12 +56,19 @@ public class UserDetails {
 
     private boolean enabled;
 
+    public UserRegistration() {
+    }
 
-    public Integer getId() {
+    public UserRegistration(String email) {
+        this.email = email;
+
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -122,11 +129,11 @@ public class UserDetails {
     }
 
     public String getConfirmPassword() {
-        return ConfirmPassword;
+        return confirmPassword;
     }
 
     public void setConfirmPassword(String confirmPassword) {
-        ConfirmPassword = confirmPassword;
+        this.confirmPassword = confirmPassword;
     }
 
     public String getmName() {

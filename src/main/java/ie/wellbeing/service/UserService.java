@@ -1,7 +1,7 @@
 package ie.wellbeing.service;
 
 
-import ie.wellbeing.model.UserDetails;
+import ie.wellbeing.model.UserRegistration;
 import ie.wellbeing.request.UserRequest;
 
 import javax.mail.MessagingException;
@@ -12,7 +12,7 @@ public interface UserService {
 
     void registrationUser(UserRequest userRequest, String siteURL) throws MessagingException, UnsupportedEncodingException;
 
-    List<UserDetails> getAllUsers();
+    List<UserRegistration> getAllUsers();
 
     boolean verify(String verificationCode);
 }

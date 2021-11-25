@@ -20,7 +20,10 @@ public class PaymentDetails {
     private Integer id;
 
     @Column(name = "payment_user_id")
-    private Integer paymentUserId;
+    private Long paymentUserId;
+
+    @Column(name = "payment_created_date")
+    private String paymentCreatedDate;
 
     @Column(name = "payment_date")
     private String paymentDate;
@@ -42,11 +45,11 @@ public class PaymentDetails {
         this.id = id;
     }
 
-    public Integer getPaymentUserId() {
+    public Long getPaymentUserId() {
         return paymentUserId;
     }
 
-    public void setPaymentUserId(Integer paymentUserId) {
+    public void setPaymentUserId(Long paymentUserId) {
         this.paymentUserId = paymentUserId;
     }
 
@@ -80,5 +83,13 @@ public class PaymentDetails {
 
     public void setPaymentType(String paymentType) {
         this.paymentType = paymentType;
+    }
+
+    public String getPaymentCreatedDate() {
+        return paymentCreatedDate;
+    }
+
+    public void setPaymentCreatedDate(String paymentCreatedDate) {
+        this.paymentCreatedDate = paymentCreatedDate;
     }
 }
