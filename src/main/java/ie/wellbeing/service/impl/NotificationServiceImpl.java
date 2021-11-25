@@ -9,7 +9,7 @@ import ie.wellbeing.model.Booking;
 import ie.wellbeing.model.EmployeeDetails;
 import ie.wellbeing.model.UserDetails;
 import ie.wellbeing.repository.UserDetailsDao;
-import ie.wellbeing.service.EmailService;
+import ie.wellbeing.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -18,17 +18,16 @@ import org.springframework.stereotype.Service;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.UnsupportedEncodingException;
-import java.text.SimpleDateFormat;
-import java.util.Optional;
 
 @Service
-public class EmailServiceImpl implements EmailService {
+public class NotificationServiceImpl implements NotificationService {
     @Autowired
     private JavaMailSender mailSender;
     @Autowired
     private UserDetailsDao userDetailsDao;
 
-    public EmailServiceImpl() {
+
+    public NotificationServiceImpl() {
     }
 
     @Override
@@ -43,13 +42,19 @@ public class EmailServiceImpl implements EmailService {
             String fromAddress = "uit13328@rmd.ac.in";
             String senderName = "Booking sys";
             String subject = "Booking Done!!!";
-            String content = "Dear [[name]],<br>please find booking details below booking id [[bid]],<br>booking type [[btype]]session id [[sid]]session time [[stime]]thanks for choosing our service";
+            String content = "Dear [[name]]," +
+                    "<br>please find booking details below," +
+                    " <br>booking id: [[bid]]" +
+                    "<br>booking type: [[btype]]" +
+                   // "<br>session id: [[sid]]" +
+                    "<br>session Date: [[stime]]" +
+                    "<br>Thanks for choosing our service";
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message);
             helper.setFrom(fromAddress, senderName);
             helper.setTo(toAddress);
             helper.setSubject(subject);
-            content = content.replace("[[name]]", userDetails.getEmail());
+            content = content.replace("[[name]]", userDetails.getName());
             content = content.replace("[[bid]]", Integer.toString(booking.getBookingId()));
             content = content.replace("[[btype]]", booking.getBookingType());
            // content = content.replace("[[sid]]", Integer.toString(booking.getSessionId()));
@@ -57,24 +62,31 @@ public class EmailServiceImpl implements EmailService {
             helper.setText(content, true);
             mailSender.send(message);
         }
+
     }
 
     public void sendSimpleMessage(EmployeeDetails employeeDetails, Booking booking) throws MessagingException, UnsupportedEncodingException {
-        String toAddress = "wellbeingsystem123@gmail.com";
+
+        UserDetails userDetails = userDetailsDao.getById(booking.getUserId());
+        String toAddress = employeeDetails.geteEmail();
         String fromAddress = "uit13328@rmd.ac.in";
         String senderName = "Booking sys";
         String subject = "You are booked for a session!!";
-        String content = "Dear [[name]],<br>please find booking details belowemployee id [[eid]],<br>employee type [[btype]]session id [[sid]]session time [[stime]]thanks for choosing our service";
+        String content = "Dear [[name]]," +
+                "<br> You have been booked for a session.Please find the details below ," +
+                "<br>Booking id: [[bid]]" +
+                "<br>Session Date: [[sdate]]" +
+                "<br>Customer Name: [[cname]]";
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message);
         helper.setFrom(fromAddress, senderName);
         helper.setTo(toAddress);
         helper.setSubject(subject);
         content = content.replace("[[name]]", employeeDetails.getEmployeeName());
-        content = content.replace("[[bid]]", Integer.toString(employeeDetails.getId()));
-        content = content.replace("[[btype]]", employeeDetails.geteType());
+        content = content.replace("[[bid]]", Integer.toString(booking.getBookingId()));
        // content = content.replace("[[sid]]", Integer.toString(booking.getSessionId()));
-        content = content.replace("[[stime]]", (new SimpleDateFormat("dd-MM-yyyy HH:mm:ss")).format(booking.getSessionSlot()));
+        content = content.replace("[[sdate]]", booking.getSessionSlot());
+        content = content.replace("[[cname]]", userDetails.getName());
         helper.setText(content, true);
         mailSender.send(message);
     }

@@ -27,9 +27,18 @@ public class BookingController {
 
     @PostMapping(value = "/createBooking" )
     public BookingResponse createBooking(@RequestBody BookingRequest bookingRequest, HttpServletRequest request) throws Exception {
-        InterceptorManager interceptorManager = new InterceptorManager(bookingServiceImplEmailDecorator);
-        interceptorManager.setFilter(filter);
-        return interceptorManager.filterRequest(bookingRequest, getSiteURL(request));
+        try {// To simulate the Interceptor pattern, we use Interceptor Manager
+            // This is the manager for Interceptor and the target is set that is email decorator
+            // Ideally, it is the BookingServiceImpl but we decorated with Email for Decorator pattern
+            InterceptorManager interceptorManager = new InterceptorManager(bookingServiceImplEmailDecorator);
+            // This is the part where we set the filter which is BookingPreconditionFilter
+            // We can add more
+            interceptorManager.setFilter(filter);
+            return interceptorManager.filterRequest(bookingRequest, getSiteURL(request));
+        }
+        catch (Exception e){
+            throw e;
+        }
     }
 
     private String getSiteURL(HttpServletRequest request) {
