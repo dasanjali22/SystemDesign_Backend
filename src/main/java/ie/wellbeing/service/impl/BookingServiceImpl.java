@@ -65,7 +65,6 @@ public class BookingServiceImpl implements BookingService {
 
         MembershipDetails membershipDetails = membershipDetailsDao.getMembershipDetailsByuId(bookingRequest.getUserId());
 
-
         boolean shouldMakePayment = false;
 
         if(membershipDetails == null)
@@ -98,7 +97,7 @@ public class BookingServiceImpl implements BookingService {
         if(shouldMakePayment)
         {
             setPaymentDetails(bookingRequest, booking, employeeDetails);
-            bookingResponse.setPaymentUrl(siteURL+"/payment-stripe/charge");
+            bookingResponse.setPaymentUrl(siteURL + "/payment-stripe/charge");
         }
 
         bookingDao.save(booking);
@@ -138,8 +137,6 @@ public class BookingServiceImpl implements BookingService {
                     booking.setPaymentStatus(1);
                     bookingDao.save(booking);
                     paymentDetailsDao.save(paymentDetails);
-                    notificationService.sendSimpleMessage(booking);
-
                 }
             }
         }

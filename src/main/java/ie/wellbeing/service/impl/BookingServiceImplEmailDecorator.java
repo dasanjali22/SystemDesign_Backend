@@ -2,7 +2,10 @@ package ie.wellbeing.service.impl;
 
 import ie.wellbeing.model.Booking;
 import ie.wellbeing.model.EmployeeDetails;
+import ie.wellbeing.model.PaymentDetails;
+import ie.wellbeing.repository.BookingDao;
 import ie.wellbeing.repository.EmployeeDetailsDao;
+import ie.wellbeing.repository.PaymentDetailsDao;
 import ie.wellbeing.request.BookingRequest;
 import ie.wellbeing.request.BookingResponse;
 import ie.wellbeing.service.BookingService;
@@ -14,7 +17,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-//@author: Sai Rohit Voleti/*
+
 @Service
 @Qualifier("bookingServiceImplEmailDecorator")
 public class BookingServiceImplEmailDecorator implements BookingService
@@ -28,12 +31,21 @@ public class BookingServiceImplEmailDecorator implements BookingService
     @Autowired
     private EmployeeDetailsDao employeeDetailsDao;
 
+    @Autowired
+    private BookingDao bookingDao;
+
+    @Autowired
+    private PaymentDetailsDao paymentDetailsDao;
+
     @Override
     public BookingResponse createBooking(BookingRequest bookingRequest, String siteURL) throws Exception {
         BookingResponse bookingResponse =  bookingServiceImpl.createBooking(bookingRequest, siteURL);
-        emailService.sendSimpleMessage(bookingResponse.getBooking());
-        Optional<EmployeeDetails> employeeDetailsOptional = employeeDetailsDao.findById(bookingResponse.booking.geteId());
-        emailService.sendSimpleMessage(employeeDetailsOptional.isPresent() ? employeeDetailsOptional.get() : null, bookingResponse.getBooking());
+        if(bookingResponse.getPaymentUrl() == null || bookingResponse.getPaymentUrl().equals(""))
+        {
+            emailService.sendSimpleMessage(bookingResponse.getBooking());
+            Optional<EmployeeDetails> employeeDetailsOptional = employeeDetailsDao.findById(bookingResponse.booking.geteId());
+            emailService.sendSimpleMessage(employeeDetailsOptional.orElse(null), bookingResponse.getBooking());
+        }
         return bookingResponse;
     }
 
@@ -45,5 +57,16 @@ public class BookingServiceImplEmailDecorator implements BookingService
     @Override
     public void updateBookingDetails(Integer paymentId, String type) throws Exception {
         bookingServiceImpl.updateBookingDetails(paymentId, type);
+        PaymentDetails paymentDetails = paymentDetailsDao.getById(paymentId);
+        List<Booking> bookingCheck = bookingDao.findByUserId(paymentDetails.getPaymentUserId());
+        if (bookingCheck.size() > 0) {
+            for (Booking booking : bookingCheck) {
+                if (booking.getBookingType().equals(type)) {
+                    emailService.sendSimpleMessage(booking);
+                    Optional<EmployeeDetails> employeeDetailsOptional = employeeDetailsDao.findById(booking.geteId());
+                    emailService.sendSimpleMessage(employeeDetailsOptional.orElse(null), booking);
+                }
+            }
+        }
     }
 }

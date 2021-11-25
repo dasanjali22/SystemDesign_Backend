@@ -32,7 +32,7 @@ public class PaymentServiceImpl implements PaymentService,PaymentServiceProxy {
     PaymentServiceProxy paymentServiceProxy;
 
     @Autowired
-    BookingService bookingServiceImpl;
+    BookingService bookingServiceImplEmailDecorator;
 
     @Override
     public List<PaymentDetails> getAllPaymentDetails() {
@@ -94,7 +94,11 @@ public class PaymentServiceImpl implements PaymentService,PaymentServiceProxy {
             case "GYM":
             case "DOCTOR":
             case "DIETITIAN":
-                bookingServiceImpl.updateBookingDetails(paymentDetails.getId(), paymentDetails.getPaymentType());
+            case "Yoga":
+            case "Gym":
+            case "Doctor":
+            case "Dietitian":
+                bookingServiceImplEmailDecorator.updateBookingDetails(paymentDetails.getId(), paymentDetails.getPaymentType());
                 break;
             default:
                 break;

@@ -50,7 +50,6 @@ public class BookingPreconditionFilter implements IFilter{
 
         MembershipDetails membershipDetails = membershipDetailsDao.getMembershipDetailsByuId(bookingRequest.getUserId());
 
-
         if (membershipDetails != null) {
             if (new Date().compareTo(new SimpleDateFormat("yyyy-MM-dd").parse(membershipDetails.getmEndDate())) > 0) {
                 throw new Exception("Expired");
