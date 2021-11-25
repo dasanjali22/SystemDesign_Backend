@@ -1,6 +1,7 @@
 //package ie.wellbeing.model.dao;
 //
 //import ie.wellbeing.model.UserDetails;
+//import ie.wellbeing.repository.UserDetailsDao;
 //import org.junit.jupiter.api.Test;
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -16,8 +17,10 @@
 //    @Test
 //    public void checkIfEmailExists(){
 //        String email_is="anushkachalla@gmail.com";
+//        Integer userid=1;
 //        UserDetails userDetails=new UserDetails(email_is);
 //        userDetails.setEmail(email_is);
+//        userDetails.setId(1);
 //        userDetailsDao.save(userDetails);
 //
 //        String expectedDetails = String.valueOf(userDetailsDao.findByEmail(email_is).getEmail());

@@ -74,6 +74,24 @@ public class BookingServiceImpl implements BookingService {
             {
                 throw new Exception("User Details not found!!!!");
             }
+
+        if(userRegistration.getmName().equalsIgnoreCase("NO_MEMBERSHIP")){
+            booking.setBookingType(bookingRequest.getBookingType());
+            booking.setSessionSlot(bookingRequest.getSessionSlot());
+            booking.setUserId(bookingRequest.getUserId());
+            booking.setServicePrice(serviceList.getsPrice());
+            booking.seteId(employeeDetails.geteId());
+            booking.setPaymentStatus(0);
+            bookingDao.save(booking);
+            paymentDetails.setPaymentPrice(serviceList.getsPrice());
+            paymentDetails.setPaymentUserId(bookingRequest.getUserId());
+            paymentDetails.setPaymentStatus(0);
+            paymentDetails.setPaymentCreatedDate(ft.format(today));
+            paymentDetails.setPaymentType(bookingRequest.getBookingType());
+            paymentDetailsDao.save(paymentDetails);
+            return siteURL+"/payment-stripe/charge";
+        }
+
             MembershipDetails membershipDetails = membershipDetailsDao.getMembershipDetailsByuId(bookingRequest.getUserId());
 
             if(membershipDetails != null)
