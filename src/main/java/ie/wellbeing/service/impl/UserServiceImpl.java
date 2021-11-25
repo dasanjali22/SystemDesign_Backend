@@ -1,7 +1,7 @@
 package ie.wellbeing.service.impl;
 
 import ie.wellbeing.model.UserDetails;
-import ie.wellbeing.model.dao.UserDetailsDao;
+import ie.wellbeing.repository.UserDetailsDao;
 import ie.wellbeing.request.UserRequest;
 import ie.wellbeing.service.MembershipContextService;
 import ie.wellbeing.service.UserService;
@@ -12,12 +12,10 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
-
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -25,6 +23,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserDetailsDao userDao;
     private PasswordEncoder passwordEncoder;
+
 
     @Autowired
     private JavaMailSender mailSender;
@@ -51,6 +50,7 @@ public class UserServiceImpl implements UserService {
             userdetails.setmName(membershipService.handle());
             if(userRequest.getuCreatePassword().equals(userRequest.getuConfirmPassword())){
                 String encodedPassword=this.passwordEncoder.encode(userRequest.getuConfirmPassword());
+
                 userdetails.setConfirmPassword(encodedPassword);
                 userdetails.setCreatePassword(encodedPassword);
             }

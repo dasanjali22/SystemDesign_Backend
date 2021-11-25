@@ -45,7 +45,7 @@ public class UserDetails {
     private String CreatePassword;
 
     @Column(name = "UConfirmPassword")
-    private String ConfirmPassword;
+    private String confirmPassword;
 
     @Column(name = "membership_name")
     private String mName;
@@ -56,6 +56,13 @@ public class UserDetails {
 
     private boolean enabled;
 
+    public UserDetails() {
+    }
+
+    public UserDetails(String email) {
+        this.email = email;
+
+    }
 
     public Integer getId() {
         return id;
@@ -122,11 +129,11 @@ public class UserDetails {
     }
 
     public String getConfirmPassword() {
-        return ConfirmPassword;
+        return confirmPassword;
     }
 
     public void setConfirmPassword(String confirmPassword) {
-        ConfirmPassword = confirmPassword;
+        this.confirmPassword = confirmPassword;
     }
 
     public String getmName() {

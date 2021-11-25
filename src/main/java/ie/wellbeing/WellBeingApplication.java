@@ -3,6 +3,7 @@ package ie.wellbeing;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+
 @SpringBootApplication
 public class WellBeingApplication {
 
@@ -11,3 +12,5 @@ public class WellBeingApplication {
 	}
 
 }
+
+

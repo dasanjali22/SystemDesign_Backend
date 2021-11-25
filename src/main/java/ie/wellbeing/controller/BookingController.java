@@ -3,13 +3,15 @@ package ie.wellbeing.controller;
 import ie.wellbeing.common.ApiResponse;
 import ie.wellbeing.common.ApiResponseBuilder;
 import ie.wellbeing.model.Booking;
+import ie.wellbeing.request.BookingRequest;
+import ie.wellbeing.request.BookingResponse;
 import ie.wellbeing.service.BookingService;
+import ie.wellbeing.service.impl.IFilter;
+import ie.wellbeing.service.impl.InterceptorManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.mail.MessagingException;
-import java.io.UnsupportedEncodingException;
-import java.text.ParseException;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 
@@ -18,25 +20,29 @@ import java.util.List;
 public class BookingController {
 
     @Autowired
-    BookingService bookingService;
+    private BookingService bookingServiceImplEmailDecorator;
 
-    @PostMapping(value = "/",headers =  "content-type=application/json" )
-    @ResponseBody
-    public Booking createBooking(@RequestBody Booking booking) throws ParseException, MessagingException, UnsupportedEncodingException {
-        return bookingService.createBooking(booking);
+    @Autowired
+    private IFilter filter;
+
+    @PostMapping(value = "/createBooking" )
+    public BookingResponse createBooking(@RequestBody BookingRequest bookingRequest, HttpServletRequest request) throws Exception {
+        InterceptorManager interceptorManager = new InterceptorManager(bookingServiceImplEmailDecorator);
+        interceptorManager.setFilter(filter);
+        return interceptorManager.filterRequest(bookingRequest, getSiteURL(request));
+    }
+
+    private String getSiteURL(HttpServletRequest request) {
+        String siteURL = request.getRequestURL().toString();
+        return siteURL.replace(request.getServletPath(), "");
     }
 
     @GetMapping("/getUsers")
     public ApiResponse getAllUsers() {
-        return ApiResponseBuilder.success().data(bookingService.getAllBooking()).build(); }
+        return ApiResponseBuilder.success().data(bookingServiceImplEmailDecorator.getAllBooking()).build(); }
 
-   @GetMapping("/{id}")
-    public Booking getBooking(@PathVariable Integer id){
-        return bookingService.getBookingId(id);
-   }
-
-   @GetMapping("/all")
+    @GetMapping("/all")
     public List<Booking> getAllBookings(){
-        return bookingService.getAllBooking();
-   }
+        return bookingServiceImplEmailDecorator.getAllBooking();
+    }
 }

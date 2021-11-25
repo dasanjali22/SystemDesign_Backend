@@ -1,8 +1,6 @@
 package ie.wellbeing.service.impl;
 
-
 import ie.wellbeing.service.MembershipState;
-
 
 
 public class NoMembershipServiceImpl extends MembershipState {

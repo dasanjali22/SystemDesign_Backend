@@ -1,24 +1,33 @@
 package ie.wellbeing.service.impl;
 
 
-import ie.wellbeing.model.Booking;
-import ie.wellbeing.model.MembershipDetails;
-import ie.wellbeing.model.dao.BookingDao;
-import ie.wellbeing.model.dao.MembershipDetailsDao;
+import ie.wellbeing.model.*;
+import ie.wellbeing.repository.*;
+import ie.wellbeing.request.BookingRequest;
+import ie.wellbeing.request.BookingResponse;
 import ie.wellbeing.service.BookingService;
+import ie.wellbeing.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import javax.mail.MessagingException;
-import java.io.UnsupportedEncodingException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
+
+/*
+Authors : Sai Rohit Voleti & Subhiksha
+ */
 
 @Service
+@Qualifier("bookingServiceImpl")
 public class BookingServiceImpl implements BookingService {
+    @Autowired
+    PaymentDetailsDao paymentDetailsDao;
+
+    @Autowired
+    EmployeeDetailsDao employeeDetailsDao;
+
     @Autowired
     private BookingDao bookingDao;
 
@@ -26,39 +35,99 @@ public class BookingServiceImpl implements BookingService {
     private MembershipDetailsDao membershipDetailsDao;
 
     @Autowired
-    private EmailServiceImpl emailServiceImpl;
+    private EmailService emailService;
+
+    @Autowired
+    private ServiceListDao serviceListDao;
+
+    @Autowired
+    private IBookingServicePaymentStrategy bookingServiceSilverMembershipPaymentStrategy;
+
+    @Autowired
+    private IBookingServicePaymentStrategy bookingServiceGoldMembershipPaymentStrategy;
 
     @Override
-    public Booking createBooking(Booking booking) throws ParseException, MessagingException, UnsupportedEncodingException {
-        Booking booking1 = bookingDao.save(booking);
-        String session_time = booking.getSessionTime();
-        Date currentDate = new Date();
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-M-yyyy hh:mm:ss", Locale.ENGLISH);
-        Date sessiondate = formatter.parse(session_time);
-        MembershipDetails membershipDetails = null;
-        if (currentDate.compareTo(sessiondate) > 0) {
-            System.out.println("Expired");
-        } else if (currentDate.compareTo(sessiondate) < 0) {
-            membershipDetails = membershipDetailsDao.getMembershipDetailsByuId(booking.getUserId());
-           // emailServiceImpl.sendSimpleMessage();
-            if (membershipDetails.getmName().equals("PLATINUM")) {
+    public BookingResponse createBooking(BookingRequest bookingRequest, String siteURL) {
 
-            }
-        } else if (membershipDetails.getmName().equals("GOLD")) {
+        List<EmployeeDetails> employeeDetailsList = employeeDetailsDao.findAll();
 
-        } else if (membershipDetails.getmName().equals("SILVER"))
+        System.out.println(employeeDetailsList);
+        EmployeeDetails employeeDetails = employeeDetailsDao.findByEmployeeName(bookingRequest.geteName());
+
+        Booking booking = new Booking();
+
+        booking.setBookingType(bookingRequest.getBookingType());
+        booking.setSessionSlot(bookingRequest.getSessionSlot());
+        booking.setUserId(bookingRequest.getUserId());
+        booking.seteId(employeeDetails.geteId());
+
+        MembershipDetails membershipDetails = membershipDetailsDao.getMembershipDetailsByuId(bookingRequest.getUserId());
+
+        boolean shouldMakePayment = false;
+
+        switch (membershipDetails.getmName())
         {
-
+            // Not using enum, stupid cases
+            case "GOLD" :
+            case "Gold" :
+                shouldMakePayment = bookingServiceGoldMembershipPaymentStrategy.ShouldMakePayment(membershipDetails, bookingRequest);
+                break;
+            case "SILVER" :
+            case "silver" :
+                shouldMakePayment = bookingServiceSilverMembershipPaymentStrategy.ShouldMakePayment(membershipDetails, bookingRequest);
+                break;
         }
-            return booking;
+
+        BookingResponse bookingResponse = new BookingResponse();
+        bookingResponse.setBooking(booking);
+
+        if(shouldMakePayment)
+        {
+            setPaymentDetails(bookingRequest, booking, employeeDetails);
+            bookingResponse.setPaymentUrl(siteURL+"/payment-stripe/charge");
+        }
+
+        bookingDao.save(booking);
+
+        return bookingResponse;
     }
 
-    public Booking getBookingId(Integer id){
-        return bookingDao.findBookingByUserId(id);
+    private void setPaymentDetails(BookingRequest bookingRequest, Booking booking, EmployeeDetails employeeDetails)
+    {
+        ServiceList serviceList = serviceListDao.findByServiceName(bookingRequest.getBookingType());
+
+        booking.setServicePrice(serviceList.getsPrice());
+        booking.seteId(employeeDetails.geteId());
+        booking.setPaymentStatus(0);
+
+        PaymentDetails paymentDetails = new PaymentDetails();
+        paymentDetails.setPaymentPrice(serviceList.getsPrice());
+        paymentDetails.setPaymentUserId(bookingRequest.getUserId());
+        paymentDetails.setPaymentStatus(0);
+        paymentDetails.setPaymentType(bookingRequest.getBookingType());
+        paymentDetails.setPaymentCreatedDate(new SimpleDateFormat ("yyyy-MM-dd").format(new Date()));
+        paymentDetailsDao.save(paymentDetails);
     }
-    public List<Booking> getAllBooking(){
+
+    public List<Booking> getAllBooking() {
         return bookingDao.findAll();
     }
 
-
+    @Override
+    public void updateBookingDetails(Integer paymentId, String type) throws Exception {
+        PaymentDetails paymentDetails = paymentDetailsDao.getById(paymentId);
+        List<Booking> bookingCheck = bookingDao.findByUserId(paymentDetails.getPaymentUserId());
+        if (bookingCheck.size() > 0) {
+            for (Booking booking : bookingCheck) {
+                if (booking.getBookingType().equals(type)) {
+                    paymentDetails.setPaymentStatus(1);
+                    booking.setPaymentStatus(1);
+                    bookingDao.save(booking);
+                    paymentDetailsDao.save(paymentDetails);
+                    emailService.sendSimpleMessage(booking);
+                }
+            }
+        }
+    }
 }
+

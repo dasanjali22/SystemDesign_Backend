@@ -7,7 +7,6 @@ import java.util.List;
 public interface PaymentService {
     List<PaymentDetails> getAllPaymentDetails();
 
-    PaymentDetails checkUserPaymentId(String email);
+    PaymentDetails checkUserPaymentId(String email, String serviceType);
 
-    void updatePaymentDetails(PaymentDetails paymentDetails);
 }

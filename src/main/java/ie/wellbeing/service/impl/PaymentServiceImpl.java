@@ -2,23 +2,19 @@ package ie.wellbeing.service.impl;
 
 import ie.wellbeing.model.PaymentDetails;
 import ie.wellbeing.model.UserDetails;
-import ie.wellbeing.model.dao.PaymentDetailsDao;
-import ie.wellbeing.model.dao.UserDetailsDao;
-import ie.wellbeing.service.MembershipContextService;
-import ie.wellbeing.service.MembershipService;
-import ie.wellbeing.service.MembershipState;
-import ie.wellbeing.service.PaymentService;
+import ie.wellbeing.repository.PaymentDetailsDao;
+import ie.wellbeing.repository.UserDetailsDao;
+import ie.wellbeing.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 @Service
-public class PaymentServiceImpl implements PaymentService {
+public class PaymentServiceImpl implements PaymentService,PaymentServiceProxy {
 
     @Autowired
     PaymentDetailsDao paymentDetailsDao;
@@ -32,35 +28,52 @@ public class PaymentServiceImpl implements PaymentService {
     @Autowired
     MembershipContextService membershipContextService;
 
+    @Autowired
+    PaymentServiceProxy paymentServiceProxy;
+
+    @Autowired
+    BookingService bookingServiceImpl;
+
     @Override
     public List<PaymentDetails> getAllPaymentDetails() {
         return paymentDetailsDao.findAll();
     }
 
     @Override
-    public PaymentDetails checkUserPaymentId(String email) {
-        UserDetails userOptional = userDao.findByEmail(email);
-        if(userOptional!=null){
-            PaymentDetails paymentDetails = paymentDetailsDao.findByPaymentUserId(userOptional.getId());
-            if(paymentDetails!=null){
-                return paymentDetails;
-            }else {
-                throw new IllegalStateException("Payment Details Not Found");
-            }
-        }else{
+    public PaymentDetails checkUserPaymentId(String email, String serviceType) {
+        SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd");
+        Calendar cal = Calendar.getInstance();
+        Date today = cal.getTime();
+        String createdDate = ft.format(today);
+
+        UserDetails userDetails = userDao.findByEmail(email);
+        if(userDetails == null)
+        {
             throw new IllegalStateException("User Not Found ");
         }
+
+        List<PaymentDetails> paymentDetails = paymentDetailsDao.findByPaymentUserId(userDetails.getId());
+
+        for(PaymentDetails pay : paymentDetails)
+        {
+            if (pay.getPaymentType().equalsIgnoreCase(serviceType) && pay.getPaymentCreatedDate().equalsIgnoreCase(createdDate)){
+                return pay;
+            }
+        }
+
+        throw new IllegalStateException("Payment Details Not Found");
     }
 
     @Override
-    @Transactional
-    public void updatePaymentDetails(PaymentDetails paymentDetails) {
+    public void updatePaymentDetails(PaymentDetails paymentDetails) throws Exception {
+
         SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd");
         Calendar cal = Calendar.getInstance();
         Date today = cal.getTime();
         paymentDetails.setPaymentStatus(1);
         paymentDetails.setPaymentDate(ft.format(today));
         paymentDetailsDao.save(paymentDetails);
+
         switch (paymentDetails.getPaymentType()){
             case "GOLD":
                 membershipService.updateMembershipDetails(paymentDetails.getPaymentUserId(), paymentDetails.getPaymentType());
@@ -76,6 +89,12 @@ public class PaymentServiceImpl implements PaymentService {
                 membershipService.updateMembershipDetails(paymentDetails.getPaymentUserId(), paymentDetails.getPaymentType());
                 MembershipState platinumMembershipState = new PlatinumMembershipServiceImpl();
                 membershipContextService.changeStateTo(platinumMembershipState, paymentDetails.getPaymentUserId());
+                break;
+            case "YOGA":
+            case "GYM":
+            case "DOCTOR":
+            case "DIETITIAN":
+                bookingServiceImpl.updateBookingDetails(paymentDetails.getId(), paymentDetails.getPaymentType());
                 break;
             default:
                 break;

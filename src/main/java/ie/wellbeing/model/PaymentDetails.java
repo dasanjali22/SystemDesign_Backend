@@ -22,6 +22,9 @@ public class PaymentDetails {
     @Column(name = "payment_user_id")
     private Integer paymentUserId;
 
+    @Column(name = "payment_created_date")
+    private String paymentCreatedDate;
+
     @Column(name = "payment_date")
     private String paymentDate;
 
@@ -80,5 +83,13 @@ public class PaymentDetails {
 
     public void setPaymentType(String paymentType) {
         this.paymentType = paymentType;
+    }
+
+    public String getPaymentCreatedDate() {
+        return paymentCreatedDate;
+    }
+
+    public void setPaymentCreatedDate(String paymentCreatedDate) {
+        this.paymentCreatedDate = paymentCreatedDate;
     }
 }
