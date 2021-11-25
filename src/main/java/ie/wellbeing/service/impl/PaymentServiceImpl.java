@@ -32,7 +32,7 @@ public class PaymentServiceImpl implements PaymentService,PaymentServiceProxy {
     PaymentServiceProxy paymentServiceProxy;
 
     @Autowired
-    BookingService bookingService;
+    BookingService bookingServiceImplEmailDecorator;
 
     @Override
     public List<PaymentDetails> getAllPaymentDetails() {
@@ -45,22 +45,23 @@ public class PaymentServiceImpl implements PaymentService,PaymentServiceProxy {
         Calendar cal = Calendar.getInstance();
         Date today = cal.getTime();
         String createdDate = ft.format(today);
-        UserRegistration userOptional = userDao.findByEmail(email);
-        if(userOptional!=null){
-            List<PaymentDetails> paymentDetails = paymentDetailsDao.findByPaymentUserId(userOptional.getId());
-            if(paymentDetails.size()>0){
-                for(PaymentDetails pay : paymentDetails){
-                    if(pay.getPaymentType().equalsIgnoreCase(serviceType) && pay.getPaymentCreatedDate().equalsIgnoreCase(createdDate)){
-                        return pay;
-                    }
-                }
-            }else {
-                throw new IllegalStateException("Payment Details Not Found");
-            }
-        }else{
+
+        UserRegistration userDetails = userDao.findByEmail(email);
+        if(userDetails == null)
+        {
             throw new IllegalStateException("User Not Found ");
         }
-        return null;
+
+        List<PaymentDetails> paymentDetails = paymentDetailsDao.findByPaymentUserId(userDetails.getId());
+
+        for(PaymentDetails pay : paymentDetails)
+        {
+            if (pay.getPaymentType().equalsIgnoreCase(serviceType) && pay.getPaymentCreatedDate().equalsIgnoreCase(createdDate)){
+                return pay;
+            }
+        }
+
+        throw new IllegalStateException("Payment Details Not Found");
     }
 
     @Override
@@ -72,6 +73,7 @@ public class PaymentServiceImpl implements PaymentService,PaymentServiceProxy {
         paymentDetails.setPaymentStatus(1);
         paymentDetails.setPaymentDate(ft.format(today));
         paymentDetailsDao.save(paymentDetails);
+
         switch (paymentDetails.getPaymentType()){
             case "GOLD":
                 membershipService.updateMembershipDetails(paymentDetails.getPaymentUserId(), paymentDetails.getPaymentType());
@@ -89,19 +91,20 @@ public class PaymentServiceImpl implements PaymentService,PaymentServiceProxy {
                 membershipContextService.changeStateTo(platinumMembershipState, paymentDetails.getPaymentUserId());
                 break;
             case "YOGA":
-                bookingService.updateBookingDetails(paymentDetails.getId(), paymentDetails.getPaymentType());
-                break;
             case "GYM":
-                bookingService.updateBookingDetails(paymentDetails.getId(), paymentDetails.getPaymentType());
-                break;
             case "DOCTOR":
-                bookingService.updateBookingDetails(paymentDetails.getId(), paymentDetails.getPaymentType());
-                break;
             case "DIETITIAN":
-                bookingService.updateBookingDetails(paymentDetails.getId(), paymentDetails.getPaymentType());
+            case "Yoga":
+            case "Gym":
+            case "Doctor":
+            case "Dietitian":
+                bookingServiceImplEmailDecorator.updateBookingDetails(paymentDetails.getId(), paymentDetails.getPaymentType());
                 break;
             default:
                 break;
         }
     }
 }
+
+
+
