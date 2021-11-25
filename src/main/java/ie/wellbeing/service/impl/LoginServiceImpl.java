@@ -13,7 +13,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 
-@Service @RequiredArgsConstructor @Transactional @Slf4j
+@Service
+@RequiredArgsConstructor
+@Transactional
+@Slf4j
 public class LoginServiceImpl implements LoginService {
 
     @Autowired
@@ -35,6 +38,4 @@ public class LoginServiceImpl implements LoginService {
             throw new IllegalStateException("User Not registered please Register");
         }
     }
-
-
 }
