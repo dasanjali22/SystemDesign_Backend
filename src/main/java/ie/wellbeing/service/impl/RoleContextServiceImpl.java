@@ -1,7 +1,7 @@
 package ie.wellbeing.service.impl;
 
 import ie.wellbeing.model.UserRegistration;
-import ie.wellbeing.repository.UserDetailsDao;
+import ie.wellbeing.repository.UserRegistrationRepo;
 import ie.wellbeing.service.RoleContextService;
 import ie.wellbeing.service.RoleState;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ public class RoleContextServiceImpl implements RoleContextService {
     private RoleState roleState;
 
     @Autowired
-    UserDetailsDao userDetailsDao;
+    UserRegistrationRepo userDetailsDao;
 
     public RoleContextServiceImpl() {
         roleState = new RoleMembershipImpl(this);

@@ -3,7 +3,7 @@ package ie.wellbeing.controller;
 import ie.wellbeing.common.ApiResponse;
 import ie.wellbeing.common.ApiResponseBuilder;
 import ie.wellbeing.service.RoleService;
-import ie.wellbeing.service.UserService;
+import ie.wellbeing.service.UserRegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,7 +16,7 @@ public class AdminController {
     private RoleService roleService;
 
     @Autowired
-    private UserService userService;
+    private UserRegistrationService userService;
 
 
     @GetMapping("/getAllUserDetails")
