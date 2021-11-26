@@ -20,6 +20,7 @@ public class Booking{
             strategy=GenerationType.SEQUENCE,
             generator="booking_sequence"
     )
+
     @Column(name = "BID")
     private Integer bookingId;
 

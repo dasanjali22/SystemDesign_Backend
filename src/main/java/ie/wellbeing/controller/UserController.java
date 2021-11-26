@@ -31,12 +31,15 @@ public class UserController {
         return siteURL.replace(request.getServletPath(), "");
     }
 
+<<<<<<< HEAD
+=======
     @GetMapping("/getUsers")
     public ApiResponse getAllUsers() {
             return ApiResponseBuilder.success().data(userRegistrationService.getAllUsers()).build();
 
     }
 
+>>>>>>> f4ddc09c0340052a2aa7772c9961ded607a6fab3
     @GetMapping("/verify/{code}")
     public String verifyUser(@PathVariable String code) {
 
