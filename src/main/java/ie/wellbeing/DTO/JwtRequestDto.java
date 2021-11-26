@@ -1,13 +1,13 @@
-package ie.wellbeing.request;
+package ie.wellbeing.DTO;
 
-public class JwtRequest {
+public class JwtRequestDto {
     String username;
     String password;
 
-    public JwtRequest() {
+    public JwtRequestDto() {
     }
 
-    public JwtRequest(String username, String password) {
+    public JwtRequestDto(String username, String password) {
         this.username = username;
         this.password = password;
     }

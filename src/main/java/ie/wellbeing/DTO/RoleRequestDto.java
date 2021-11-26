@@ -1,8 +1,6 @@
-package ie.wellbeing.request;
+package ie.wellbeing.DTO;
 
-import java.io.Serializable;
-
-public class RoleRequest {
+public class RoleRequestDto {
 
     private String uRole;
     private Integer uId;

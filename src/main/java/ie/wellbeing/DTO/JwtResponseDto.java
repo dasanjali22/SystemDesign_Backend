@@ -1,12 +1,12 @@
-package ie.wellbeing.request;
+package ie.wellbeing.DTO;
 
-public class JwtResponse {
+public class JwtResponseDto {
     String token;
 
-    public JwtResponse() {
+    public JwtResponseDto() {
     }
 
-    public JwtResponse(String token) {
+    public JwtResponseDto(String token) {
         this.token = token;
     }
 
