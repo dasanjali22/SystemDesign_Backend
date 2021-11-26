@@ -1,7 +1,7 @@
 package ie.wellbeing.service.impl;
 
-import ie.wellbeing.request.BookingRequest;
-import ie.wellbeing.request.BookingResponse;
+import ie.wellbeing.DTO.BookingRequestDto;
+import ie.wellbeing.DTO.BookingResponseDto;
 import ie.wellbeing.service.BookingService;
 import ie.wellbeing.service.IFilter;
 
@@ -19,13 +19,13 @@ public class InterceptorChain {
         filters.add(filter);
     }
 
-    public BookingResponse execute(BookingRequest bookingRequest, String siteURL) throws Exception
+    public BookingResponseDto execute(BookingRequestDto bookingRequestDto, String siteURL) throws Exception
     {
         for (IFilter filter : filters) {
-            filter.verifyBooking(bookingRequest);
+            filter.verifyBooking(bookingRequestDto);
         }
 
-        return bookingService.createBooking(bookingRequest, siteURL);
+        return bookingService.createBooking(bookingRequestDto, siteURL);
     }
 
     public void setBookingService(BookingService bookingService)

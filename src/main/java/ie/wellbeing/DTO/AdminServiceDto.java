@@ -1,6 +1,6 @@
-package ie.wellbeing.request;
+package ie.wellbeing.DTO;
 
-public class AdminServiceRequest {
+public class AdminServiceDto {
     private String service_name;
     private String email;
     private String password;

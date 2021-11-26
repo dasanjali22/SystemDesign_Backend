@@ -3,8 +3,8 @@ package ie.wellbeing.controller;
 import ie.wellbeing.common.ApiResponse;
 import ie.wellbeing.common.ApiResponseBuilder;
 import ie.wellbeing.model.Booking;
-import ie.wellbeing.request.BookingRequest;
-import ie.wellbeing.request.BookingResponse;
+import ie.wellbeing.DTO.BookingRequestDto;
+import ie.wellbeing.DTO.BookingResponseDto;
 import ie.wellbeing.service.BookingService;
 import ie.wellbeing.service.IFilter;
 import ie.wellbeing.service.impl.InterceptorManager;
@@ -26,7 +26,7 @@ public class BookingController {
     private IFilter filter;
 
     @PostMapping(value = "/createBooking" )
-    public BookingResponse createBooking(@RequestBody BookingRequest bookingRequest, HttpServletRequest request) throws Exception {
+    public BookingResponseDto createBooking(@RequestBody BookingRequestDto bookingRequestDto, HttpServletRequest request) throws Exception {
         try {// To simulate the Interceptor pattern, we use Interceptor Manager
             // This is the manager for Interceptor and the target is set that is email decorator
             // Ideally, it is the BookingServiceImpl but we decorated with Email for Decorator pattern
@@ -34,7 +34,7 @@ public class BookingController {
             // This is the part where we set the filter which is BookingPreconditionFilter
             // We can add more
             interceptorManager.setFilter(filter);
-            return interceptorManager.filterRequest(bookingRequest, getSiteURL(request));
+            return interceptorManager.filterRequest(bookingRequestDto, getSiteURL(request));
         }
         catch (Exception e){
             throw e;

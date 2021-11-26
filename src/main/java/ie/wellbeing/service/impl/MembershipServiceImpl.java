@@ -4,7 +4,7 @@ import ie.wellbeing.model.MembershipDetails;
 import ie.wellbeing.model.PaymentDetails;
 import ie.wellbeing.repository.MembershipDetailsRepo;
 import ie.wellbeing.repository.PaymentDetailsRepo;
-import ie.wellbeing.request.MembershipRequest;
+import ie.wellbeing.DTO.MembershipRequestDto;
 import ie.wellbeing.service.MembershipService;
 import ie.wellbeing.service.MembershipState;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,20 +25,20 @@ public class MembershipServiceImpl implements MembershipService {
     MembershipDetailsRepo membershipDetailsRepo;
 
     @Override
-    public String createMembership(MembershipRequest membershipRequest, String siteURL) throws Exception {
+    public String createMembership(MembershipRequestDto membershipRequestDto, String siteURL) throws Exception {
         PaymentDetails paymentDetails = new PaymentDetails();
         int membershipPrice;
         int membershipId;
         SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd");
         Calendar cal = Calendar.getInstance();
         Date today = cal.getTime();
-        switch (membershipRequest.getmName()){
+        switch (membershipRequestDto.getmName()){
             case "GOLD":
                 MembershipState goldMembershipState = new GoldMembershipServiceImpl();
                 membershipPrice = goldMembershipState.membershipPrice();
                 membershipId = goldMembershipState.membershipId();
                 paymentDetails.setPaymentPrice(membershipPrice);
-                paymentDetails.setPaymentUserId(membershipRequest.getuId());
+                paymentDetails.setPaymentUserId(membershipRequestDto.getuId());
                 paymentDetails.setPaymentStatus(0);
                 paymentDetails.setPaymentType("GOLD");
                 paymentDetails.setPaymentCreatedDate(ft.format(today));
@@ -49,7 +49,7 @@ public class MembershipServiceImpl implements MembershipService {
                 membershipPrice = silverMembershipState.membershipPrice();
                 membershipId = silverMembershipState.membershipId();
                 paymentDetails.setPaymentPrice(membershipPrice);
-                paymentDetails.setPaymentUserId(membershipRequest.getuId());
+                paymentDetails.setPaymentUserId(membershipRequestDto.getuId());
                 paymentDetails.setPaymentStatus(0);
                 paymentDetails.setPaymentType("SILVER");
                 paymentDetails.setPaymentCreatedDate(ft.format(today));
@@ -60,7 +60,7 @@ public class MembershipServiceImpl implements MembershipService {
                 membershipPrice= platinumMembershipState.membershipPrice();
                 membershipId = platinumMembershipState.membershipId();
                 paymentDetails.setPaymentPrice(membershipPrice);
-                paymentDetails.setPaymentUserId(membershipRequest.getuId());
+                paymentDetails.setPaymentUserId(membershipRequestDto.getuId());
                 paymentDetails.setPaymentStatus(0);
                 paymentDetails.setPaymentType("PLATINUM");
                 paymentDetails.setPaymentCreatedDate(ft.format(today));

@@ -1,8 +1,8 @@
-package ie.wellbeing.request;
+package ie.wellbeing.DTO;
 
 import ie.wellbeing.model.Booking;
 
-public class BookingResponse {
+public class BookingResponseDto {
 
     public Booking booking;
     public String paymentUrl;

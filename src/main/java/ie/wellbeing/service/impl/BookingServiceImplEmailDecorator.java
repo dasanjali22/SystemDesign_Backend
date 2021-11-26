@@ -6,8 +6,8 @@ import ie.wellbeing.model.PaymentDetails;
 import ie.wellbeing.repository.BookingRepo;
 import ie.wellbeing.repository.EmployeeDetailsRepo;
 import ie.wellbeing.repository.PaymentDetailsRepo;
-import ie.wellbeing.request.BookingRequest;
-import ie.wellbeing.request.BookingResponse;
+import ie.wellbeing.DTO.BookingRequestDto;
+import ie.wellbeing.DTO.BookingResponseDto;
 import ie.wellbeing.service.BookingService;
 import ie.wellbeing.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,15 +38,15 @@ public class BookingServiceImplEmailDecorator implements BookingService
     private PaymentDetailsRepo paymentDetailsRepo;
 
     @Override
-    public BookingResponse createBooking(BookingRequest bookingRequest, String siteURL) throws Exception {
-        BookingResponse bookingResponse =  bookingServiceImpl.createBooking(bookingRequest, siteURL);
-        if(bookingResponse.getPaymentUrl() == null || bookingResponse.getPaymentUrl().equals(""))
+    public BookingResponseDto createBooking(BookingRequestDto bookingRequestDto, String siteURL) throws Exception {
+        BookingResponseDto bookingResponseDto =  bookingServiceImpl.createBooking(bookingRequestDto, siteURL);
+        if(bookingResponseDto.getPaymentUrl() == null || bookingResponseDto.getPaymentUrl().equals(""))
         {
-            emailService.sendSimpleMessage(bookingResponse.getBooking());
-            Optional<EmployeeDetails> employeeDetailsOptional = employeeDetailsRepo.findById(bookingResponse.booking.geteId());
-            emailService.sendSimpleMessage(employeeDetailsOptional.orElse(null), bookingResponse.getBooking());
+            emailService.sendSimpleMessage(bookingResponseDto.getBooking());
+            Optional<EmployeeDetails> employeeDetailsOptional = employeeDetailsRepo.findById(bookingResponseDto.booking.geteId());
+            emailService.sendSimpleMessage(employeeDetailsOptional.orElse(null), bookingResponseDto.getBooking());
         }
-        return bookingResponse;
+        return bookingResponseDto;
     }
 
     @Override

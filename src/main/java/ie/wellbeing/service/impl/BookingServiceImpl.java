@@ -3,8 +3,8 @@ package ie.wellbeing.service.impl;
 
 import ie.wellbeing.model.*;
 import ie.wellbeing.repository.*;
-import ie.wellbeing.request.BookingRequest;
-import ie.wellbeing.request.BookingResponse;
+import ie.wellbeing.DTO.BookingRequestDto;
+import ie.wellbeing.DTO.BookingResponseDto;
 import ie.wellbeing.service.BookingService;
 import ie.wellbeing.service.IBookingServicePaymentStrategy;
 import ie.wellbeing.service.NotificationService;
@@ -50,21 +50,21 @@ public class BookingServiceImpl implements BookingService {
     private IBookingServicePaymentStrategy bookingServicePlatinumMembershipPaymentStrategy;
 
     @Override
-    public BookingResponse createBooking(BookingRequest bookingRequest, String siteURL) {
+    public BookingResponseDto createBooking(BookingRequestDto bookingRequestDto, String siteURL) {
 
         List<EmployeeDetails> employeeDetailsList = employeeDetailsRepo.findAll();
 
         System.out.println(employeeDetailsList);
-        EmployeeDetails employeeDetails = employeeDetailsRepo.findByEmployeeName(bookingRequest.geteName());
+        EmployeeDetails employeeDetails = employeeDetailsRepo.findByEmployeeName(bookingRequestDto.geteName());
 
         Booking booking = new Booking();
 
-        booking.setBookingType(bookingRequest.getBookingType());
-        booking.setSessionSlot(bookingRequest.getSessionSlot());
-        booking.setUserId(bookingRequest.getUserId());
+        booking.setBookingType(bookingRequestDto.getBookingType());
+        booking.setSessionSlot(bookingRequestDto.getSessionSlot());
+        booking.setUserId(bookingRequestDto.getUserId());
         booking.seteId(employeeDetails.geteId());
 
-        MembershipDetails membershipDetails = membershipDetailsRepo.getMembershipDetailsByuId(bookingRequest.getUserId());
+        MembershipDetails membershipDetails = membershipDetailsRepo.getMembershipDetailsByuId(bookingRequestDto.getUserId());
 
         boolean shouldMakePayment = false;
 
@@ -79,36 +79,36 @@ public class BookingServiceImpl implements BookingService {
                 // Not using enum, stupid cases
                 case "PLATINUM":
                 case "Platinum":
-                    shouldMakePayment = bookingServicePlatinumMembershipPaymentStrategy.ShouldMakePayment(membershipDetails, bookingRequest);
+                    shouldMakePayment = bookingServicePlatinumMembershipPaymentStrategy.ShouldMakePayment(membershipDetails, bookingRequestDto);
                     break;
                 case "GOLD" :
                 case "Gold" :
-                    shouldMakePayment = bookingServiceGoldMembershipPaymentStrategy.ShouldMakePayment(membershipDetails, bookingRequest);
+                    shouldMakePayment = bookingServiceGoldMembershipPaymentStrategy.ShouldMakePayment(membershipDetails, bookingRequestDto);
                     break;
                 case "SILVER" :
                 case "silver" :
-                    shouldMakePayment = bookingServiceSilverMembershipPaymentStrategy.ShouldMakePayment(membershipDetails, bookingRequest);
+                    shouldMakePayment = bookingServiceSilverMembershipPaymentStrategy.ShouldMakePayment(membershipDetails, bookingRequestDto);
                     break;
             }
         }
 
-        BookingResponse bookingResponse = new BookingResponse();
-        bookingResponse.setBooking(booking);
+        BookingResponseDto bookingResponseDto = new BookingResponseDto();
+        bookingResponseDto.setBooking(booking);
 
         if(shouldMakePayment)
         {
-            setPaymentDetails(bookingRequest, booking, employeeDetails);
-            bookingResponse.setPaymentUrl(siteURL + "/payment-stripe/charge");
+            setPaymentDetails(bookingRequestDto, booking, employeeDetails);
+            bookingResponseDto.setPaymentUrl(siteURL + "/payment-stripe/charge");
         }
 
         bookingRepo.save(booking);
 
-        return bookingResponse;
+        return bookingResponseDto;
     }
 
-    private void setPaymentDetails(BookingRequest bookingRequest, Booking booking, EmployeeDetails employeeDetails)
+    private void setPaymentDetails(BookingRequestDto bookingRequestDto, Booking booking, EmployeeDetails employeeDetails)
     {
-        ServiceDetails serviceDetailsList = serviceListDao.findByServiceNameContainingIgnoreCase(bookingRequest.getBookingType());
+        ServiceDetails serviceDetailsList = serviceListDao.findByServiceNameContainingIgnoreCase(bookingRequestDto.getBookingType());
 
         booking.setServicePrice(serviceDetailsList.getsPrice());
         booking.seteId(employeeDetails.geteId());
@@ -116,9 +116,9 @@ public class BookingServiceImpl implements BookingService {
 
         PaymentDetails paymentDetails = new PaymentDetails();
         paymentDetails.setPaymentPrice(serviceDetailsList.getsPrice());
-        paymentDetails.setPaymentUserId(bookingRequest.getUserId());
+        paymentDetails.setPaymentUserId(bookingRequestDto.getUserId());
         paymentDetails.setPaymentStatus(0);
-        paymentDetails.setPaymentType(bookingRequest.getBookingType());
+        paymentDetails.setPaymentType(bookingRequestDto.getBookingType());
         paymentDetails.setPaymentCreatedDate(new SimpleDateFormat ("yyyy-MM-dd").format(new Date()));
         paymentDetailsRepo.save(paymentDetails);
     }

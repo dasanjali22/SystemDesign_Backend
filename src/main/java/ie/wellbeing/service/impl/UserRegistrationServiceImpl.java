@@ -1,13 +1,15 @@
 package ie.wellbeing.service.impl;
 
-import ie.wellbeing.common.ApiResponseBuilder;
 import ie.wellbeing.model.UserRegistration;
 import ie.wellbeing.repository.UserRegistrationRepo;
-import ie.wellbeing.request.UserRequest;
+import ie.wellbeing.DTO.UserRequestDto;
 import ie.wellbeing.service.MembershipContextService;
 import ie.wellbeing.service.UserRegistrationService;
+import ie.wellbeing.validator.UserValidator;
 import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -20,7 +22,17 @@ import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 @Service
+@PropertySource("application.properties")
 public class UserRegistrationServiceImpl implements UserRegistrationService {
+
+    @Value("${spring.user.already_exsist}")
+    String errorRegister;
+
+    @Value("${spring.user.password}")
+    String wrongPassword;
+
+    @Value("${spring.user.successRegister}")
+    String successRegister;
 
     @Autowired
     MembershipContextService membershipService;
@@ -33,34 +45,44 @@ public class UserRegistrationServiceImpl implements UserRegistrationService {
 
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private UserValidator userValidator;
+
     @Override
-    public void registrationUser(UserRequest userRequest, String siteURL) throws IllegalStateException, UnsupportedEncodingException,MessagingException {
+    public String registrationUser(UserRequestDto userRequestDto, String siteURL) throws IllegalStateException, UnsupportedEncodingException,MessagingException {
            passwordEncoder = new BCryptPasswordEncoder();
-           UserRegistration userOptional = userDao.findByEmail(userRequest.getuEmail());
+           String result=null;
+           UserRegistration userOptional = userDao.findByEmail(userRequestDto.getuEmail());
            if (userOptional == null) {
                String randomCode = RandomString.make(64);
                UserRegistration userdetails = new UserRegistration();
-               userdetails.setName(userRequest.getuName());
-               userdetails.setEmail(userRequest.getuEmail().toLowerCase());
-               userdetails.setPhone(userRequest.getuPhone());
-               userdetails.setAge(userRequest.getuAge());
-               userdetails.setCity(userRequest.getuCity());
-               userdetails.setCountry(userRequest.getuCountry());
+               result=userValidator.validate(userRequestDto);
+               if(result!=null){
+                   return result;
+               }
+               userdetails.setName(userRequestDto.getuName());
+               userdetails.setEmail(userRequestDto.getuEmail().toLowerCase());
+               userdetails.setPhone(userRequestDto.getuPhone());
+               userdetails.setAge(userRequestDto.getuAge());
+               userdetails.setCity(userRequestDto.getuCity());
+               userdetails.setCountry(userRequestDto.getuCountry());
                userdetails.setVerificationCode(randomCode);
                userdetails.setEnabled(false);
                userdetails.setmName(membershipService.handle());
-               if (userRequest.getuCreatePassword().equals(userRequest.getuConfirmPassword())) {
-                   String encodedPassword = this.passwordEncoder.encode(userRequest.getuConfirmPassword());
+               if (userRequestDto.getuCreatePassword().equals(userRequestDto.getuConfirmPassword())) {
+                   String encodedPassword = this.passwordEncoder.encode(userRequestDto.getuConfirmPassword());
                    userdetails.setConfirmPassword(encodedPassword);
                    userdetails.setCreatePassword(encodedPassword);
                } else {
-                   throw new IllegalStateException("Password Mismatch");
+                   throw new IllegalStateException(wrongPassword);
                }
                userDao.save(userdetails);
                sendVerificationEmail(userdetails, siteURL);
            } else {
-               throw new IllegalStateException("User Already registered please login: " + userOptional.getEmail());
+                return errorRegister;
+               //throw new IllegalStateException("User Already registered please login: " + userOptional.getEmail());
            }
+        return successRegister;
     }
 
     @Override
