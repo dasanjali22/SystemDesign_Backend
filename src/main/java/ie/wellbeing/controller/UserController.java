@@ -29,11 +29,6 @@ public class UserController {
         return siteURL.replace(request.getServletPath(), "");
     }
 
-    @GetMapping("/getUsers")
-    public ApiResponse getAllUsers() {
-        return ApiResponseBuilder.success().data(userService.getAllUsers()).build();
-    }
-
     @GetMapping("/verify/{code}")
     public String verifyUser(@PathVariable String code) {
         if (userService.verify(code)) {

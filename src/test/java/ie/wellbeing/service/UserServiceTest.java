@@ -47,6 +47,7 @@ class UserServiceTest {
         mimeMessageHelper.setFrom("anjali","anushka");
         mimeMessageHelper.setTo("anjali");
         mimeMessageHelper.setSubject("abc");
+        mimeMessage.setFrom();
         mimeMessage.saveChanges();
     }
 
