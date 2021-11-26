@@ -1,6 +1,6 @@
-package ie.wellbeing.request;
+package ie.wellbeing.DTO;
 
-public class MembershipRequest {
+public class MembershipRequestDto {
 
     private String mName;
 

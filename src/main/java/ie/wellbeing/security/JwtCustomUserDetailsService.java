@@ -1,7 +1,7 @@
 package ie.wellbeing.security;
 
 import ie.wellbeing.model.UserRegistration;
-import ie.wellbeing.repository.UserDetailsDao;
+import ie.wellbeing.repository.UserRegistrationRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,12 +14,12 @@ import java.util.ArrayList;
 public class JwtCustomUserDetailsService implements UserDetailsService {
 
     @Autowired
-    private UserDetailsDao userDetailsDao;
+    private UserRegistrationRepo userRegistrationRepo;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        UserRegistration userRegistration = userDetailsDao.findByEmail(username);
+        UserRegistration userRegistration = userRegistrationRepo.findByEmail(username);
         if (userRegistration != null) {
             return new User(userRegistration.getEmail(), userRegistration.getConfirmPassword(), new ArrayList<>());
         } else {

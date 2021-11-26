@@ -1,8 +1,8 @@
-package ie.wellbeing.request;
+package ie.wellbeing.DTO;
 
 import javax.validation.constraints.Size;
 
-public class LoginRequest {
+public class LoginRequestDto {
     private String uEmail;
     @Size(max = 8)
     private String uConfirmPassword;

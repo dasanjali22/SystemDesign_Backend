@@ -1,8 +1,8 @@
 package ie.wellbeing.controller;
 
 import ie.wellbeing.security.JwtTokenUtil;
-import ie.wellbeing.request.JwtResponse;
-import ie.wellbeing.request.LoginRequest;
+import ie.wellbeing.DTO.JwtResponseDto;
+import ie.wellbeing.DTO.LoginRequestDto;
 import ie.wellbeing.service.LoginService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,11 +36,11 @@ public class LoginUserController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<?> loginUser(@RequestBody LoginRequest loginRequest, HttpServletRequest request) throws Exception {
-        authenticate(loginRequest.getuEmail(), loginRequest.getuConfirmPassword());
-        final UserDetails userDetails = userService.loadUserByUsername(loginRequest.getuEmail());
+    public ResponseEntity<?> loginUser(@RequestBody LoginRequestDto loginRequestDto, HttpServletRequest request) throws Exception {
+        authenticate(loginRequestDto.getuEmail(), loginRequestDto.getuConfirmPassword());
+        final UserDetails userDetails = userService.loadUserByUsername(loginRequestDto.getuEmail());
         final String token = jwtTokenUtil.generateToken(userDetails);
-        return ResponseEntity.ok(new JwtResponse(token));
+        return ResponseEntity.ok(new JwtResponseDto(token));
     }
 
     private void authenticate(String email, String password) throws Exception {

@@ -1,9 +1,9 @@
-package ie.wellbeing.request;
+package ie.wellbeing.DTO;
 
 
 import javax.validation.constraints.Size;
 
-public class UserRequest {
+public class UserRequestDto {
 
     private String uName;
 
