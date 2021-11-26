@@ -1,8 +1,8 @@
 package ie.wellbeing.service;
 
+import ie.wellbeing.DTO.LoginRequestDto;
 import ie.wellbeing.model.UserRegistration;
-import ie.wellbeing.repository.UserDetailsDao;
-import ie.wellbeing.request.LoginRequest;
+import ie.wellbeing.repository.UserRegistrationRepo;
 import ie.wellbeing.service.impl.LoginServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,14 +22,14 @@ public class LoginServiceTest {
     private LoginService loginService = new LoginServiceImpl();
 
     @Mock
-    private UserDetailsDao userDao;
+    private UserRegistrationRepo userDao;
 
     @Mock
     private UserRegistration userRegistration;
 
     @Test
     void loginUser() throws MessagingException, UnsupportedEncodingException {
-        LoginRequest loginRequest = new LoginRequest();
+        LoginRequestDto loginRequest = new LoginRequestDto();
         UserRegistration userRegistration = new UserRegistration();
         String siteUrl = "Test";
         loginRequest.setuEmail("anjalids916@gmail.com");

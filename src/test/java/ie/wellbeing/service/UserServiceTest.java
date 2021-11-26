@@ -1,9 +1,8 @@
 package ie.wellbeing.service;
 
 import ie.wellbeing.model.UserRegistration;
-import ie.wellbeing.repository.UserDetailsDao;
-import ie.wellbeing.request.UserRequest;
-import ie.wellbeing.service.impl.UserServiceImpl;
+import ie.wellbeing.repository.UserRegistrationRepo;
+import ie.wellbeing.service.impl.UserRegistrationServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -34,10 +33,10 @@ class UserServiceTest {
     private MimeMessage mimeMessage;
 
     @Mock
-    private UserDetailsDao userDetailsDao;
+    private UserRegistrationRepo userDetailsDao;
 
     @InjectMocks
-    private UserService userService = new UserServiceImpl();
+    private UserRegistrationService userService = new UserRegistrationServiceImpl();
 
     @Mock
     private JavaMailSender mailSender;
