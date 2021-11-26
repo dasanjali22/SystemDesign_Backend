@@ -23,22 +23,22 @@ Authors : Sai Rohit Voleti & Subhiksha
 @Qualifier("bookingServiceImpl")
 public class BookingServiceImpl implements BookingService {
     @Autowired
-    PaymentDetailsDao paymentDetailsDao;
+    PaymentDetailsRepo paymentDetailsRepo;
 
     @Autowired
-    EmployeeDetailsDao employeeDetailsDao;
+    EmployeeDetailsRepo employeeDetailsRepo;
 
     @Autowired
-    private BookingDao bookingDao;
+    private BookingRepo bookingRepo;
 
     @Autowired
-    private MembershipDetailsDao membershipDetailsDao;
+    private MembershipDetailsRepo membershipDetailsRepo;
 
     @Autowired
     private NotificationService notificationService;
 
     @Autowired
-    private ServiceDao serviceListDao;
+    private ServiceDetailsRepo serviceListDao;
 
     @Autowired
     private IBookingServicePaymentStrategy bookingServiceSilverMembershipPaymentStrategy;
@@ -52,10 +52,10 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public BookingResponse createBooking(BookingRequest bookingRequest, String siteURL) {
 
-        List<EmployeeDetails> employeeDetailsList = employeeDetailsDao.findAll();
+        List<EmployeeDetails> employeeDetailsList = employeeDetailsRepo.findAll();
 
         System.out.println(employeeDetailsList);
-        EmployeeDetails employeeDetails = employeeDetailsDao.findByEmployeeName(bookingRequest.geteName());
+        EmployeeDetails employeeDetails = employeeDetailsRepo.findByEmployeeName(bookingRequest.geteName());
 
         Booking booking = new Booking();
 
@@ -64,7 +64,7 @@ public class BookingServiceImpl implements BookingService {
         booking.setUserId(bookingRequest.getUserId());
         booking.seteId(employeeDetails.geteId());
 
-        MembershipDetails membershipDetails = membershipDetailsDao.getMembershipDetailsByuId(bookingRequest.getUserId());
+        MembershipDetails membershipDetails = membershipDetailsRepo.getMembershipDetailsByuId(bookingRequest.getUserId());
 
         boolean shouldMakePayment = false;
 
@@ -101,43 +101,43 @@ public class BookingServiceImpl implements BookingService {
             bookingResponse.setPaymentUrl(siteURL + "/payment-stripe/charge");
         }
 
-        bookingDao.save(booking);
+        bookingRepo.save(booking);
 
         return bookingResponse;
     }
 
     private void setPaymentDetails(BookingRequest bookingRequest, Booking booking, EmployeeDetails employeeDetails)
     {
-        Service serviceList = serviceListDao.findByServiceNameContainingIgnoreCase(bookingRequest.getBookingType());
+        ServiceDetails serviceDetailsList = serviceListDao.findByServiceNameContainingIgnoreCase(bookingRequest.getBookingType());
 
-        booking.setServicePrice(serviceList.getsPrice());
+        booking.setServicePrice(serviceDetailsList.getsPrice());
         booking.seteId(employeeDetails.geteId());
         booking.setPaymentStatus(0);
 
         PaymentDetails paymentDetails = new PaymentDetails();
-        paymentDetails.setPaymentPrice(serviceList.getsPrice());
+        paymentDetails.setPaymentPrice(serviceDetailsList.getsPrice());
         paymentDetails.setPaymentUserId(bookingRequest.getUserId());
         paymentDetails.setPaymentStatus(0);
         paymentDetails.setPaymentType(bookingRequest.getBookingType());
         paymentDetails.setPaymentCreatedDate(new SimpleDateFormat ("yyyy-MM-dd").format(new Date()));
-        paymentDetailsDao.save(paymentDetails);
+        paymentDetailsRepo.save(paymentDetails);
     }
 
     public List<Booking> getAllBooking() {
-        return bookingDao.findAll();
+        return bookingRepo.findAll();
     }
 
     @Override
     public void updateBookingDetails(Integer paymentId, String type) throws Exception {
-        PaymentDetails paymentDetails = paymentDetailsDao.getById(paymentId);
-        List<Booking> bookingCheck = bookingDao.findByUserId(paymentDetails.getPaymentUserId());
+        PaymentDetails paymentDetails = paymentDetailsRepo.getById(paymentId);
+        List<Booking> bookingCheck = bookingRepo.findByUserId(paymentDetails.getPaymentUserId());
         if (bookingCheck.size() > 0) {
             for (Booking booking : bookingCheck) {
                 if (booking.getBookingType().equals(type)) {
                     paymentDetails.setPaymentStatus(1);
                     booking.setPaymentStatus(1);
-                    bookingDao.save(booking);
-                    paymentDetailsDao.save(paymentDetails);
+                    bookingRepo.save(booking);
+                    paymentDetailsRepo.save(paymentDetails);
                 }
             }
         }

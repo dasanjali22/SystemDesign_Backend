@@ -11,7 +11,7 @@ import java.util.List;
 Authors : Sai Rohit Voleti & Subhiksha
  */
 @Repository
-public interface BookingDao extends JpaRepository<Booking, Integer>{
+public interface BookingRepo extends JpaRepository<Booking, Integer>{
 
     List<Booking> findByUserId(Long userId);
 

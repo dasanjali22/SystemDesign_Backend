@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface MembershipDetailsDao extends JpaRepository<MembershipDetails, Integer> {
+public interface MembershipDetailsRepo extends JpaRepository<MembershipDetails, Integer> {
 
     MembershipDetails getMembershipDetailsByuId(Long userId);
 }

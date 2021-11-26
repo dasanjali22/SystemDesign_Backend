@@ -8,7 +8,7 @@ import javax.mail.MessagingException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
-public interface UserService {
+public interface UserRegistrationService {
 
     void registrationUser(UserRequest userRequest, String siteURL) throws MessagingException, UnsupportedEncodingException;
 

@@ -1,7 +1,7 @@
 package ie.wellbeing.service.impl;
 
 import ie.wellbeing.model.UserRegistration;
-import ie.wellbeing.repository.UserDetailsDao;
+import ie.wellbeing.repository.UserRegistrationRepo;
 import ie.wellbeing.service.MembershipContextService;
 import ie.wellbeing.service.MembershipState;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +13,7 @@ public class MembershipContextServiceImpl implements MembershipContextService {
     private MembershipState membershipState;
 
     @Autowired
-    UserDetailsDao userDetailsDao;
+    UserRegistrationRepo userRegistrationRepo;
 
     public MembershipContextServiceImpl(){
         membershipState = new NoMembershipServiceImpl(this   );
@@ -21,9 +21,9 @@ public class MembershipContextServiceImpl implements MembershipContextService {
 
     @Override
     public void changeStateTo(MembershipState newState, Long userId){
-        UserRegistration userRegistration =userDetailsDao.getById(userId);
+        UserRegistration userRegistration = userRegistrationRepo.getById(userId);
         userRegistration.setmName(newState.membershipName());
-        userDetailsDao.save(userRegistration);
+        userRegistrationRepo.save(userRegistration);
     }
 
     @Override

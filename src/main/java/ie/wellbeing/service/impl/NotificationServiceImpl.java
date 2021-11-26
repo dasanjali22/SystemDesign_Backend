@@ -8,7 +8,7 @@ package ie.wellbeing.service.impl;
 import ie.wellbeing.model.Booking;
 import ie.wellbeing.model.EmployeeDetails;
 import ie.wellbeing.model.UserRegistration;
-import ie.wellbeing.repository.UserDetailsDao;
+import ie.wellbeing.repository.UserRegistrationRepo;
 import ie.wellbeing.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -25,7 +25,7 @@ public class NotificationServiceImpl implements NotificationService {
     @Autowired
     private JavaMailSender mailSender;
     @Autowired
-    private UserDetailsDao userDetailsDao;
+    private UserRegistrationRepo userRegistrationRepo;
 
 
     public NotificationServiceImpl() {
@@ -33,7 +33,7 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public void sendSimpleMessage(Booking booking) throws Exception {
-        UserRegistration userRegistration = userDetailsDao.getById(booking.getUserId());
+        UserRegistration userRegistration = userRegistrationRepo.getById(booking.getUserId());
 
         if (userRegistration ==null) {
             throw new Exception("Invalid user Id");
@@ -68,7 +68,7 @@ public class NotificationServiceImpl implements NotificationService {
 
     public void sendSimpleMessage(EmployeeDetails employeeDetails, Booking booking) throws MessagingException, UnsupportedEncodingException {
 
-        UserRegistration userDetails = userDetailsDao.getById(booking.getUserId());
+        UserRegistration userDetails = userRegistrationRepo.getById(booking.getUserId());
         String toAddress = employeeDetails.geteEmail();
         String fromAddress = "uit13328@rmd.ac.in";
         String senderName = "Booking sys";

@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface LoginUserDao  extends JpaRepository<LoginUser, Long> {
+public interface LoginUserRepo extends JpaRepository<LoginUser, Long> {
     LoginUser findByEmail(String email);
 }

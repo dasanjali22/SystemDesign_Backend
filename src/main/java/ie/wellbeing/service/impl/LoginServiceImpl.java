@@ -1,6 +1,6 @@
 package ie.wellbeing.service.impl;
 import ie.wellbeing.model.UserRegistration;
-import ie.wellbeing.repository.UserDetailsDao;
+import ie.wellbeing.repository.UserRegistrationRepo;
 import ie.wellbeing.request.LoginRequest;
 import ie.wellbeing.service.LoginService;
 import lombok.RequiredArgsConstructor;
@@ -17,13 +17,13 @@ import org.springframework.transaction.annotation.Transactional;
 public class LoginServiceImpl implements LoginService {
 
     @Autowired
-    private UserDetailsDao userDetailsDao;
+    private UserRegistrationRepo userRegistrationRepo;
     private PasswordEncoder passwordEncoder;
 
     public UserRegistration loginUser(LoginRequest loginRequest, String siteURL) throws IllegalStateException {
         passwordEncoder = new BCryptPasswordEncoder();
         if (loginRequest.getuEmail() != null && loginRequest.getuConfirmPassword() != null) {
-            UserRegistration userRegistration = userDetailsDao.findByEmail(loginRequest.getuEmail());
+            UserRegistration userRegistration = userRegistrationRepo.findByEmail(loginRequest.getuEmail());
             boolean isPasswordMatches = passwordEncoder.matches(loginRequest.getuConfirmPassword(), userRegistration.getConfirmPassword());
             if (isPasswordMatches) {
                 System.out.println("Logged in");
