@@ -2,8 +2,8 @@ package ie.wellbeing.service.impl;
 
 import ie.wellbeing.model.MembershipDetails;
 import ie.wellbeing.model.PaymentDetails;
-import ie.wellbeing.repository.MembershipDetailsDao;
-import ie.wellbeing.repository.PaymentDetailsDao;
+import ie.wellbeing.repository.MembershipDetailsRepo;
+import ie.wellbeing.repository.PaymentDetailsRepo;
 import ie.wellbeing.request.MembershipRequest;
 import ie.wellbeing.service.MembershipService;
 import ie.wellbeing.service.MembershipState;
@@ -19,10 +19,10 @@ import java.util.List;
 public class MembershipServiceImpl implements MembershipService {
 
     @Autowired
-    PaymentDetailsDao paymentDetailsDao;
+    PaymentDetailsRepo paymentDetailsRepo;
 
     @Autowired
-    MembershipDetailsDao membershipDetailsDao;
+    MembershipDetailsRepo membershipDetailsRepo;
 
     @Override
     public String createMembership(MembershipRequest membershipRequest, String siteURL) throws Exception {
@@ -42,7 +42,7 @@ public class MembershipServiceImpl implements MembershipService {
                 paymentDetails.setPaymentStatus(0);
                 paymentDetails.setPaymentType("GOLD");
                 paymentDetails.setPaymentCreatedDate(ft.format(today));
-                paymentDetailsDao.save(paymentDetails);
+                paymentDetailsRepo.save(paymentDetails);
                 break;
             case "SILVER":
                 MembershipState silverMembershipState = new SilverMembershipServiceImpl();
@@ -53,7 +53,7 @@ public class MembershipServiceImpl implements MembershipService {
                 paymentDetails.setPaymentStatus(0);
                 paymentDetails.setPaymentType("SILVER");
                 paymentDetails.setPaymentCreatedDate(ft.format(today));
-                paymentDetailsDao.save(paymentDetails);
+                paymentDetailsRepo.save(paymentDetails);
                 break;
             case "PLATINUM":
                 MembershipState platinumMembershipState = new PlatinumMembershipServiceImpl();
@@ -64,7 +64,7 @@ public class MembershipServiceImpl implements MembershipService {
                 paymentDetails.setPaymentStatus(0);
                 paymentDetails.setPaymentType("PLATINUM");
                 paymentDetails.setPaymentCreatedDate(ft.format(today));
-                paymentDetailsDao.save(paymentDetails);
+                paymentDetailsRepo.save(paymentDetails);
                 break;
             default:
                 break;
@@ -84,11 +84,11 @@ public class MembershipServiceImpl implements MembershipService {
         membershipDetails.setuId(userId);
         membershipDetails.setmStartDate(ft.format(today));
         membershipDetails.setmEndDate(ft.format(nextYear));
-        membershipDetailsDao.save(membershipDetails);
+        membershipDetailsRepo.save(membershipDetails);
     }
 
     @Override
     public List<MembershipDetails> getAllUsersMembershipDetails() {
-        return membershipDetailsDao.findAll();
+        return membershipDetailsRepo.findAll();
     }
 }
