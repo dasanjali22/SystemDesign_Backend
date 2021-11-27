@@ -1,10 +1,10 @@
 package ie.wellbeing;
 import org.junit.jupiter.api.Test;
 
-public class WellBeingApplicationTests {
+ class WellBeingApplicationTests {
 
 	@Test
-	public void contextLoads() throws Exception {
+	 void contextLoads() throws Exception {
 
 	}
 }
