@@ -9,7 +9,7 @@ import ie.wellbeing.model.Booking;
 import ie.wellbeing.model.EmployeeDetails;
 import ie.wellbeing.model.UserDetails;
 import ie.wellbeing.repository.UserDetailsDao;
-import ie.wellbeing.service.NotificationService;
+import ie.wellbeing.service.ObserverService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -20,14 +20,14 @@ import javax.mail.internet.MimeMessage;
 import java.io.UnsupportedEncodingException;
 
 @Service
-public class NotificationServiceImpl implements NotificationService {
+public class ObserverServiceImpl implements ObserverService {
     @Autowired
     private JavaMailSender mailSender;
     @Autowired
     private UserDetailsDao userDetailsDao;
 
 
-    public NotificationServiceImpl() {
+    public ObserverServiceImpl() {
     }
 
     @Override

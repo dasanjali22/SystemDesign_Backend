@@ -9,7 +9,7 @@ import ie.wellbeing.repository.PaymentDetailsDao;
 import ie.wellbeing.request.BookingRequest;
 import ie.wellbeing.request.BookingResponse;
 import ie.wellbeing.service.BookingService;
-import ie.wellbeing.service.NotificationService;
+import ie.wellbeing.service.ObserverService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -19,14 +19,14 @@ import java.util.Optional;
 
 
 @Service
-@Qualifier("bookingServiceImplEmailDecorator")
-public class BookingServiceImplEmailDecorator implements BookingService
+@Qualifier("observerServiceImplDemo")
+public class ObserverServiceImplDemo implements BookingService
 {
     @Autowired
     private BookingService bookingServiceImpl;
 
     @Autowired
-    private NotificationService emailService;
+    private ObserverService emailService;
 
     @Autowired
     private EmployeeDetailsDao employeeDetailsDao;

@@ -6,7 +6,7 @@ import ie.wellbeing.repository.*;
 import ie.wellbeing.request.BookingRequest;
 import ie.wellbeing.request.BookingResponse;
 import ie.wellbeing.service.BookingService;
-import ie.wellbeing.service.NotificationService;
+import ie.wellbeing.service.ObserverService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
@@ -34,7 +34,7 @@ public class BookingServiceImpl implements BookingService {
     private MembershipDetailsDao membershipDetailsDao;
 
     @Autowired
-    private NotificationService notificationService;
+    private ObserverService observerService;
 
     @Autowired
     private ServiceDao serviceListDao;

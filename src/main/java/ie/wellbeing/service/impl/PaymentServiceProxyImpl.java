@@ -15,8 +15,9 @@ public class PaymentServiceProxyImpl implements PaymentServiceProxy {
     @Override
     @Transactional
     public void updatePaymentDetails(PaymentDetails paymentDetails) throws Exception {
-
+       System.out.println("updatePaymentstarted");
         paymentServiceProxy.updatePaymentDetails(paymentDetails);
+        System.out.println("updatePaymentcompleted");
 
     }
 }
