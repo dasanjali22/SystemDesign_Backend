@@ -20,16 +20,25 @@ import java.util.List;
 public class BookingController {
 
     @Autowired
-    private BookingService bookingServiceImplEmailDecorator;
+    private BookingService observerServiceImpl;
 
     @Autowired
     private IFilter filter;
 
     @PostMapping(value = "/createBooking" )
     public BookingResponse createBooking(@RequestBody BookingRequest bookingRequest, HttpServletRequest request) throws Exception {
-        InterceptorManager interceptorManager = new InterceptorManager(bookingServiceImplEmailDecorator);
-        interceptorManager.setFilter(filter);
-        return interceptorManager.filterRequest(bookingRequest, getSiteURL(request));
+        try {// To simulate the Interceptor pattern, we use Interceptor Manager
+            // This is the manager for Interceptor and the target is set that is email decorator
+            // Ideally, it is the BookingServiceImpl but we decorated with Email for Decorator pattern
+            InterceptorManager interceptorManager = new InterceptorManager(observerServiceImpl);
+            // This is the part where we set the filter which is BookingPreconditionFilter
+            // We can add more
+            interceptorManager.setFilter(filter);
+            return interceptorManager.filterRequest(bookingRequest, getSiteURL(request));
+        }
+        catch (Exception e){
+            throw e;
+        }
     }
 
     private String getSiteURL(HttpServletRequest request) {
@@ -39,10 +48,10 @@ public class BookingController {
 
     @GetMapping("/getUsers")
     public ApiResponse getAllUsers() {
-        return ApiResponseBuilder.success().data(bookingServiceImplEmailDecorator.getAllBooking()).build(); }
+        return ApiResponseBuilder.success().data(observerServiceImpl.getAllBooking()).build(); }
 
     @GetMapping("/all")
     public List<Booking> getAllBookings(){
-        return bookingServiceImplEmailDecorator.getAllBooking();
+        return observerServiceImpl.getAllBooking();
     }
 }

@@ -6,10 +6,12 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 @Service
-@Qualifier("bookingServiceGoldMembershipPaymentStrategy")
-public class BookingServiceGoldMembershipPaymentStrategy implements IBookingServicePaymentStrategy {
+@Qualifier("bookingServicePlatinumMembershipPaymentStrategy")
+
+public class BookingServicePlatinumMembershipPaymentStrategy implements IBookingServicePaymentStrategy {
     @Override
     public boolean ShouldMakePayment(MembershipDetails membershipDetails, BookingRequest bookingRequest) {
-        return bookingRequest.getBookingType().equalsIgnoreCase("Doctor") || bookingRequest.getBookingType().equalsIgnoreCase("Yoga");
+        return false;
     }
+
 }
