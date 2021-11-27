@@ -26,9 +26,17 @@ public class BookingPreconditionFilter implements IFilter{
     @Autowired
     private MembershipDetailsDao membershipDetailsDao;
 
+    @Autowired
+    private UserDetailsDao userDetailsDao;
+
     @Override
     public void verifyBooking(BookingRequest bookingRequest) throws Exception
     {
+
+        if(userDetailsDao.findById(bookingRequest.getUserId()) == null)
+        {
+            throw new Exception("User Not found");
+        }
 
         List<Booking> bookingCheck = bookingDao.findBySessionSlot(bookingRequest.getSessionSlot());
 
@@ -41,11 +49,6 @@ public class BookingPreconditionFilter implements IFilter{
         }
 
         MembershipDetails membershipDetails = membershipDetailsDao.getMembershipDetailsByuId(bookingRequest.getUserId());
-
-        if(membershipDetails == null)
-        {
-            throw new Exception("No Membership");
-        }
 
         if (membershipDetails != null) {
             if (new Date().compareTo(new SimpleDateFormat("yyyy-MM-dd").parse(membershipDetails.getmEndDate())) > 0) {
