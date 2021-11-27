@@ -16,7 +16,7 @@ import java.io.UnsupportedEncodingException;
 
 @ExtendWith(SpringExtension.class)
 @ExtendWith(MockitoExtension.class)
-public class LoginServiceTest {
+ class LoginServiceTest {
 
     @InjectMocks
     private LoginService loginService = new LoginServiceImpl();
