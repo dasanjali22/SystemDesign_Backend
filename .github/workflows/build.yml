@@ -1,4 +1,4 @@
-name: SonarCloud-Build-WellBeing
+name: SonarCloud-Build-WellBeingSystem
 on:
   push:
     branches:
