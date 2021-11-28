@@ -7,9 +7,9 @@ package ie.wellbeing.service.impl;
 
 import ie.wellbeing.model.Booking;
 import ie.wellbeing.model.EmployeeDetails;
+import ie.wellbeing.service.ObserverService;
 import ie.wellbeing.model.UserRegistration;
 import ie.wellbeing.repository.UserRegistrationRepo;
-import ie.wellbeing.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -21,14 +21,14 @@ import java.io.UnsupportedEncodingException;
 
 
 @Service
-public class NotificationServiceImpl implements NotificationService {
+public class ObserverServiceImpl implements ObserverService {
     @Autowired
     private JavaMailSender mailSender;
     @Autowired
     private UserRegistrationRepo userRegistrationRepo;
 
 
-    public NotificationServiceImpl() {
+    public ObserverServiceImpl() {
     }
 
     @Override
@@ -40,15 +40,15 @@ public class NotificationServiceImpl implements NotificationService {
         }
         else {
             String toAddress = userRegistration.getEmail();
-            String fromAddress = "uit13328@rmd.ac.in";
+            String fromAddress = "sairohit349@gmail.com";
             String senderName = "Booking sys";
             String subject = "Booking Done!!!";
             String content = "Dear [[name]]," +
-                    "<br>please find booking details below," +
-                    " <br>booking id: [[bid]]" +
-                    "<br>booking type: [[btype]]" +
+                    "<br>Please find booking details below," +
+                    " <br>Booking id: [[bid]]" +
+                    "<br>Booking type: [[btype]]" +
                    // "<br>session id: [[sid]]" +
-                    "<br>session Date: [[stime]]" +
+                    "<br>Session Date: [[stime]]" +
                     "<br>Thanks for choosing our service";
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message);
@@ -70,7 +70,7 @@ public class NotificationServiceImpl implements NotificationService {
 
         UserRegistration userDetails = userRegistrationRepo.getById(booking.getUserId());
         String toAddress = employeeDetails.geteEmail();
-        String fromAddress = "uit13328@rmd.ac.in";
+        String fromAddress = "sairohit349@gmail.com";
         String senderName = "Booking sys";
         String subject = "You are booked for a session!!";
         String content = "Dear [[name]]," +

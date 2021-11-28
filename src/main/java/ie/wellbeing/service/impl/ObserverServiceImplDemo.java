@@ -1,13 +1,13 @@
 package ie.wellbeing.service.impl;
 
+import ie.wellbeing.DTO.BookingRequestDto;
+import ie.wellbeing.DTO.BookingResponseDto;
 import ie.wellbeing.model.Booking;
 import ie.wellbeing.model.EmployeeDetails;
 import ie.wellbeing.model.PaymentDetails;
 import ie.wellbeing.repository.BookingRepo;
 import ie.wellbeing.repository.EmployeeDetailsRepo;
 import ie.wellbeing.repository.PaymentDetailsRepo;
-import ie.wellbeing.DTO.BookingRequestDto;
-import ie.wellbeing.DTO.BookingResponseDto;
 import ie.wellbeing.service.BookingService;
 import ie.wellbeing.service.ObserverService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +19,8 @@ import java.util.Optional;
 
 
 @Service
-@Qualifier("bookingServiceImplEmailDecorator")
-public class BookingServiceImplEmailDecorator implements BookingService
+@Qualifier("observerServiceImplDemo")
+public class ObserverServiceImplDemo implements BookingService
 {
     @Autowired
     private BookingService bookingServiceImpl;
@@ -29,24 +29,24 @@ public class BookingServiceImplEmailDecorator implements BookingService
     private ObserverService emailService;
 
     @Autowired
-    private EmployeeDetailsRepo employeeDetailsRepo;
+    private EmployeeDetailsRepo employeeDetailsDao;
 
     @Autowired
-    private BookingRepo bookingRepo;
+    private BookingRepo bookingDao;
 
     @Autowired
-    private PaymentDetailsRepo paymentDetailsRepo;
+    private PaymentDetailsRepo paymentDetailsDao;
 
     @Override
-    public BookingResponseDto createBooking(BookingRequestDto bookingRequestDto, String siteURL) throws Exception {
-        BookingResponseDto bookingResponseDto =  bookingServiceImpl.createBooking(bookingRequestDto, siteURL);
-        if(bookingResponseDto.getPaymentUrl() == null || bookingResponseDto.getPaymentUrl().equals(""))
+    public BookingResponseDto createBooking(BookingRequestDto bookingRequest, String siteURL) throws Exception {
+        BookingResponseDto bookingResponse =  bookingServiceImpl.createBooking(bookingRequest, siteURL);
+        if(bookingResponse.getPaymentUrl() == null || bookingResponse.getPaymentUrl().equals(""))
         {
-            emailService.sendSimpleMessage(bookingResponseDto.getBooking());
-            Optional<EmployeeDetails> employeeDetailsOptional = employeeDetailsRepo.findById(bookingResponseDto.booking.geteId());
-            emailService.sendSimpleMessage(employeeDetailsOptional.orElse(null), bookingResponseDto.getBooking());
+            emailService.sendSimpleMessage(bookingResponse.getBooking());
+            Optional<EmployeeDetails> employeeDetailsOptional = employeeDetailsDao.findById(bookingResponse.booking.geteId());
+            emailService.sendSimpleMessage(employeeDetailsOptional.orElse(null), bookingResponse.getBooking());
         }
-        return bookingResponseDto;
+        return bookingResponse;
     }
 
     @Override
@@ -57,13 +57,13 @@ public class BookingServiceImplEmailDecorator implements BookingService
     @Override
     public void updateBookingDetails(Integer paymentId, String type) throws Exception {
         bookingServiceImpl.updateBookingDetails(paymentId, type);
-        PaymentDetails paymentDetails = paymentDetailsRepo.getById(paymentId);
-        List<Booking> bookingCheck = bookingRepo.findByUserId(paymentDetails.getPaymentUserId());
+        PaymentDetails paymentDetails = paymentDetailsDao.getById(paymentId);
+        List<Booking> bookingCheck = bookingDao.findByUserId(paymentDetails.getPaymentUserId());
         if (bookingCheck.size() > 0) {
             for (Booking booking : bookingCheck) {
                 if (booking.getBookingType().equals(type)) {
                     emailService.sendSimpleMessage(booking);
-                    Optional<EmployeeDetails> employeeDetailsOptional = employeeDetailsRepo.findById(booking.geteId());
+                    Optional<EmployeeDetails> employeeDetailsOptional = employeeDetailsDao.findById(booking.geteId());
                     emailService.sendSimpleMessage(employeeDetailsOptional.orElse(null), booking);
                 }
             }

@@ -14,7 +14,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import javax.mail.MessagingException;
 import java.io.UnsupportedEncodingException;
 
-@ExtendWith(SpringExtension.class)
+@ExtendWith(MockitoExtension.class)
 @ExtendWith(MockitoExtension.class)
 public class LoginServiceTest {
 

@@ -55,8 +55,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
 
+        //Swagger will work with below configuration.
         httpSecurity.cors().and().csrf().disable(); //to send post requests without being rejected
         httpSecurity.headers().frameOptions().disable();
+
+        //        //Below is for JWT to authenticate all API's excluding two.
+        //        httpSecurity.csrf().disable()
+        //        // dont authenticate this particular request
+        //                .authorizeRequests().antMatchers("/user/registerUser").permitAll().
+        //                antMatchers("/loginUser/login").permitAll().
+        //        // all other requests need to be authenticated
+        //        anyRequest().authenticated().and().
+        //        // make sure we use stateless session; session won't be used to
+        //        // store user's state.
+        //        exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
+        //                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        //        // Add a filter to validate the tokens with every request
+        //        httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
     }
 

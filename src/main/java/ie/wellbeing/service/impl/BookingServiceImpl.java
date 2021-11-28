@@ -6,8 +6,8 @@ import ie.wellbeing.repository.*;
 import ie.wellbeing.DTO.BookingRequestDto;
 import ie.wellbeing.DTO.BookingResponseDto;
 import ie.wellbeing.service.BookingService;
+import ie.wellbeing.service.ObserverService;
 import ie.wellbeing.service.IBookingServicePaymentStrategy;
-import ie.wellbeing.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
@@ -35,7 +35,7 @@ public class BookingServiceImpl implements BookingService {
     private MembershipDetailsRepo membershipDetailsRepo;
 
     @Autowired
-    private NotificationService notificationService;
+    private ObserverService observerService;
 
     @Autowired
     private ServiceDetailsRepo serviceListDao;
@@ -64,7 +64,10 @@ public class BookingServiceImpl implements BookingService {
         booking.setUserId(bookingRequestDto.getUserId());
         booking.seteId(employeeDetails.geteId());
 
+
+
         MembershipDetails membershipDetails = membershipDetailsRepo.getMembershipDetailsByuId(bookingRequestDto.getUserId());
+
 
         boolean shouldMakePayment = false;
 
@@ -76,7 +79,7 @@ public class BookingServiceImpl implements BookingService {
         {
             switch (membershipDetails.getmName())
             {
-                // Not using enum, stupid cases
+
                 case "PLATINUM":
                 case "Platinum":
                     shouldMakePayment = bookingServicePlatinumMembershipPaymentStrategy.ShouldMakePayment(membershipDetails, bookingRequestDto);
@@ -97,8 +100,10 @@ public class BookingServiceImpl implements BookingService {
 
         if(shouldMakePayment)
         {
+
             setPaymentDetails(bookingRequestDto, booking, employeeDetails);
             bookingResponseDto.setPaymentUrl(siteURL + "/payment-stripe/charge");
+
         }
 
         bookingRepo.save(booking);
@@ -138,6 +143,7 @@ public class BookingServiceImpl implements BookingService {
                     booking.setPaymentStatus(1);
                     bookingRepo.save(booking);
                     paymentDetailsRepo.save(paymentDetails);
+
                 }
             }
         }
