@@ -9,7 +9,7 @@ package ie.wellbeing.controller;
 
 import ie.wellbeing.common.ApiResponse;
 import ie.wellbeing.common.ApiResponseBuilder;
-import ie.wellbeing.request.MembershipRequest;
+import ie.wellbeing.DTO.MembershipRequestDto;
 import ie.wellbeing.service.MembershipService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -25,8 +25,8 @@ public class MembershipController {
     private MembershipService membershipService;
 
     @PostMapping("/createMembership")
-    public String createUserMembership(@RequestBody MembershipRequest membershipRequest, HttpServletRequest request) throws Exception {
-       String url= membershipService.createMembership(membershipRequest, getSiteURL(request));
+    public String createUserMembership(@RequestBody MembershipRequestDto membershipRequestDto, HttpServletRequest request) throws Exception {
+       String url= membershipService.createMembership(membershipRequestDto, getSiteURL(request));
         return url;
     }
 

@@ -1,8 +1,9 @@
 package ie.wellbeing.service.impl;
 
-import ie.wellbeing.request.BookingRequest;
-import ie.wellbeing.request.BookingResponse;
+import ie.wellbeing.DTO.BookingRequestDto;
+import ie.wellbeing.DTO.BookingResponseDto;
 import ie.wellbeing.service.BookingService;
+import ie.wellbeing.service.IFilter;
 
 public class InterceptorManager {
     private InterceptorChain interceptorChain;
@@ -18,8 +19,8 @@ public class InterceptorManager {
         interceptorChain.addFilter(filter);
     }
 
-    public BookingResponse filterRequest(BookingRequest bookingRequest, String siteURL) throws Exception
+    public BookingResponseDto filterRequest(BookingRequestDto bookingRequestDto, String siteURL) throws Exception
     {
-        return interceptorChain.execute(bookingRequest, siteURL);
+        return interceptorChain.execute(bookingRequestDto, siteURL);
     }
 }

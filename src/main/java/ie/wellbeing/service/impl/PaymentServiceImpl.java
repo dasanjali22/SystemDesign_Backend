@@ -1,9 +1,9 @@
 package ie.wellbeing.service.impl;
 
 import ie.wellbeing.model.PaymentDetails;
-import ie.wellbeing.model.UserDetails;
-import ie.wellbeing.repository.PaymentDetailsDao;
-import ie.wellbeing.repository.UserDetailsDao;
+import ie.wellbeing.model.UserRegistration;
+import ie.wellbeing.repository.PaymentDetailsRepo;
+import ie.wellbeing.repository.UserRegistrationRepo;
 import ie.wellbeing.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,10 +17,10 @@ import java.util.List;
 public class PaymentServiceImpl implements PaymentService,PaymentServiceProxy {
 
     @Autowired
-    PaymentDetailsDao paymentDetailsDao;
+    PaymentDetailsRepo paymentDetailsRepo;
 
     @Autowired
-    private UserDetailsDao userDao;
+    private UserRegistrationRepo userDao;
 
     @Autowired
     MembershipService membershipService;
@@ -34,9 +34,13 @@ public class PaymentServiceImpl implements PaymentService,PaymentServiceProxy {
     @Autowired
     BookingService observerServiceImplDemo;
 
+    @Autowired
+    BookingService bookingServiceImplEmailDecorator;
+
+
     @Override
     public List<PaymentDetails> getAllPaymentDetails() {
-        return paymentDetailsDao.findAll();
+        return paymentDetailsRepo.findAll();
     }
 
     @Override
@@ -46,13 +50,13 @@ public class PaymentServiceImpl implements PaymentService,PaymentServiceProxy {
         Date today = cal.getTime();
         String createdDate = ft.format(today);
 
-        UserDetails userDetails = userDao.findByEmail(email);
+        UserRegistration userDetails = userDao.findByEmail(email);
         if(userDetails == null)
         {
             throw new IllegalStateException("User Not Found ");
         }
 
-        List<PaymentDetails> paymentDetails = paymentDetailsDao.findByPaymentUserId(userDetails.getId());
+        List<PaymentDetails> paymentDetails = paymentDetailsRepo.findByPaymentUserId(userDetails.getId());
 
         for(PaymentDetails pay : paymentDetails)
         {
@@ -72,7 +76,7 @@ public class PaymentServiceImpl implements PaymentService,PaymentServiceProxy {
         Date today = cal.getTime();
         paymentDetails.setPaymentStatus(1);
         paymentDetails.setPaymentDate(ft.format(today));
-        paymentDetailsDao.save(paymentDetails);
+        paymentDetailsRepo.save(paymentDetails);
 
         switch (paymentDetails.getPaymentType()){
             case "GOLD":
@@ -98,10 +102,16 @@ public class PaymentServiceImpl implements PaymentService,PaymentServiceProxy {
             case "Gym":
             case "Doctor":
             case "Dietitian":
+
                 observerServiceImplDemo.updateBookingDetails(paymentDetails.getId(), paymentDetails.getPaymentType());
+
+                bookingServiceImplEmailDecorator.updateBookingDetails(paymentDetails.getId(), paymentDetails.getPaymentType());
                 break;
             default:
                 break;
         }
     }
 }
+
+
+

@@ -43,18 +43,18 @@ public class PaymentStripeController {
     public @ResponseBody Response createCharge(String email, String token, String serviceType ) throws Exception {
 
         if (token == null) {
-            return new Response(false, "Stripe payment token is missing. please try again later.");
+            return new Response(false, "Payment token is missing. please try again later.");
         }
         PaymentDetails paymentDetails = paymentService.checkUserPaymentId(email, serviceType);
         int price = paymentDetails.getPaymentPrice();
 
         String chargeId = paymentStripeService.createCharge(email, token, price*100);
         if (chargeId == null) {
-            return new Response(false, "An error accurred while trying to charge.");
+            return new Response(false, "An error occured During payment.");
         }
         if (chargeId != null) {
             paymentServiceProxy.updatePaymentDetails(paymentDetails);
         }
-        return new Response(true, "Success your charge id is " + chargeId);
+        return new Response(true, "Payment transaction id" + chargeId);
     }
 }

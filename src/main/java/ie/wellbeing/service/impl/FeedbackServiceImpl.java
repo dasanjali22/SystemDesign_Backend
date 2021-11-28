@@ -1,10 +1,10 @@
 package ie.wellbeing.service.impl;
 
 
+import ie.wellbeing.DTO.FeedbackRequestDto;
 import ie.wellbeing.model.Feedback;
 
 import ie.wellbeing.repository.FeedbackDao;
-import ie.wellbeing.request.FeedbackRequest;
 import ie.wellbeing.service.FeedbackService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,14 +21,15 @@ public class FeedbackServiceImpl implements FeedbackService {
     @Autowired
     private FeedbackDao feedbackDao;
 
+
     @Override
-    public Feedback getFeedback(FeedbackRequest feedbackRequest) throws IllegalStateException, MessagingException, UnsupportedEncodingException {
+    public Feedback getFeedback(FeedbackRequestDto feedbackRequestDto) throws IllegalStateException, MessagingException, UnsupportedEncodingException {
 
 
           Feedback  feedback = new Feedback();
-            feedback.setId(feedbackRequest.getId());
-            feedback.setComment(feedbackRequest.getComment());
-            feedback.setRating(feedbackRequest.getRating());
+            feedback.setId(feedbackRequestDto.getId());
+            feedback.setComment(feedbackRequestDto.getComment());
+            feedback.setRating(feedbackRequestDto.getRating());
 
 
         feedbackDao.save(feedback);

@@ -1,14 +1,12 @@
 package ie.wellbeing.service;
 
-import ie.wellbeing.model.LoginUser;
-import ie.wellbeing.model.UserDetails;
-import ie.wellbeing.request.LoginRequest;
+import ie.wellbeing.model.UserRegistration;
+import ie.wellbeing.DTO.LoginRequestDto;
 
 import javax.mail.MessagingException;
 import java.io.UnsupportedEncodingException;
-import java.util.List;
 
 
 public interface LoginService {
-   UserDetails loginUser(LoginRequest loginRequest, String siteURL) throws MessagingException, UnsupportedEncodingException;
+   UserRegistration loginUser(LoginRequestDto loginRequestDto, String siteURL) throws MessagingException, UnsupportedEncodingException;
 }

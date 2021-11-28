@@ -3,10 +3,11 @@ package ie.wellbeing.service.impl;
 
 import ie.wellbeing.model.*;
 import ie.wellbeing.repository.*;
-import ie.wellbeing.request.BookingRequest;
-import ie.wellbeing.request.BookingResponse;
+import ie.wellbeing.DTO.BookingRequestDto;
+import ie.wellbeing.DTO.BookingResponseDto;
 import ie.wellbeing.service.BookingService;
 import ie.wellbeing.service.ObserverService;
+import ie.wellbeing.service.IBookingServicePaymentStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
@@ -22,22 +23,22 @@ Authors : Sai Rohit Voleti & Subhiksha
 @Qualifier("bookingServiceImpl")
 public class BookingServiceImpl implements BookingService {
     @Autowired
-    PaymentDetailsDao paymentDetailsDao;
+    PaymentDetailsRepo paymentDetailsRepo;
 
     @Autowired
-    EmployeeDetailsDao employeeDetailsDao;
+    EmployeeDetailsRepo employeeDetailsRepo;
 
     @Autowired
-    private BookingDao bookingDao;
+    private BookingRepo bookingRepo;
 
     @Autowired
-    private MembershipDetailsDao membershipDetailsDao;
+    private MembershipDetailsRepo membershipDetailsRepo;
 
     @Autowired
     private ObserverService observerService;
 
     @Autowired
-    private ServiceDao serviceListDao;
+    private ServiceDetailsRepo serviceListDao;
 
     @Autowired
     private IBookingServicePaymentStrategy bookingServiceSilverMembershipPaymentStrategy;
@@ -49,21 +50,24 @@ public class BookingServiceImpl implements BookingService {
     private IBookingServicePaymentStrategy bookingServicePlatinumMembershipPaymentStrategy;
 
     @Override
-    public BookingResponse createBooking(BookingRequest bookingRequest, String siteURL) {
+    public BookingResponseDto createBooking(BookingRequestDto bookingRequestDto, String siteURL) {
 
-        List<EmployeeDetails> employeeDetailsList = employeeDetailsDao.findAll();
+        List<EmployeeDetails> employeeDetailsList = employeeDetailsRepo.findAll();
 
         System.out.println(employeeDetailsList);
-        EmployeeDetails employeeDetails = employeeDetailsDao.findByEmployeeName(bookingRequest.geteName());
+        EmployeeDetails employeeDetails = employeeDetailsRepo.findByEmployeeName(bookingRequestDto.geteName());
 
         Booking booking = new Booking();
 
-        booking.setBookingType(bookingRequest.getBookingType());
-        booking.setSessionSlot(bookingRequest.getSessionSlot());
-        booking.setUserId(bookingRequest.getUserId());
+        booking.setBookingType(bookingRequestDto.getBookingType());
+        booking.setSessionSlot(bookingRequestDto.getSessionSlot());
+        booking.setUserId(bookingRequestDto.getUserId());
         booking.seteId(employeeDetails.geteId());
 
-        MembershipDetails membershipDetails = membershipDetailsDao.getMembershipDetailsByuId(bookingRequest.getUserId());
+
+
+        MembershipDetails membershipDetails = membershipDetailsRepo.getMembershipDetailsByuId(bookingRequestDto.getUserId());
+
 
         boolean shouldMakePayment = false;
 
@@ -75,71 +79,73 @@ public class BookingServiceImpl implements BookingService {
         {
             switch (membershipDetails.getmName())
             {
-                // Not using enum, stupid cases
+
                 case "PLATINUM":
                 case "Platinum":
-                    shouldMakePayment = bookingServicePlatinumMembershipPaymentStrategy.ShouldMakePayment(membershipDetails, bookingRequest);
+                    shouldMakePayment = bookingServicePlatinumMembershipPaymentStrategy.ShouldMakePayment(membershipDetails, bookingRequestDto);
                     break;
                 case "GOLD" :
                 case "Gold" :
-                    shouldMakePayment = bookingServiceGoldMembershipPaymentStrategy.ShouldMakePayment(membershipDetails, bookingRequest);
+                    shouldMakePayment = bookingServiceGoldMembershipPaymentStrategy.ShouldMakePayment(membershipDetails, bookingRequestDto);
                     break;
                 case "SILVER" :
                 case "silver" :
-                    shouldMakePayment = bookingServiceSilverMembershipPaymentStrategy.ShouldMakePayment(membershipDetails, bookingRequest);
+                    shouldMakePayment = bookingServiceSilverMembershipPaymentStrategy.ShouldMakePayment(membershipDetails, bookingRequestDto);
                     break;
             }
         }
 
-        BookingResponse bookingResponse = new BookingResponse();
-        bookingResponse.setBooking(booking);
+        BookingResponseDto bookingResponseDto = new BookingResponseDto();
+        bookingResponseDto.setBooking(booking);
 
         if(shouldMakePayment)
         {
-            setPaymentDetails(bookingRequest, booking, employeeDetails);
-            bookingResponse.setPaymentUrl(siteURL + "/payment-stripe/charge");
+
+            setPaymentDetails(bookingRequestDto, booking, employeeDetails);
+            bookingResponseDto.setPaymentUrl(siteURL + "/payment-stripe/charge");
+
         }
 
-        bookingDao.save(booking);
+        bookingRepo.save(booking);
 
-        return bookingResponse;
+        return bookingResponseDto;
     }
 
-    private void setPaymentDetails(BookingRequest bookingRequest, Booking booking, EmployeeDetails employeeDetails)
+    private void setPaymentDetails(BookingRequestDto bookingRequestDto, Booking booking, EmployeeDetails employeeDetails)
     {
-        Service serviceList = serviceListDao.findByServiceNameContainingIgnoreCase(bookingRequest.getBookingType());
+        ServiceDetails serviceDetailsList = serviceListDao.findByServiceNameContainingIgnoreCase(bookingRequestDto.getBookingType());
 
-        booking.setServicePrice(serviceList.getsPrice());
+        booking.setServicePrice(serviceDetailsList.getsPrice());
         booking.seteId(employeeDetails.geteId());
         booking.setPaymentStatus(0);
 
         PaymentDetails paymentDetails = new PaymentDetails();
-        paymentDetails.setPaymentPrice(serviceList.getsPrice());
-        paymentDetails.setPaymentUserId(bookingRequest.getUserId());
+        paymentDetails.setPaymentPrice(serviceDetailsList.getsPrice());
+        paymentDetails.setPaymentUserId(bookingRequestDto.getUserId());
         paymentDetails.setPaymentStatus(0);
-        paymentDetails.setPaymentType(bookingRequest.getBookingType());
+        paymentDetails.setPaymentType(bookingRequestDto.getBookingType());
         paymentDetails.setPaymentCreatedDate(new SimpleDateFormat ("yyyy-MM-dd").format(new Date()));
-        paymentDetailsDao.save(paymentDetails);
+        paymentDetailsRepo.save(paymentDetails);
     }
 
     public List<Booking> getAllBooking() {
-        return bookingDao.findAll();
+        return bookingRepo.findAll();
     }
 
     @Override
     public void updateBookingDetails(Integer paymentId, String type) throws Exception {
-        PaymentDetails paymentDetails = paymentDetailsDao.getById(paymentId);
-        List<Booking> bookingCheck = bookingDao.findByUserId(paymentDetails.getPaymentUserId());
+        PaymentDetails paymentDetails = paymentDetailsRepo.getById(paymentId);
+        List<Booking> bookingCheck = bookingRepo.findByUserId(paymentDetails.getPaymentUserId());
         if (bookingCheck.size() > 0) {
             for (Booking booking : bookingCheck) {
                 if (booking.getBookingType().equals(type)) {
                     paymentDetails.setPaymentStatus(1);
                     booking.setPaymentStatus(1);
-                    bookingDao.save(booking);
-                    paymentDetailsDao.save(paymentDetails);
+                    bookingRepo.save(booking);
+                    paymentDetailsRepo.save(paymentDetails);
+
                 }
             }
         }
     }
 }
-

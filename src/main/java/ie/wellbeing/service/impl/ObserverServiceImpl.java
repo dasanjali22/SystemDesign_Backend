@@ -7,9 +7,9 @@ package ie.wellbeing.service.impl;
 
 import ie.wellbeing.model.Booking;
 import ie.wellbeing.model.EmployeeDetails;
-import ie.wellbeing.model.UserDetails;
-import ie.wellbeing.repository.UserDetailsDao;
 import ie.wellbeing.service.ObserverService;
+import ie.wellbeing.model.UserRegistration;
+import ie.wellbeing.repository.UserRegistrationRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -19,12 +19,13 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.UnsupportedEncodingException;
 
+
 @Service
 public class ObserverServiceImpl implements ObserverService {
     @Autowired
     private JavaMailSender mailSender;
     @Autowired
-    private UserDetailsDao userDetailsDao;
+    private UserRegistrationRepo userRegistrationRepo;
 
 
     public ObserverServiceImpl() {
@@ -32,29 +33,29 @@ public class ObserverServiceImpl implements ObserverService {
 
     @Override
     public void sendSimpleMessage(Booking booking) throws Exception {
-        UserDetails userDetails = userDetailsDao.getById(booking.getUserId());
+        UserRegistration userRegistration = userRegistrationRepo.getById(booking.getUserId());
 
-        if (userDetails==null) {
+        if (userRegistration ==null) {
             throw new Exception("Invalid user Id");
         }
         else {
-            String toAddress = userDetails.getEmail();
-            String fromAddress = "uit13328@rmd.ac.in";
+            String toAddress = userRegistration.getEmail();
+            String fromAddress = "sairohit349@gmail.com";
             String senderName = "Booking sys";
             String subject = "Booking Done!!!";
             String content = "Dear [[name]]," +
-                    "<br>please find booking details below," +
-                    " <br>booking id: [[bid]]" +
-                    "<br>booking type: [[btype]]" +
+                    "<br>Please find booking details below," +
+                    " <br>Booking id: [[bid]]" +
+                    "<br>Booking type: [[btype]]" +
                    // "<br>session id: [[sid]]" +
-                    "<br>session Date: [[stime]]" +
+                    "<br>Session Date: [[stime]]" +
                     "<br>Thanks for choosing our service";
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message);
             helper.setFrom(fromAddress, senderName);
             helper.setTo(toAddress);
             helper.setSubject(subject);
-            content = content.replace("[[name]]", userDetails.getName());
+            content = content.replace("[[name]]", userRegistration.getName());
             content = content.replace("[[bid]]", Integer.toString(booking.getBookingId()));
             content = content.replace("[[btype]]", booking.getBookingType());
            // content = content.replace("[[sid]]", Integer.toString(booking.getSessionId()));
@@ -67,9 +68,9 @@ public class ObserverServiceImpl implements ObserverService {
 
     public void sendSimpleMessage(EmployeeDetails employeeDetails, Booking booking) throws MessagingException, UnsupportedEncodingException {
 
-        UserDetails userDetails = userDetailsDao.getById(booking.getUserId());
+        UserRegistration userDetails = userRegistrationRepo.getById(booking.getUserId());
         String toAddress = employeeDetails.geteEmail();
-        String fromAddress = "uit13328@rmd.ac.in";
+        String fromAddress = "sairohit349@gmail.com";
         String senderName = "Booking sys";
         String subject = "You are booked for a session!!";
         String content = "Dear [[name]]," +

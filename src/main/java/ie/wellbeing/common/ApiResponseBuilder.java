@@ -13,7 +13,7 @@ public class ApiResponseBuilder
      */
     private ApiResponseBuilder(int status )
     {
-        
+
         res = new ApiResponse( status );
     }
     

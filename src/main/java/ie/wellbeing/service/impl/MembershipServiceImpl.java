@@ -2,9 +2,9 @@ package ie.wellbeing.service.impl;
 
 import ie.wellbeing.model.MembershipDetails;
 import ie.wellbeing.model.PaymentDetails;
-import ie.wellbeing.repository.MembershipDetailsDao;
-import ie.wellbeing.repository.PaymentDetailsDao;
-import ie.wellbeing.request.MembershipRequest;
+import ie.wellbeing.repository.MembershipDetailsRepo;
+import ie.wellbeing.repository.PaymentDetailsRepo;
+import ie.wellbeing.DTO.MembershipRequestDto;
 import ie.wellbeing.service.MembershipService;
 import ie.wellbeing.service.MembershipState;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,52 +19,52 @@ import java.util.List;
 public class MembershipServiceImpl implements MembershipService {
 
     @Autowired
-    PaymentDetailsDao paymentDetailsDao;
+    PaymentDetailsRepo paymentDetailsRepo;
 
     @Autowired
-    MembershipDetailsDao membershipDetailsDao;
+    MembershipDetailsRepo membershipDetailsRepo;
 
     @Override
-    public String createMembership(MembershipRequest membershipRequest, String siteURL) throws Exception {
+    public String createMembership(MembershipRequestDto membershipRequestDto, String siteURL) throws Exception {
         PaymentDetails paymentDetails = new PaymentDetails();
         int membershipPrice;
         int membershipId;
         SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd");
         Calendar cal = Calendar.getInstance();
         Date today = cal.getTime();
-        switch (membershipRequest.getmName()){
+        switch (membershipRequestDto.getmName()){
             case "GOLD":
                 MembershipState goldMembershipState = new GoldMembershipServiceImpl();
                 membershipPrice = goldMembershipState.membershipPrice();
                 membershipId = goldMembershipState.membershipId();
                 paymentDetails.setPaymentPrice(membershipPrice);
-                paymentDetails.setPaymentUserId(membershipRequest.getuId());
+                paymentDetails.setPaymentUserId(membershipRequestDto.getuId());
                 paymentDetails.setPaymentStatus(0);
                 paymentDetails.setPaymentType("GOLD");
                 paymentDetails.setPaymentCreatedDate(ft.format(today));
-                paymentDetailsDao.save(paymentDetails);
+                paymentDetailsRepo.save(paymentDetails);
                 break;
             case "SILVER":
                 MembershipState silverMembershipState = new SilverMembershipServiceImpl();
                 membershipPrice = silverMembershipState.membershipPrice();
                 membershipId = silverMembershipState.membershipId();
                 paymentDetails.setPaymentPrice(membershipPrice);
-                paymentDetails.setPaymentUserId(membershipRequest.getuId());
+                paymentDetails.setPaymentUserId(membershipRequestDto.getuId());
                 paymentDetails.setPaymentStatus(0);
                 paymentDetails.setPaymentType("SILVER");
                 paymentDetails.setPaymentCreatedDate(ft.format(today));
-                paymentDetailsDao.save(paymentDetails);
+                paymentDetailsRepo.save(paymentDetails);
                 break;
             case "PLATINUM":
                 MembershipState platinumMembershipState = new PlatinumMembershipServiceImpl();
                 membershipPrice= platinumMembershipState.membershipPrice();
                 membershipId = platinumMembershipState.membershipId();
                 paymentDetails.setPaymentPrice(membershipPrice);
-                paymentDetails.setPaymentUserId(membershipRequest.getuId());
+                paymentDetails.setPaymentUserId(membershipRequestDto.getuId());
                 paymentDetails.setPaymentStatus(0);
                 paymentDetails.setPaymentType("PLATINUM");
                 paymentDetails.setPaymentCreatedDate(ft.format(today));
-                paymentDetailsDao.save(paymentDetails);
+                paymentDetailsRepo.save(paymentDetails);
                 break;
             default:
                 break;
@@ -73,7 +73,7 @@ public class MembershipServiceImpl implements MembershipService {
     }
 
     @Override
-    public void updateMembershipDetails(Integer userId, String type) {
+    public void updateMembershipDetails(Long userId, String type) {
         SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd");
         Calendar cal = Calendar.getInstance();
         Date today = cal.getTime();
@@ -84,11 +84,11 @@ public class MembershipServiceImpl implements MembershipService {
         membershipDetails.setuId(userId);
         membershipDetails.setmStartDate(ft.format(today));
         membershipDetails.setmEndDate(ft.format(nextYear));
-        membershipDetailsDao.save(membershipDetails);
+        membershipDetailsRepo.save(membershipDetails);
     }
 
     @Override
     public List<MembershipDetails> getAllUsersMembershipDetails() {
-        return membershipDetailsDao.findAll();
+        return membershipDetailsRepo.findAll();
     }
 }

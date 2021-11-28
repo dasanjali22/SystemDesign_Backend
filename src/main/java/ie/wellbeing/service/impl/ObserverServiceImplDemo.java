@@ -1,13 +1,13 @@
 package ie.wellbeing.service.impl;
 
+import ie.wellbeing.DTO.BookingRequestDto;
+import ie.wellbeing.DTO.BookingResponseDto;
 import ie.wellbeing.model.Booking;
 import ie.wellbeing.model.EmployeeDetails;
 import ie.wellbeing.model.PaymentDetails;
-import ie.wellbeing.repository.BookingDao;
-import ie.wellbeing.repository.EmployeeDetailsDao;
-import ie.wellbeing.repository.PaymentDetailsDao;
-import ie.wellbeing.request.BookingRequest;
-import ie.wellbeing.request.BookingResponse;
+import ie.wellbeing.repository.BookingRepo;
+import ie.wellbeing.repository.EmployeeDetailsRepo;
+import ie.wellbeing.repository.PaymentDetailsRepo;
 import ie.wellbeing.service.BookingService;
 import ie.wellbeing.service.ObserverService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,17 +29,17 @@ public class ObserverServiceImplDemo implements BookingService
     private ObserverService emailService;
 
     @Autowired
-    private EmployeeDetailsDao employeeDetailsDao;
+    private EmployeeDetailsRepo employeeDetailsDao;
 
     @Autowired
-    private BookingDao bookingDao;
+    private BookingRepo bookingDao;
 
     @Autowired
-    private PaymentDetailsDao paymentDetailsDao;
+    private PaymentDetailsRepo paymentDetailsDao;
 
     @Override
-    public BookingResponse createBooking(BookingRequest bookingRequest, String siteURL) throws Exception {
-        BookingResponse bookingResponse =  bookingServiceImpl.createBooking(bookingRequest, siteURL);
+    public BookingResponseDto createBooking(BookingRequestDto bookingRequest, String siteURL) throws Exception {
+        BookingResponseDto bookingResponse =  bookingServiceImpl.createBooking(bookingRequest, siteURL);
         if(bookingResponse.getPaymentUrl() == null || bookingResponse.getPaymentUrl().equals(""))
         {
             emailService.sendSimpleMessage(bookingResponse.getBooking());
