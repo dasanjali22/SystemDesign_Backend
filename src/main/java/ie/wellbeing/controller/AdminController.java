@@ -7,6 +7,8 @@ import ie.wellbeing.service.UserRegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 
 @RestController
 @RequestMapping("admin")
@@ -20,8 +22,12 @@ public class AdminController {
 
 
     @GetMapping("/getAllUserDetails")
-    public ApiResponse getAllUserDetails() {
+    public ApiResponse getAllUsers() {
         return ApiResponseBuilder.success().data(userService.getAllUsers()).build();
     }
 
+    private String getSiteURL(HttpServletRequest request) {
+        String siteURL = request.getRequestURL().toString();
+        return siteURL.replace(request.getServletPath(), "");
+    }
 }
