@@ -5,7 +5,7 @@ plugins {
 	id 'war'
 	id "org.sonarqube" version "3.3"
 }
-
+apply plugin: 'war'
 group = 'ie'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
@@ -57,7 +57,7 @@ dependencies {
 
 	// https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt
 	implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
-
+	
 
 }
 
