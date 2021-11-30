@@ -49,7 +49,9 @@ public class BookingPreconditionFilter implements IFilter{
             }
         }
 
+
         MembershipDetails membershipDetails = membershipDetailsRepo.getMembershipDetailsByuId(bookingRequestDto.getUserId());
+
 
         if (membershipDetails != null) {
             if (new Date().compareTo(new SimpleDateFormat("yyyy-MM-dd").parse(membershipDetails.getmEndDate())) > 0) {

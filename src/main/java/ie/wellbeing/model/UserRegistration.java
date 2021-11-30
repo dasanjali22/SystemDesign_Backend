@@ -1,5 +1,4 @@
 package ie.wellbeing.model;
-
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 

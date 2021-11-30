@@ -20,7 +20,7 @@ import java.util.List;
 public class BookingController {
 
     @Autowired
-    private BookingService bookingServiceImplEmailDecorator;
+    private BookingService observerServiceImplDemo;
 
     @Autowired
     private IFilter filter;
@@ -28,9 +28,8 @@ public class BookingController {
     @PostMapping(value = "/createBooking" )
     public BookingResponseDto createBooking(@RequestBody BookingRequestDto bookingRequestDto, HttpServletRequest request) throws Exception {
         try {// To simulate the Interceptor pattern, we use Interceptor Manager
-            // This is the manager for Interceptor and the target is set that is email decorator
-            // Ideally, it is the BookingServiceImpl but we decorated with Email for Decorator pattern
-            InterceptorManager interceptorManager = new InterceptorManager(bookingServiceImplEmailDecorator);
+            // This is the manager for Interceptor and the target is set that is Observer service Demo
+            InterceptorManager interceptorManager = new InterceptorManager(observerServiceImplDemo);
             // This is the part where we set the filter which is BookingPreconditionFilter
             // We can add more
             interceptorManager.setFilter(filter);
@@ -48,10 +47,10 @@ public class BookingController {
 
     @GetMapping("/getUsers")
     public ApiResponse getAllUsers() {
-        return ApiResponseBuilder.success().data(bookingServiceImplEmailDecorator.getAllBooking()).build(); }
+        return ApiResponseBuilder.success().data(observerServiceImplDemo.getAllBooking()).build(); }
 
     @GetMapping("/all")
     public List<Booking> getAllBookings(){
-        return bookingServiceImplEmailDecorator.getAllBooking();
+        return observerServiceImplDemo.getAllBooking();
     }
 }

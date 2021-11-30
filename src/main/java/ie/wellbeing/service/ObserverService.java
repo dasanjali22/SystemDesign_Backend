@@ -6,7 +6,7 @@ import ie.wellbeing.model.EmployeeDetails;
 import javax.mail.MessagingException;
 import java.io.UnsupportedEncodingException;
 
-public interface NotificationService {
+public interface ObserverService {
 
     void sendSimpleMessage(Booking booking) throws Exception;
     void sendSimpleMessage(EmployeeDetails employeeDetails, Booking booking) throws MessagingException, UnsupportedEncodingException;
