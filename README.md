@@ -3,8 +3,20 @@
 Well Being System
 
 ## Deployment Details
-
-
+1. Getting started with AWS
+We have created AWS account with Free Tier.
+2. Getting started with Elastic Beanstalk
+From AWS Administration Console, select Elastic Beanstalk. Click on Make Application. Next, give an application title and select the suitable platform title. For Spring Boot, it’s Java.
+3.We have uploaded our application war file. As we have Gradle, we build a jar using below command
+ ->./gradlew war and  
+ ->./gradlew bootWar 
+ which created a snapshot war file in our build/libs/ folder.
+4.Than we have uploaded war file, Elastic Beanstalk will create the environment to run your code.
+By default, code throw a warning since Elastic Beanstalk runs on port 5000 while Spring Boot’s embedded Tomcat runs on 8080.
+5.To fix this, we went into the Configuration tab and select Software category. Under Environment properties, add SERVER_PORT with value 5000. Click on Apply.
+6.After click on Apply, Elastic Beanstalk  updated in our environment.
+7.Once the environment was updated, we have launched our application. We Replace localhost:8080 with the AWS url. 
+http://wellbeing-env.eba-tgcii7hq.ap-south-1.elasticbeanstalk.com/swagger-ui/#
 
 ## Description
 
